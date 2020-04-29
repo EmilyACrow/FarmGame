@@ -36,7 +36,7 @@ public class Crop implements Merchandise{
 	 * @return message to output to user reporting whether or not the item was successfully used and additional info 
 	 * @throws RuntimeException if item could not be used
 	 */
-	public boolean useItem(Item item)
+	private boolean useItem(Item item)
 	{		
 		if(item.getForCrops())
 		{
@@ -87,8 +87,7 @@ public class Crop implements Merchandise{
 	{
 		try
 		{
-			useItem(item);
-			return true;
+			return useItem(item);			
 		}
 		catch(RuntimeException e)
 		{

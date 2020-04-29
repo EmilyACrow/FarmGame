@@ -10,4 +10,6 @@
 public interface Merchandise {
 	public int getPurchasePrice();
 	public void setPurchasePrice(int price);
+	public String getName();
+	public void setName(String name);
 }
