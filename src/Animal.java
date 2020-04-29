@@ -1,3 +1,5 @@
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
 * The Animal class represents an animal that can be bought by the
 * player and placed on their farm
@@ -7,13 +9,26 @@
 * Created: 29-4-20
 * @author  Dmitri Smith
 */
-public class Animal implements Merchandise{
+
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "animal")
+public class Animal extends Merchandise{
+	@XmlElement(name = "name")
 	private String m_name;
+	@XmlElement(name = "species")
 	private String m_species;
+	@XmlElement(name = "purchasePrice")
 	private int m_purchasePrice;
 	private int m_health;
 	private int m_happiness;
+	@XmlElement(name = "dailyBonus")
 	private int m_dailyBonus; //Amount of cash awarded at the end of each day
+	
+	public Animal()
+	{
+		
+	}
 	
 	/**
 	 * 
@@ -167,5 +182,19 @@ public class Animal implements Merchandise{
 	public void setHappiness(int happiness)
 	{
 		m_happiness = happiness;
+	}
+	
+	@Override
+	public String toString()
+	{
+		final StringBuffer sb = new StringBuffer("Animal{");
+        sb.append("name=").append(m_name);
+        sb.append(", specieces='").append(m_species).append('\'');
+        sb.append(", purchasePrice='").append(m_purchasePrice).append('\'');
+        sb.append(", health='").append(m_health).append('\'');
+        sb.append(", happiness'").append(m_happiness).append('\'');
+        sb.append(", dailyBonus='").append(m_dailyBonus).append('\'');
+        sb.append('}');
+        return sb.toString();
 	}
 }

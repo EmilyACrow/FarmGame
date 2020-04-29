@@ -1,0 +1,28 @@
+<merch>
+	<animal>
+		<name>Slagathor</name>
+		<species>Cow</species>
+		<purchasePrice>20</purchasePrice>
+		<dailyBonus>10</dailyBonus>
+	</animal>
+	<crop>
+		<name>foo</name>
+		<purchasePrice>5</purchasePrice>
+		<sellPrice>10</sellPrice>
+		<daysToGrow>3</daysToGrow>
+	</crop>
+	<item>
+		<name>bar</name>
+		<purchasePrice>1</purchasePrice>
+		<boostAmount>2</boostAmount>
+		<forAnimals>1</forAnimals>
+		<forCrops>0</forCrops>
+	</item>
+	<item>
+		<name>fizzbuzz</name>
+		<purchasePrice>3</purchasePrice>
+		<boostAmount>5</boostAmount>
+		<forAnimals>0</forAnimals>
+		<forCrops>1</forCrops>
+	</item>
+</merch>	

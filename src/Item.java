@@ -7,19 +7,30 @@
 * Created: 28-4-20
 * @author  Dmitri Smith
 */
-public class Item implements Merchandise{
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "item")
+public class Item extends Merchandise{
 	//Variables
-	
+	@XmlElement(name = "name")
 	private String m_name;
+	@XmlElement(name = "purchasePrice")
 	private int m_purchasePrice;
+	@XmlElement(name = "boostAmount")
 	private int m_boostAmount;
 	
 	/*
 	 * Some items can be used on animals; some can be used on crops.
 	 * The following two flags determine what classes it can be used on
 	 */
+	@XmlElement(name = "forAnimals")
 	private boolean m_forAnimals;
+	@XmlElement(name = "forCrops")
 	private boolean m_forCrops;
+	
+	public Item()
+	{
+	}
 	
 	/**
 	 * 
@@ -137,6 +148,19 @@ public class Item implements Merchandise{
 	public void setForCrops(boolean newVal)
 	{
 		m_forCrops = newVal;
+	}
+	
+	@Override
+	public String toString()
+	{
+		final StringBuffer sb = new StringBuffer("Item{");
+        sb.append("name=").append(m_name);
+        sb.append(", purchasePrice='").append(m_purchasePrice).append('\'');
+        sb.append(", boostAmount='").append(m_boostAmount).append('\'');
+        sb.append(", forAnimals='").append(m_forAnimals).append('\'');
+        sb.append(", forCrops='").append(m_forCrops).append('\'');
+        sb.append('}');
+        return sb.toString();
 	}
 
 }

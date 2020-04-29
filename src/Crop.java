@@ -1,19 +1,34 @@
 /**
 * The Crop class represents a crop that can be bought by the
-* player and planted on their farm
+* player and planted on their farm.
+* 
+* XML code in part from springframework.guru
+* (https://springframework.guru/using-jaxb-for-xml-with-java/)
 * 
 * Last modified: 29-4-20 by Dmitri Smith
 *
 * Created: 28-4-20
 * @author  Dmitri Smith
 */
-public class Crop implements Merchandise{
+import javax.xml.bind.annotation.*;
+
+
+@XmlRootElement(name = "crop")
+public class Crop extends Merchandise{
+	@XmlElement(name = "name")
 	private String m_name;
+	@XmlElement(name = "purchasePrice")
 	private int m_purchasePrice;
+	@XmlElement(name = "sellPrice")
 	private int m_sellPrice;
+	@XmlElement(name = "daysToGrow")
 	private int m_daysToGrow;
 	private int m_daysUntilHarvest;
 	
+	public Crop()
+	{
+		
+	}
 	/**
 	 * Constructor. A new instance of a Crop object has spent no days growing
 	 * @param name			Name of the crop
@@ -229,5 +244,18 @@ public class Crop implements Merchandise{
 	public void setDaysUntilHarvest(int days)
 	{
 		m_daysUntilHarvest = days;
+	}
+	
+	@Override
+	public String toString()
+	{
+		final StringBuffer sb = new StringBuffer("Crop{");
+        sb.append("name=").append(m_name);
+        sb.append(", purchasePrice='").append(m_purchasePrice).append('\'');
+        sb.append(", sellPrice='").append(m_sellPrice).append('\'');
+        sb.append(", daysToGrow='").append(m_daysToGrow).append('\'');
+        sb.append(", daysUntilHarvest='").append(m_daysUntilHarvest).append('\'');
+        sb.append('}');
+        return sb.toString();
 	}
 }
