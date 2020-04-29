@@ -1,7 +1,10 @@
 /**
 * The Item class represents any item that can be bought by the
 * player and used to provide some benefit to their farm
+* 
+* Last modified: 29-4-20 by Dmitri Smith
 *
+* Created: 28-4-20
 * @author  Dmitri Smith
 */
 public class Item implements Merchandise{
