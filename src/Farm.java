@@ -213,8 +213,18 @@ public class Farm {
 	 * 
 	 * @return name	the name of the farm the player typed in for the farm.
 	 */
-	public String getName() {
+	public String getFarmName() {
 		return m_name;
+	}
+	
+	
+	/**
+	 * 
+	 * @param name the name of the farm player wrote.
+	 */
+	public void setFarmName(String name) {
+		m_name = name;
+		
 	}
 
 	
@@ -228,6 +238,10 @@ public class Farm {
 	}
 	
 	
+	public void setFarmType(FarmType farmType) {
+		m_type = farmType;
+	}
+	
 	
 	/**
 	 * 
@@ -235,6 +249,16 @@ public class Farm {
 	 */
 	public Farmer getFarmer() {
 		return m_farmer;
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @param farmer the farmer player created. Reminder that this is an object. 
+	 */
+	public void setFarmer(Farmer farmer) {
+		m_farmer = farmer;
 	}
 	
 	
@@ -251,7 +275,7 @@ public class Farm {
 	
 	/**
 	 * 
-	 * @param animal adds a new animal object to the list when player purchases it from GeneralStore.
+	 * @param animal the new animal object player purchased from GeneralStore.
 	 */
 	public void addAnimal(Animal animal) {
 		m_crops.add(animal);
@@ -272,7 +296,7 @@ public class Farm {
 	
 	/**
 	 * 
-	 * @param crop	adds a new crop object to the list after player purchases it from GeneralStore.
+	 * @param crop	the new crop object  player purchased from GeneralStore.
 	 */
 	public void addCrop(Crop crop) {
 		m_crops.add(crop);
@@ -293,7 +317,7 @@ public class Farm {
 	
 	/**
 	 * 
-	 * @param item adds a new item object to the list after player purchases it from GeneralStore.
+	 * @param item  new item object the player purchased from GeneralStore.
 	 */
 	public void addItem(Item item) {
 		m_crops.add(item);
@@ -321,6 +345,7 @@ public class Farm {
 	}
 
 
+	
 	/**
 	 * 
 	 * @return m_maxCropAmount The maximum amount of crops a player can have growing
@@ -407,7 +432,7 @@ public class Farm {
 
 	/**
 	 * 
-	 * @return m_animalHappinessMod percentage influences owned animals' happiness level.
+	 * @return m_animalHappinessMod percentage bonus for animal's happiness.
 	 */
 	public double getAnimalHappinessMod() {
 		return m_animalHappinessMod;
@@ -417,7 +442,7 @@ public class Farm {
 	
 	/**
 	 * 
-	 * @param animalHappiness sets the percentage happiness bonus for animals.
+	 * @param animalHappiness  the percentage happiness bonus for animals.
 	 * 						  May be altered by action tendFarm or lack of farm tending.
 	 */
 	public void setAnimalHappinessMod(double animalHappiness) {
@@ -433,6 +458,15 @@ public class Farm {
 	 */
 	public double getPurchaseDiscountMod() {
 		return m_purchaseDiscountMod;
+	}
+	
+	
+	/**
+	 * 
+	 * @param purchaseDiscount  percentage of the discount player gets.
+	 */
+	public void setPurchaseDiscountMod(double purchaseDiscount) {
+		m_purchaseDiscountMod = purchaseDiscount;
 	}
 
 
