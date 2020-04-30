@@ -283,27 +283,41 @@ public class Farm {
 		
 	}
 	
-
+	
 	
 	/**
 	 * 
-	 * @return m_crops	list of Crop objects representing the crops player is growing.
+	 * @param animalList List of Animal objects.
+	 */
+	
+	public void setAnimalList(Animal animalList) {
+		m_animals = animalList;
+	}
+
+	
+	
+	/**
+	 * 
+	 * @return m_crops	list of Crop objects representing the plants the player is growing.
 	 */
 	public ArrayList<Crop> getCrops() {
 		return m_crops;
 	}
-
+	
 
 	
 	/**
 	 * 
-	 * @param crop	the new crop object  player purchased from GeneralStore.
+	 * @param crop	the new crop object the  player has purchased from GeneralStore.
 	 */
 	public void addCrop(Crop crop) {
 		m_crops.add(crop);
 		
 	}
 	
+	public void setCropList(Crop cropList) {
+		m_crops = cropList;
+	}
 	
 	
 	/**
@@ -323,6 +337,16 @@ public class Farm {
 	public void addItem(Item item) {
 		m_items.add(item);
 		
+	}
+	
+	
+	
+	/**
+	 * 
+	 * @param itemList list of Item objects.
+	 */
+	public void setItemList(Item itemList) {
+		m_items = itemList;
 	}
 
 	
