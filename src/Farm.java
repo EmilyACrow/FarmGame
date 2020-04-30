@@ -21,10 +21,10 @@ public class Farm {
 	
 	
 	/**
-	 * The type of farm the player selected. It represents the selected FarmType identifier as a String. 
+	 * The type of farm the player selected. It represents the selected FarmType identifier 
 	 *
 	 */
-	 private String m_type;
+	 private FarmType m_type;
 	 
 	 
 	 
@@ -52,7 +52,7 @@ public class Farm {
 	/**
 	 * ArrayList of Item objects the player owns. 
 	 */
-	private ArrayList<Item>  m_items; 
+	private ArrayList<Item> m_items; 
 	
 	
 
@@ -124,17 +124,19 @@ public class Farm {
 		
 		m_name = farmName;
 		m_farmer = farmer;
+		m_type = farmType;	
+		
 		
 		//setting up the arrayLists. When the game starts, these must be empty
 		m_crops = new ArrayList<Crop>();
 		m_animals = new ArrayList<Animal>();
 		m_items = new ArrayList<Item>();		
 		
+		
 		//Switch cases for FarmTypes determine starting values
 		switch(farmType) {
 		case COMMERCIAL:
-			
-			m_type = "Commercial";			
+					
 			m_money = 100;
 			
 			m_maxCropAmount = 6;
@@ -152,7 +154,6 @@ public class Farm {
 			
 		case PRODUCE:
 			
-			m_type = "Produce";			
 			m_money = 500;
 			
 			m_maxCropAmount = 6;
@@ -167,8 +168,7 @@ public class Farm {
 			break;
 			
 		case RANCH:
-			
-			m_type = "Ranch";			
+						
 			m_money = 500;
 			
 			m_maxCropAmount = 2;
@@ -183,8 +183,7 @@ public class Farm {
 			break;
 			
 		case MIXED:
-			
-			m_type = "Mixed";			
+					
 			m_money = 1000;
 			
 			m_maxCropAmount = 3;
@@ -238,9 +237,11 @@ public class Farm {
 	}
 	
 	
+	
 	public void setFarmType(FarmType farmType) {
 		m_type = farmType;
 	}
+	
 	
 	
 	/**
@@ -278,7 +279,7 @@ public class Farm {
 	 * @param animal the new animal object player purchased from GeneralStore.
 	 */
 	public void addAnimal(Animal animal) {
-		m_crops.add(animal);
+		m_animals.add(animal);
 		
 	}
 	
@@ -320,7 +321,7 @@ public class Farm {
 	 * @param item  new item object the player purchased from GeneralStore.
 	 */
 	public void addItem(Item item) {
-		m_crops.add(item);
+		m_items.add(item);
 		
 	}
 
