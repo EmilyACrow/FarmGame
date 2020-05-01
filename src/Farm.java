@@ -232,7 +232,7 @@ public class Farm {
 	 * 
 	 * @return m_type	the type of farm player selected.
 	 */
-	public String getfarmType() {
+	public FarmType getfarmType() {
 		return m_type;
 	}
 	
@@ -290,7 +290,7 @@ public class Farm {
 	 * @param animalList List of Animal objects.
 	 */
 	
-	public void setAnimalList(Animal animalList) {
+	public void setAnimalList(ArrayList<Animal> animalList) {
 		m_animals = animalList;
 	}
 
@@ -315,7 +315,7 @@ public class Farm {
 		
 	}
 	
-	public void setCropList(Crop cropList) {
+	public void setCropList(ArrayList<Crop> cropList) {
 		m_crops = cropList;
 	}
 	
@@ -345,7 +345,7 @@ public class Farm {
 	 * 
 	 * @param itemList list of Item objects.
 	 */
-	public void setItemList(Item itemList) {
+	public void setItemList(ArrayList<Item> itemList) {
 		m_items = itemList;
 	}
 
