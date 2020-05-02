@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * The GeneralStore class is where the player can view or purchase available merchandise.
  * They can also view their current balance.
  * 
- * Last modified: 1-05-2020
+ * Last modified: 2-05-2020
  * 
  * created: 1-05-2020
  * @author Kenn Leen Fulgencio
@@ -33,34 +33,30 @@ public class GeneralStore {
 	
 	
 	/**
-	 * The checkout method will go through all the merch in the ShoppingCart.
+	 * 
+	 * @param item An instance of Item class.
 	 */
-	public ArrayList<Merchandise> checkout() {
+	public void addItem(Item item) {
 		
-		//int totalSum;	
-		
+		m_itemsAvailable.add(item);
 	}
 	
-	
+	/**
+	 * 
+	 * @param animal An instance of Animal class.
+	 */
+	public void addAnimal(Animal animal) {
+		
+		m_animalsAvailable.add(animal);
+	}
 	
 	/**
-	 * checkBalance checks if the player can afford the sum total of the merch they want to buy. 
-	 * @return True if player can afford merch. False if player can't.
+	 * 
+	 * @param crop An instance of Animal class.
 	 */
-	private boolean checkBalance() {
-		/*
-		//checks if player's money is greater or equal to  total sum . 
-		if(Farm.getMoney() >= {
-			
-			return true;
-			
-		}
+	public void addCrop(Crop crop) {
 		
-		// Player can't afford the merch
-		else {
-			return false;
-		} */
-
+		m_cropsAvailable.add(crop);
 	}
 	
 	/**  
@@ -73,10 +69,3 @@ public class GeneralStore {
 	
 	
 	}
-	
-	
-	
-	
-	
-	
-
