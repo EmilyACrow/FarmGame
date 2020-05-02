@@ -2,24 +2,49 @@
 * The Item class represents any item that can be bought by the
 * player and used to provide some benefit to their farm
 * 
-* Last modified: 29-4-20 by Dmitri Smith
+* Last modified: 1-5-20 by Dmitri Smith
 *
 * Created: 28-4-20
 * @author  Dmitri Smith
 */
+import javax.xml.bind.annotation.*;
+
+@XmlRootElement(name = "item")
 public class Item implements Merchandise{
-	//Variables
-	
+	/**
+	 * String representing the item's type
+	 */
+	@XmlElement(name = "name")
 	private String m_name;
+	/**
+	 * int representing the price of the item from the store
+	 */
+	@XmlElement(name = "purchasePrice")
 	private int m_purchasePrice;
+	/**
+	 * int representing the numerical boost amount provided by the item
+	 */
+	@XmlElement(name = "boostAmount")
 	private int m_boostAmount;
 	
 	/*
 	 * Some items can be used on animals; some can be used on crops.
 	 * The following two flags determine what classes it can be used on
 	 */
+	/**
+	 * Bool representing whether or not the item can be used on animals
+	 */
+	@XmlElement(name = "forAnimals")
 	private boolean m_forAnimals;
+	/**
+	 * Bool representing whether or not the item can be used on crops
+	 */
+	@XmlElement(name = "forCrops")
 	private boolean m_forCrops;
+	
+	public Item()
+	{
+	}
 	
 	/**
 	 * 
@@ -53,6 +78,7 @@ public class Item implements Merchandise{
 	 * Get Item's name
 	 * @return Item's name
 	 */
+	@Override
 	public String getName()
 	{
 		return m_name;
@@ -62,6 +88,7 @@ public class Item implements Merchandise{
 	 * Set new name for Item
 	 * @param name new name for Item
 	 */
+	@Override
 	public void setName(String name)
 	{
 		m_name = name;
@@ -71,6 +98,7 @@ public class Item implements Merchandise{
 	 * Get price of Item when bought from General Store
 	 * @return Price of Item when bought in General Store
 	 */
+	@Override
 	public int getPurchasePrice()
 	{
 		return m_purchasePrice;
@@ -80,6 +108,7 @@ public class Item implements Merchandise{
 	 * Set new price of Item when bought from General Store
 	 * @param New price for Item
 	 */
+	@Override
 	public void setPurchasePrice(int price)
 	{
 		m_purchasePrice = price;
@@ -137,6 +166,19 @@ public class Item implements Merchandise{
 	public void setForCrops(boolean newVal)
 	{
 		m_forCrops = newVal;
+	}
+	
+	@Override
+	public String toString()
+	{
+		final StringBuffer sb = new StringBuffer("Item{");
+        sb.append("name=").append(m_name);
+        sb.append(", purchasePrice='").append(m_purchasePrice).append('\'');
+        sb.append(", boostAmount='").append(m_boostAmount).append('\'');
+        sb.append(", forAnimals='").append(m_forAnimals).append('\'');
+        sb.append(", forCrops='").append(m_forCrops).append('\'');
+        sb.append('}');
+        return sb.toString();
 	}
 
 }

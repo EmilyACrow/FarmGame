@@ -1,19 +1,52 @@
 /**
 * The Crop class represents a crop that can be bought by the
-* player and planted on their farm
+* player and planted on their farm.
 * 
-* Last modified: 29-4-20 by Dmitri Smith
+* XML code in part from springframework.guru
+* (https://springframework.guru/using-jaxb-for-xml-with-java/)
+* 
+* Last modified: 1-5-20 by Dmitri Smith
 *
 * Created: 28-4-20
 * @author  Dmitri Smith
 */
+import javax.xml.bind.annotation.*;
+
+
+@XmlRootElement(name = "crop")
 public class Crop implements Merchandise{
+	/**
+	 * String representing the crop's type
+	 */
+	@XmlElement(name = "name")
 	private String m_name;
+	/**
+	 * int representing the price of the crop from the store
+	 */
+	@XmlElement(name = "purchasePrice")
 	private int m_purchasePrice;
+	/**
+	 * int representing the amount of money received for harvesting the crop
+	 */
+	@XmlElement(name = "sellPrice")
 	private int m_sellPrice;
+	/**
+	 * int representing the number of days it takes to grow the crop
+	 */
+	@XmlElement(name = "daysToGrow")
 	private int m_daysToGrow;
+	/**
+	 * int representing the Days remaining until the crop is ready to harvest
+	 */
 	private int m_daysUntilHarvest;
 	
+	/**
+	 * Empty default constructor for JAXB
+	 */
+	public Crop()
+	{
+		
+	}
 	/**
 	 * Constructor. A new instance of a Crop object has spent no days growing
 	 * @param name			Name of the crop
@@ -147,6 +180,7 @@ public class Crop implements Merchandise{
 	 * 
 	 * @return Name of crop
 	 */
+	@Override
 	public String getName()
 	{
 		return m_name;
@@ -156,6 +190,7 @@ public class Crop implements Merchandise{
 	 * 
 	 * @param name New name for crop
 	 */
+	@Override
 	public void setName(String name)
 	{
 		m_name = name;
@@ -164,6 +199,7 @@ public class Crop implements Merchandise{
 	/**
 	 * @return Price of crop when purchased from General Store
 	 */
+	@Override
 	public int getPurchasePrice()
 	{
 		return m_purchasePrice;
@@ -172,6 +208,7 @@ public class Crop implements Merchandise{
 	/**
 	 * @param price New price of crop in General Store
 	 */
+	@Override
 	public void setPurchasePrice(int price)
 	{
 		m_purchasePrice = price;
@@ -229,5 +266,18 @@ public class Crop implements Merchandise{
 	public void setDaysUntilHarvest(int days)
 	{
 		m_daysUntilHarvest = days;
+	}
+	
+	@Override
+	public String toString()
+	{
+		final StringBuffer sb = new StringBuffer("Crop{");
+        sb.append("name=").append(m_name);
+        sb.append(", purchasePrice='").append(m_purchasePrice).append('\'');
+        sb.append(", sellPrice='").append(m_sellPrice).append('\'');
+        sb.append(", daysToGrow='").append(m_daysToGrow).append('\'');
+        sb.append(", daysUntilHarvest='").append(m_daysUntilHarvest).append('\'');
+        sb.append('}');
+        return sb.toString();
 	}
 }
