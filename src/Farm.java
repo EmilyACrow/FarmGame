@@ -5,9 +5,9 @@ import java.util.ArrayList;
  * actions remaining or any health, money, growth boosts.
  * This is also where the bonuses the player can start with is created.
  * 
- *Last modified: 30/04/2020
+ *Last modified: 2-05-2020
  *
- *Created 29/04/2020
+ *Created 29-04-2020
  * @author Kenn Leen Duenas Fulgencio
  *
  */
