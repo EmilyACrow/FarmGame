@@ -1,3 +1,9 @@
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class GameEnvironment {
@@ -15,11 +21,25 @@ public class GameEnvironment {
 		createNewGame();
 	}
 	
+	/**
+	 * 
+	 */
 	private void createNewGame()
 	{
 		/*
 		 * TODO: Read XML config file
 		 */
+		configureStore();
+		
+		
+	}
+	
+	/**
+	 * Read Merchandise config file then initialize GeneralStore with config data
+	 */
+	private void configureStore()
+	{
+
 		
 	}
 	
