@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 /**
- * The Farm class holds information of what the player currently owns, the status boosts they have, 
- * the Farmer they created and their type of farm. 
+ * The Farm class holds information of what the player currently owns, their statuses such as 
+ * actions remaining or any health, money, growth boosts.
  * This is also where the bonuses the player can start with is created.
  * 
  *Last modified: 30/04/2020
@@ -102,6 +102,12 @@ public class Farm {
 	 * Discount-bonus farm provides when player purchases from General Store. 
 	 */
 	private double m_purchaseDiscountMod; 
+	
+	
+	/** 
+	 * remaining actions player has left for the day. 
+	 */
+	private int m_remainingActions;
 	
 	
 	
@@ -492,6 +498,23 @@ public class Farm {
 	 */
 	public void setPurchaseDiscountMod(double purchaseDiscount) {
 		m_purchaseDiscountMod = purchaseDiscount;
+	}
+	
+	/**
+	 * 
+	 * @return how many actions left.
+	 */
+	public int getRemainingActions() {
+		
+		return m_remainingActions; 
+	}
+	
+	/**
+	 * @param actionsLeft change how many actions player has left.
+	 */
+	public void setRemainingActions(int actionsLeft) {
+		
+		m_remainingActions = actionsLeft;
 	}
 
 
