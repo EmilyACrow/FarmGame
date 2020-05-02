@@ -5,7 +5,7 @@
 * XML code in part from springframework.guru
 * (https://springframework.guru/using-jaxb-for-xml-with-java/)
 * 
-* Last modified: 29-4-20 by Dmitri Smith
+* Last modified: 1-5-20 by Dmitri Smith
 *
 * Created: 28-4-20
 * @author  Dmitri Smith
@@ -14,17 +14,35 @@ import javax.xml.bind.annotation.*;
 
 
 @XmlRootElement(name = "crop")
-public class Crop extends Merchandise{
+public class Crop implements Merchandise{
+	/**
+	 * String representing the crop's type
+	 */
 	@XmlElement(name = "name")
 	private String m_name;
+	/**
+	 * int representing the price of the crop from the store
+	 */
 	@XmlElement(name = "purchasePrice")
 	private int m_purchasePrice;
+	/**
+	 * int representing the amount of money received for harvesting the crop
+	 */
 	@XmlElement(name = "sellPrice")
 	private int m_sellPrice;
+	/**
+	 * int representing the number of days it takes to grow the crop
+	 */
 	@XmlElement(name = "daysToGrow")
 	private int m_daysToGrow;
+	/**
+	 * int representing the Days remaining until the crop is ready to harvest
+	 */
 	private int m_daysUntilHarvest;
 	
+	/**
+	 * Empty default constructor for JAXB
+	 */
 	public Crop()
 	{
 		
@@ -162,6 +180,7 @@ public class Crop extends Merchandise{
 	 * 
 	 * @return Name of crop
 	 */
+	@Override
 	public String getName()
 	{
 		return m_name;
@@ -171,6 +190,7 @@ public class Crop extends Merchandise{
 	 * 
 	 * @param name New name for crop
 	 */
+	@Override
 	public void setName(String name)
 	{
 		m_name = name;
@@ -179,6 +199,7 @@ public class Crop extends Merchandise{
 	/**
 	 * @return Price of crop when purchased from General Store
 	 */
+	@Override
 	public int getPurchasePrice()
 	{
 		return m_purchasePrice;
@@ -187,6 +208,7 @@ public class Crop extends Merchandise{
 	/**
 	 * @param price New price of crop in General Store
 	 */
+	@Override
 	public void setPurchasePrice(int price)
 	{
 		m_purchasePrice = price;

@@ -1,30 +1,58 @@
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
 * The Animal class represents an animal that can be bought by the
 * player and placed on their farm
 * 
-* Last modified: 29-4-20 by Dmitri Smith
+* Last modified: 1-5-20 by Dmitri Smith
 *
 * Created: 29-4-20
 * @author  Dmitri Smith
 */
-
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "animal")
-public class Animal extends Merchandise{
+public class Animal implements Merchandise{
+	/**
+	 * String representing the animal's name given by the player
+	 */
 	@XmlElement(name = "name")
 	private String m_name;
+	
+	/**
+	 * String representing the animal's species
+	 */
 	@XmlElement(name = "species")
 	private String m_species;
+	
+	/**
+	 * int representing the price of the animal from the store
+	 */
 	@XmlElement(name = "purchasePrice")
 	private int m_purchasePrice;
-	private int m_health;
-	private int m_happiness;
-	@XmlElement(name = "dailyBonus")
-	private int m_dailyBonus; //Amount of cash awarded at the end of each day
 	
+	/**
+	 * int representing the animal's health; 
+	 * scale of 0-100 with 100 being perfect health and 0 being dead
+	 * can be raised by feeding the animal an item
+	 */
+	private int m_health;
+	
+	/**
+	 * int representing the animal's happiness
+	 * scale of 0-100 with 100 being very happy and 0 being miserable
+	 * Factors into anima's bonus amount
+	 * can be raised by playing with animal
+	 */
+	private int m_happiness;
+	
+	/**
+	 * Amount of cash given to farmer at end of each day
+	 */
+	@XmlElement(name = "dailyBonus")
+	private int m_dailyBonus;
+	
+	/**
+	 * Empty default constructor for JAXB
+	 */
 	public Animal()
 	{
 		
@@ -81,6 +109,7 @@ public class Animal extends Merchandise{
 	/**
 	 * @return Name of animal
 	 */
+	@Override
 	public String getName()
 	{
 		return m_name;
@@ -90,6 +119,7 @@ public class Animal extends Merchandise{
 	 * 
 	 * @param name new name for the animal
 	 */
+	@Override
 	public void setName(String name)
 	{
 		m_name = name;
@@ -116,6 +146,7 @@ public class Animal extends Merchandise{
 	/**
 	 * @return Price to buy animal from General Store
 	 */
+	@Override
 	public int getPurchasePrice()
 	{
 		return m_purchasePrice;
@@ -125,6 +156,7 @@ public class Animal extends Merchandise{
 	 * 
 	 * @param price New price to buy animal from General Store
 	 */
+	@Override
 	public void setPurchasePrice(int price)
 	{
 		m_purchasePrice = price;

@@ -2,7 +2,7 @@
 * The Item class represents any item that can be bought by the
 * player and used to provide some benefit to their farm
 * 
-* Last modified: 29-4-20 by Dmitri Smith
+* Last modified: 1-5-20 by Dmitri Smith
 *
 * Created: 28-4-20
 * @author  Dmitri Smith
@@ -10,12 +10,20 @@
 import javax.xml.bind.annotation.*;
 
 @XmlRootElement(name = "item")
-public class Item extends Merchandise{
-	//Variables
+public class Item implements Merchandise{
+	/**
+	 * String representing the item's type
+	 */
 	@XmlElement(name = "name")
 	private String m_name;
+	/**
+	 * int representing the price of the item from the store
+	 */
 	@XmlElement(name = "purchasePrice")
 	private int m_purchasePrice;
+	/**
+	 * int representing the numerical boost amount provided by the item
+	 */
 	@XmlElement(name = "boostAmount")
 	private int m_boostAmount;
 	
@@ -23,8 +31,14 @@ public class Item extends Merchandise{
 	 * Some items can be used on animals; some can be used on crops.
 	 * The following two flags determine what classes it can be used on
 	 */
+	/**
+	 * Bool representing whether or not the item can be used on animals
+	 */
 	@XmlElement(name = "forAnimals")
 	private boolean m_forAnimals;
+	/**
+	 * Bool representing whether or not the item can be used on crops
+	 */
 	@XmlElement(name = "forCrops")
 	private boolean m_forCrops;
 	
@@ -64,6 +78,7 @@ public class Item extends Merchandise{
 	 * Get Item's name
 	 * @return Item's name
 	 */
+	@Override
 	public String getName()
 	{
 		return m_name;
@@ -73,6 +88,7 @@ public class Item extends Merchandise{
 	 * Set new name for Item
 	 * @param name new name for Item
 	 */
+	@Override
 	public void setName(String name)
 	{
 		m_name = name;
@@ -82,6 +98,7 @@ public class Item extends Merchandise{
 	 * Get price of Item when bought from General Store
 	 * @return Price of Item when bought in General Store
 	 */
+	@Override
 	public int getPurchasePrice()
 	{
 		return m_purchasePrice;
@@ -91,6 +108,7 @@ public class Item extends Merchandise{
 	 * Set new price of Item when bought from General Store
 	 * @param New price for Item
 	 */
+	@Override
 	public void setPurchasePrice(int price)
 	{
 		m_purchasePrice = price;

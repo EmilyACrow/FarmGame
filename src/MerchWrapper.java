@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "merch")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MerchContainer {
+public class MerchWrapper {
 	@XmlElements({
         @XmlElement(name="animal",type=Animal.class),
         @XmlElement(name="crop",type=Crop.class),
