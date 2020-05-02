@@ -13,12 +13,12 @@ public class GameEnvironment {
 	
 	public GameEnvironment()
 	{
-		
+		showMainMenu();
 	}
 	
-	private void init()
+	private void showMainMenu()
 	{
-		createNewGame();
+		
 	}
 	
 	/**
@@ -29,7 +29,14 @@ public class GameEnvironment {
 		/*
 		 * TODO: Read XML config file
 		 */
-		configureStore();
+		try
+		{
+			configureStore();
+		}
+		catch(Exception e)
+		{
+			
+		}
 		
 		
 	}
@@ -37,9 +44,22 @@ public class GameEnvironment {
 	/**
 	 * Read Merchandise config file then initialize GeneralStore with config data
 	 */
-	private void configureStore()
+	private int configureStore()
 	{
-
+		try
+		{
+			File file = new File("config/test.xml");
+	        JAXBContext jaxbContext = JAXBContext.newInstance(MerchWrapper.class);
+	        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+	        MerchWrapper merchWrapper = (MerchWrapper) unmarshaller.unmarshal(file);
+	        m_store = new GeneralStore(merchWrapper.getMerchList());
+	        return 0;
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+			throw new RuntimeException("Error configuring GeneralStore");
+		}
 		
 	}
 	
@@ -55,12 +75,20 @@ public class GameEnvironment {
 	
 	private void addFarmMoney(int amount)
 	{
-		
+		m_farm.setMoney(m_farm.getMoney() + amount);
 	}
 	
 	private void removeFarmMoney(int amount)
 	{
-		
+		int bank = m_farm.getMoney();
+		if(amount < bank)
+		{
+			m_farm.setMoney(0);
+		}
+		else
+		{
+			m_farm.setMoney(bank - amount);
+		}
 	}
 	
 	private void tendCrops(Crop crop)
@@ -104,6 +132,8 @@ public class GameEnvironment {
 	
 	public void viewFarmStatus() 
 	{
+		ArrayList<Merchandise> merchList;
+		merchList = (ArrayList<Merchandise>) m_farm.getAnimals();
 		
 	}
 	

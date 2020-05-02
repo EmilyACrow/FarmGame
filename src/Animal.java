@@ -217,16 +217,20 @@ public class Animal implements Merchandise{
 	}
 	
 	@Override
+	/**
+	 * Override default toString. Modification of Eclipse generated toString to make more readable
+	 * @return String with class name followed by all private variables and their values in curly brackets
+	 */
 	public String toString()
 	{
-		final StringBuffer sb = new StringBuffer("Animal{");
-        sb.append("name=").append(m_name);
-        sb.append(", specieces='").append(m_species).append('\'');
-        sb.append(", purchasePrice='").append(m_purchasePrice).append('\'');
-        sb.append(", health='").append(m_health).append('\'');
-        sb.append(", happiness'").append(m_happiness).append('\'');
-        sb.append(", dailyBonus='").append(m_dailyBonus).append('\'');
-        sb.append('}');
-        return sb.toString();
+		String output = "Animal{";
+        output.concat("name=" + m_name);
+        output.concat(", specieces='" + m_species + '\'');
+        output.concat(", purchasePrice='" + m_purchasePrice + '\'');
+        output.concat(", health='" + m_health + '\'');
+        output.concat(", happiness'" + m_happiness + '\'');
+        output.concat(", dailyBonus='" + m_dailyBonus + '\'');
+        output.concat("}");
+        return output.toString();
 	}
 }
