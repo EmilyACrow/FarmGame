@@ -36,7 +36,7 @@ public class GeneralStore {
 	 * 
 	 * @param item An instance of Item class.
 	 */
-	public void addItem(Item item) {
+	public void addMerch(Item item) {
 		
 		m_itemsAvailable.add(item);
 	}
@@ -45,7 +45,7 @@ public class GeneralStore {
 	 * 
 	 * @param animal An instance of Animal class.
 	 */
-	public void addAnimal(Animal animal) {
+	public void addMerch(Animal animal) {
 		
 		m_animalsAvailable.add(animal);
 	}
@@ -54,7 +54,7 @@ public class GeneralStore {
 	 * 
 	 * @param crop An instance of Animal class.
 	 */
-	public void addCrop(Crop crop) {
+	public void addMerch(Crop crop) {
 		
 		m_cropsAvailable.add(crop);
 	}
