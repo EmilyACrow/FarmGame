@@ -4,23 +4,38 @@ import java.util.ArrayList;
  * The GeneralStore class is where the player can view or purchase available merchandise.
  * They can also view their current balance.
  * 
- * Last modified: 2-05-2020
+ * Last modified: 5-05-2020
  * 
  * created: 1-05-2020
- * @author Kenn Leen Fulgencio
+ * @author Kenn Leen Duenas Fulgencio
  */
 
 public class GeneralStore {
 	
+	/**
+	 * An arrayList of available items in shop
+	 */
 	private ArrayList<Item> m_itemsAvailable;
+	
+	/**
+	 * an arraylist of animals available in shop
+	 */
 	private ArrayList<Animal> m_animalsAvailable;
+	
+	/**
+	 * an arraylist of crops available
+	 */
 	private ArrayList<Crop> m_cropsAvailable;
 	
+	/**
+	 * Shopping cart variable
+	 */
 	private ShoppingCart m_shoppingCart;
 	
 	
 	/**
 	 * This constructor method creates empty lists for items, animals and crops in GeneralStore.
+	 * Also makes an instance of a ShoppingCart class.
 	 */
 	public GeneralStore() {
 		
@@ -28,15 +43,28 @@ public class GeneralStore {
 		m_animalsAvailable = new ArrayList<Animal>();
 		m_cropsAvailable = new ArrayList<Crop>();
 		
+		m_shoppingCart = new ShoppingCart();
+		
 	
 	}
+
+	/*Using overloading on methods addToShop() and removeFromShop.
+	 This way of coding is another way to put the merch 
+	 into the correct ArrayList. 
+	 */
+	
+	
+	
+	
+	//addToShop methods begin below this line 
+	
 	
 	
 	/**
 	 * 
 	 * @param item An instance of Item class.
 	 */
-	public void addMerch(Item item) {
+	public void addToShop(Item item) {
 		
 		m_itemsAvailable.add(item);
 	}
@@ -45,24 +73,188 @@ public class GeneralStore {
 	 * 
 	 * @param animal An instance of Animal class.
 	 */
-	public void addMerch(Animal animal) {
+	public void addToShop(Animal animal) {
 		
 		m_animalsAvailable.add(animal);
 	}
 	
 	/**
 	 * 
-	 * @param crop An instance of Animal class.
+	 * @param crop An instance of Crop class.
 	 */
-	public void addMerch(Crop crop) {
+	public void addToShop(Crop crop) {
 		
 		m_cropsAvailable.add(crop);
 	}
 	
-	/**  
-	 * @return The current merch in player's shopping cart. 
+	
+	//removeFromShop methods begin below this line
+
+	
+	
+	/**
+	 * @param purchasedItem item player has bought.
 	 */
-	public ShoppingCart viewCart() {
+	public void removeFromShop(Item purchasedItem) {
+		
+		m_itemsAvailable.remove(purchasedItem);		
+		
+	}
+	
+	/**
+	 * @param purchasedAnimal the animal player has bought.
+	 */
+	public void removeFromShop(Animal purchasedAnimal) {
+		
+		m_animalsAvailable.remove(purchasedAnimal);				
+	}
+	
+	
+	
+	//methods relevant to the ShoppingCart begin below this line.
+	
+	
+	
+	/**  
+	 * @return An arrayList of merch currently in cart.
+	 */
+	public ArrayList<Merchandise> viewCart() {
+	
+		return m_shoppingCart.getCart();
+	}
+	
+	/**
+	 * @param merch is either an instance of a crop, animal or item.
+	 */
+	public void addToCart(Merchandise merch) {
+		
+		m_shoppingCart.addToCart(merch, merch.getPurchasePrice());
+	}
+	
+	/**
+	 * @param merch player has chosen to remove from cart.
+	 */
+	public void removeFromCart(Merchandise merch) {
+		
+		m_shoppingCart.removeFromCart(merch);
+	}
+	
+	
+	
+	//methods relevant to purchasing merch in the car begin below. WIP
+	
+	
+	
+	/**
+	 * The checkout method checks the player can afford the merch in cart
+	 * before selling to player.
+	 * 
+	 * If True: Commences with purchasing item,
+	 * return an arraylist of purchased merch and empties the cart.
+	 * else: error? 
+	 * @return an ArrayList of merch player has purchased.
+	 */
+	public ArrayList<Merchandise> checkout() {
+		
+		//Could use a try and use a catch exception?
+		
+		//local variable for this method.
+		ArrayList<Merchandise> purchasedMerch = new ArrayList<Merchandise>();
+		
+		//First check balance
+		if (checkBalance()) {
+			//player can buy. 
+			// subtract the totalCost from the player's money. So use .set()
+			
+		}
+		
+		return purchasedMerch; 
+
+	}
+	
+	/**
+	 * 
+	 * @return True: totalCost of merch is less than or equal to player's money.
+	 * False: totalCost is larger than player's money. Play can't purchase.
+	 */
+	private boolean checkBalance() {
+		
+		//Current balance. 
+		
+		
+		//How do I call the instance of the Farm class. 
+		if (m_shoppingCart.getTotalCost() <= Farm.getMoney()) {
+			//ERROR Cannot make a static ref to a nonstatic method getMoney().
+			return true;
+		}
+		
+		else {
+			return false;
+		}
+	}
+	
+
+	
+	
+	//getters and setters begin below this line 
+	
+	
+	
+	/**
+	 * @return a list of available animals in store.
+	 */
+	public ArrayList<Animal> getAnimalsAvailable() {
+		
+		return m_animalsAvailable;
+	}
+	
+	/**
+	 * 
+	 * @param animals an arrayList of Animal instances.
+	 */
+	public void setAnimalsAvailable(ArrayList<Animal> animals) {
+		
+		m_animalsAvailable = animals;
+		
+	}
+	
+	/**
+	 * @return an arraylist of items available in store 
+	 */
+	public ArrayList<Item> getItemsAvailable() {
+		
+		return m_itemsAvailable;
+	}
+	
+	/**
+	 * @param items an arraylist of Item instances.
+	 */
+	public void setItemsAvailable(ArrayList<Item> items) {
+		
+		m_itemsAvailable = items;
+	}
+	
+	/**
+	 * @return a list of crops available in store 
+	 */
+	public ArrayList<Crop> getCropsAvailable() {
+		
+		return m_cropsAvailable;
+	}
+	
+	/**
+	 * @param crops arraylist of  Crop instances
+	 */
+	public void setCropsAvailable(ArrayList<Crop> crops) {
+		
+		m_cropsAvailable = crops;
+		
+	}
+	
+	/**
+	 * @return The instance of m_shoppingCart. Has the attributes totalCost and Price.
+	 */
+	public ShoppingCart getShoppingCart() {
 		
 		return m_shoppingCart;
 	}
