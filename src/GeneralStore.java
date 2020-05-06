@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * The GeneralStore class is where the player can view or purchase available merchandise.
  * They can also view their current balance.
  * 
- * Last modified: 5-05-2020
+ * Last modified: 6-05-2020
  * 
  * created: 1-05-2020
  * @author Kenn Leen Duenas Fulgencio
@@ -146,51 +146,68 @@ public class GeneralStore {
 	
 	
 	/**
-	 * The checkout method checks the player can afford the merch in cart
+	 * The checkout method checks the player can afford the merch in the cart
 	 * before selling to player.
-	 * 
-	 * If True: Commences with purchasing item,
-	 * return an arraylist of purchased merch and empties the cart.
-	 * else: error? 
 	 * @return an ArrayList of merch player has purchased.
 	 */
-	public ArrayList<Merchandise> checkout() {
+	public ArrayList<Merchandise> checkout(Farm farm) {
 		
-		//Could use a try and use a catch exception?
+		//local variable created to hold the merchandise being bought. But not be changed. 
+		ArrayList<Merchandise> purchasedMerch = new ArrayList<Merchandise>(m_shoppingCart.getCart());
 		
-		//local variable for this method.
-		ArrayList<Merchandise> purchasedMerch = new ArrayList<Merchandise>();
+		//Player's money.
+		int playersMoney = farm.getMoney();
 		
-		//First check balance
-		if (checkBalance()) {
-			//player can buy. 
-			// subtract the totalCost from the player's money. So use .set()
+		//Discount. Java doesn't allow int * double. forced to cast int.
+		int discountPercent = (int) farm.getPurchaseDiscountMod();
+		
+		//amountDiscounted calculates discount. 
+		int amountDiscounted = m_shoppingCart.getTotalCost() * discountPercent;
+		
+		//finalCost subtracts the discount to provide the final Cost.
+		int finalCost = m_shoppingCart.getTotalCost() - amountDiscounted; 
+		
+		
+		//First check balance, if true player can buy.
+		if (checkBalance(finalCost, playersMoney)) {
+			
+			// subtract the totalCost from the player's money.
+			farm.setMoney(playersMoney - finalCost);
+			
+			
+			//Empty the cart of the merch. 
+			m_shoppingCart.clearCart();
+			
+			return purchasedMerch;
 			
 		}
 		
-		return purchasedMerch; 
+		else {
+			//Player can't afford the merch they have in the Cart.
+			throw new IllegalStateException("Not enough Money");
+		}
 
 	}
 	
 	/**
+	 * @param finalCost Price of everything in the cart.
+	 * @param playersMoney money the player has.
 	 * 
-	 * @return True: totalCost of merch is less than or equal to player's money.
-	 * False: totalCost is larger than player's money. Play can't purchase.
+	 * @return True: totalCost of merch is less than or equal to player's money. Therefore, the player can purchase it.
+	 * False: totalCost is larger than player's money. Player can't purchase.
 	 */
-	private boolean checkBalance() {
-		
-		//Current balance. 
+	private boolean checkBalance(int finalCost, int playersMoney) {
 		
 		
-		//How do I call the instance of the Farm class. 
-		if (m_shoppingCart.getTotalCost() <= Farm.getMoney()) {
-			//ERROR Cannot make a static ref to a nonstatic method getMoney().
+		if (finalCost <= playersMoney) {
+			
 			return true;
 		}
 		
 		else {
 			return false;
 		}
+		
 	}
 	
 
