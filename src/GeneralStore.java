@@ -1,10 +1,9 @@
 import java.util.ArrayList;
-
 /**
  * The GeneralStore class is where the player can view or purchase available merchandise.
  * They can also view their current balance.
  * 
- * Last modified: 6-05-2020
+ * Last modified: 7-05-2020
  * 
  * created: 1-05-2020
  * @author Kenn Leen Duenas Fulgencio
@@ -147,28 +146,23 @@ public class GeneralStore {
 	
 	/**
 	 * The checkout method checks the player can afford the merch in the cart
-	 * before selling to player.
+	 * before giving merch to the player.
 	 * @return an ArrayList of merch player has purchased.
 	 */
 	public ArrayList<Merchandise> checkout(Farm farm) {
 		
-		//local variable created to hold the merchandise being bought. But not be changed. 
+		//local variable created to hold the merchandise being bought after cart is cleared.
 		ArrayList<Merchandise> purchasedMerch = new ArrayList<Merchandise>(m_shoppingCart.getCart());
 		
-		//Player's money.
 		int playersMoney = farm.getMoney();
+		double discountPercent = farm.getPurchaseDiscountMod();
 		
-		//Discount. Java doesn't allow int * double. forced to cast int.
-		int discountPercent = (int) farm.getPurchaseDiscountMod();
-		
-		//amountDiscounted calculates discount. 
-		int amountDiscounted = m_shoppingCart.getTotalCost() * discountPercent;
-		
-		//finalCost subtracts the discount to provide the final Cost.
-		int finalCost = m_shoppingCart.getTotalCost() - amountDiscounted; 
+		//calculation for any discounts.
+		double amountRemoved = m_shoppingCart.getTotalCost() * discountPercent;
+		int finalCost = (int) (m_shoppingCart.getTotalCost() - amountRemoved); 
 		
 		
-		//First check balance, if true player can buy.
+		//check player's balance
 		if (checkBalance(finalCost, playersMoney)) {
 			
 			// subtract the totalCost from the player's money.
