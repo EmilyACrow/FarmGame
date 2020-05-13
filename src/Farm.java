@@ -5,7 +5,10 @@ import java.util.ArrayList;
  * actions remaining or any health, money, growth boosts.
  * This is also where the bonuses the player can start with is created.
  * 
- *Last modified: 2-05-2020
+ * TODO: Rig for JAXB
+ * - Dmitri
+ * 
+ *Last modified: 13-05-2020
  *
  *Created 29-04-2020
  * @author Kenn Leen Duenas Fulgencio
@@ -108,6 +111,23 @@ public class Farm {
 	 * remaining actions player has left for the day. 
 	 */
 	private int m_remainingActions;
+	
+	/**
+	 * days remaining in the game
+	 */
+	private int m_remainingDays;
+	
+	/**
+	 * Max possible animal happiness
+	 * TODO: Replace hardcoded value with xml config file
+	 */
+	private static final int MAX_ANIMAL_HAPPINESS = 100;
+	
+	/**
+	 * Max possible animal health
+	 * TODO: Replace hardcoded value with xml config file
+	 */
+	private static final int MAX_ANIMAL_HEALTH = 100;
 	
 	
 	
@@ -374,8 +394,30 @@ public class Farm {
 	public void setMoney(int money) {
 		m_money = money;
 	}
-
-
+	
+	/**
+	 * Adds a given amount of money to the farm's bank
+	 */
+	public void addMoney(int amount)
+	{
+		m_money += amount;
+	}
+	
+	/**
+	 * Subtract a given amount of money from the player's bank
+	 * @throws RuntimeException if player does not have enough money
+	 */
+	public void subtractMoney(int amount)
+	{
+		if (m_money < amount)
+		{
+			throw new RuntimeException(String.format("Not enough money. Needed %d, but only %d available", amount, m_money));
+		}
+		else
+		{
+			m_money -= amount;
+		}
+	}
 	
 	/**
 	 * 
@@ -515,6 +557,22 @@ public class Farm {
 	public void setRemainingActions(int actionsLeft) {
 		
 		m_remainingActions = actionsLeft;
+	}
+	
+	/**
+	 * @return how manydays left in the game.
+	 */
+	public int getRemainingDays()
+	{
+		return m_remainingDays;
+	}
+	
+	/**
+	 * @param actionsLeft change how many days left in the game.
+	 */
+	public void setRemainingDays(int days)
+	{
+		m_remainingDays = days;
 	}
 
 

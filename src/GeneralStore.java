@@ -1,9 +1,13 @@
+import java.io.File;
 import java.util.ArrayList;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
 /**
  * The GeneralStore class is where the player can view or purchase available merchandise.
  * They can also view their current balance.
  * 
- * Last modified: 7-05-2020
+ * Last modified: 13-05-2020
  * 
  * created: 1-05-2020
  * @author Kenn Leen Duenas Fulgencio
@@ -12,19 +16,9 @@ import java.util.ArrayList;
 public class GeneralStore {
 	
 	/**
-	 * An arrayList of available items in shop
+	 * Wrapper for all merchandise in shop
 	 */
-	private ArrayList<Item> m_itemsAvailable;
-	
-	/**
-	 * an arraylist of animals available in shop
-	 */
-	private ArrayList<Animal> m_animalsAvailable;
-	
-	/**
-	 * an arraylist of crops available
-	 */
-	private ArrayList<Crop> m_cropsAvailable;
+	private MerchandiseWrapper m_merchWrapper;
 	
 	/**
 	 * Shopping cart variable
@@ -33,23 +27,32 @@ public class GeneralStore {
 	
 	
 	/**
-	 * This constructor method creates empty lists for items, animals and crops in GeneralStore.
+	 * This constructor method reads in from an XML config file and populates the merchandise wrapper.
 	 * Also makes an instance of a ShoppingCart class.
 	 */
 	public GeneralStore() {
 		
-		m_itemsAvailable = new ArrayList<Item>();
-		m_animalsAvailable = new ArrayList<Animal>();
-		m_cropsAvailable = new ArrayList<Crop>();
-		
 		m_shoppingCart = new ShoppingCart();
+		
+		try
+		{
+			File file = new File("config/test.xml");
+	        JAXBContext jaxbContext = JAXBContext.newInstance(MerchandiseWrapper.class);
+	        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+	        m_merchWrapper = (MerchandiseWrapper) unmarshaller.unmarshal(file);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+			throw new RuntimeException("Error configuring GeneralStore");
+		}
 		
 	
 	}
 
 	/*Using overloading on methods addToShop() and removeFromShop.
 	 This way of coding is another way to put the merch 
-	 into the correct ArrayList. 
+	 into the Wrapper.
 	 */
 	
 	
@@ -65,7 +68,7 @@ public class GeneralStore {
 	 */
 	public void addToShop(Item item) {
 		
-		m_itemsAvailable.add(item);
+		addToShop((Merchandise)item);
 	}
 	
 	/**
@@ -74,7 +77,7 @@ public class GeneralStore {
 	 */
 	public void addToShop(Animal animal) {
 		
-		m_animalsAvailable.add(animal);
+		addToShop((Merchandise)animal);
 	}
 	
 	/**
@@ -83,7 +86,15 @@ public class GeneralStore {
 	 */
 	public void addToShop(Crop crop) {
 		
-		m_cropsAvailable.add(crop);
+		addToShop((Merchandise)crop);
+	}
+	
+	public void addToShop(Merchandise merch)
+	{
+		//Create shallow copy of Arraylist inside merchwrapper
+		ArrayList<Merchandise> tempList = m_merchWrapper.getMerchList();
+		//Since it is a shallow copy, this will affect the original as well
+		tempList.add(merch);
 	}
 	
 	
@@ -94,20 +105,41 @@ public class GeneralStore {
 	/**
 	 * @param purchasedItem item player has bought.
 	 */
-	public void removeFromShop(Item purchasedItem) {
+	public void removeFromShop(Item item) 
+	{
 		
-		m_itemsAvailable.remove(purchasedItem);		
+		removeFromShop((Merchandise) item);		
 		
 	}
 	
 	/**
 	 * @param purchasedAnimal the animal player has bought.
 	 */
-	public void removeFromShop(Animal purchasedAnimal) {
+	public void removeFromShop(Animal animal) 
+	{
 		
-		m_animalsAvailable.remove(purchasedAnimal);				
+		removeFromShop((Merchandise) animal);				
 	}
 	
+	/**
+	 * @param purchasedAnimal the animal player has bought.
+	 */
+	public void removeFromShop(Crop crop) 
+	{
+		
+		removeFromShop((Merchandise) crop);				
+	}
+	
+	/**
+	 * @param purchasedAnimal the animal player has bought.
+	 */
+	public void removeFromShop(Merchandise merch) 
+	{
+		//Create shallow copy of Arraylist inside merchwrapper
+		ArrayList<Merchandise> tempList = m_merchWrapper.getMerchList();
+		//Since it is a shallow copy, this will affect the original as well
+		tempList.remove(merch);
+	}
 	
 	
 	//methods relevant to the ShoppingCart begin below this line.
@@ -214,53 +246,27 @@ public class GeneralStore {
 	/**
 	 * @return a list of available animals in store.
 	 */
-	public ArrayList<Animal> getAnimalsAvailable() {
+	public ArrayList<Animal> getAnimals() {
 		
-		return m_animalsAvailable;
-	}
-	
-	/**
-	 * 
-	 * @param animals an arrayList of Animal instances.
-	 */
-	public void setAnimalsAvailable(ArrayList<Animal> animals) {
-		
-		m_animalsAvailable = animals;
-		
+		return m_merchWrapper.getAnimals();
 	}
 	
 	/**
 	 * @return an arraylist of items available in store 
 	 */
-	public ArrayList<Item> getItemsAvailable() {
-		
-		return m_itemsAvailable;
-	}
 	
-	/**
-	 * @param items an arraylist of Item instances.
-	 */
-	public void setItemsAvailable(ArrayList<Item> items) {
+	public ArrayList<Item> getItems() {
 		
-		m_itemsAvailable = items;
+		return m_merchWrapper.getItems();
 	}
-	
+
 	/**
 	 * @return a list of crops available in store 
 	 */
-	public ArrayList<Crop> getCropsAvailable() {
+	public ArrayList<Crop> getCrops() {
 		
-		return m_cropsAvailable;
-	}
-	
-	/**
-	 * @param crops arraylist of  Crop instances
-	 */
-	public void setCropsAvailable(ArrayList<Crop> crops) {
-		
-		m_cropsAvailable = crops;
-		
-	}
+		return m_merchWrapper.getCrops();
+	}	
 	
 	/**
 	 * @return The instance of m_shoppingCart. Has the attributes totalCost and Price.
@@ -271,4 +277,4 @@ public class GeneralStore {
 	}
 	
 	
-	}
+}

@@ -13,6 +13,10 @@ public class GameEnvironment {
 	
 	public GameEnvironment()
 	{
+	}
+	
+	public void Run()
+	{
 		showMainMenu();
 	}
 	
@@ -24,43 +28,10 @@ public class GameEnvironment {
 	/**
 	 * 
 	 */
-	private void createNewGame()
-	{
-		/*
-		 * TODO: Read XML config file
-		 */
-		try
-		{
-			configureStore();
-		}
-		catch(Exception e)
-		{
-			
-		}
-		
-		
-	}
-	
-	/**
-	 * Read Merchandise config file then initialize GeneralStore with config data
-	 */
-	private int configureStore()
-	{
-		try
-		{
-			File file = new File("config/test.xml");
-	        JAXBContext jaxbContext = JAXBContext.newInstance(MerchWrapper.class);
-	        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-	        MerchWrapper merchWrapper = (MerchWrapper) unmarshaller.unmarshal(file);
-	        m_store = new GeneralStore(merchWrapper.getMerchList());
-	        return 0;
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
-			throw new RuntimeException("Error configuring GeneralStore");
-		}
-		
+	private void createNewGame(String farmName, FarmType farmType, Farmer farmer)
+	{		
+		m_farm = new Farm(farmName, farmType, farmer);
+		m_store = new GeneralStore();
 	}
 	
 	private void removeFromFarm(Merchandise merch)
@@ -96,19 +67,33 @@ public class GameEnvironment {
 		
 	}
 	
-	private void feedAnimal(Animal animal)
+	private void feedAnimal(Animal animal, Item item)
 	{
-		
+		try
+		{
+			animal.useItem(item);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
 	}
 	
 	private void playWithAnimal(Animal animal)
 	{
-		
+		animal.setHappiness(m_farm.getMAX_ANIMAL_HAPPINESS);
 	}
 	
 	private void harvestCrop(Crop crop)
 	{
-		
+		try
+		{
+			m_farm.addMoney(crop.harvest());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
 	}
 	
 	private void tendLand()
@@ -139,12 +124,37 @@ public class GameEnvironment {
 	
 	public int takeAction(PossibleAction action, ArrayList<Merchandise> selection)
 	{
+		if(m_farm.getRemainingActions() == 0)
+		{
+			System.out.println("No remaining actions!");
+			return 0;
+		}
+		try
+		{
+			switch(action) 
+			{
+				case TEND_CROP: tendCrops((Crop)selection.get(0)); break;
+				case FEED_ANIMAL: feedAnimal(); break;
+				case PLAY_WITH_ANIMAL: break;
+				case HARVEST_CROP: break;
+				case TEND_LAND: break;
+			}
+		}
 		return m_farm.getRemainingActions();
 	}
 	
+	/**
+	 * End the game day.
+	 * If days remaining in game <= 0, end the game
+	 */
 	public void endDay()
 	{
-		
+		if(m_farm.getRemainingDays() <= 0)
+		{
+			endGame();
+			return;
+		}
+		m_farm.setRemainingDays(m_farm.getRemainingDays() - 1);
 	}
 	
 	public ArrayList<Merchandise> selectMerch()
@@ -154,6 +164,11 @@ public class GameEnvironment {
 	}
 	
 	public void visitGeneralStore()
+	{
+		
+	}
+	
+	private void endGame()
 	{
 		
 	}

@@ -28,9 +28,9 @@ public class Test {
 	public void testXmlToObj() throws JAXBException, FileNotFoundException
 	{		
 		File file = new File("config/test.xml");
-        JAXBContext jaxbContext = JAXBContext.newInstance(MerchWrapper.class);
+        JAXBContext jaxbContext = JAXBContext.newInstance(MerchandiseWrapper.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-        MerchWrapper merchList = (MerchWrapper) unmarshaller.unmarshal(file);
+        MerchandiseWrapper merchList = (MerchandiseWrapper) unmarshaller.unmarshal(file);
         
         for(Merchandise merch : merchList.getMerchList())
         {

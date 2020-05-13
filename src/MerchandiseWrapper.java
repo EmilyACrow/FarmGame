@@ -6,7 +6,7 @@
 * Structure of this class based on 
 * (https://howtodoinjava.com/jaxb/jaxb-exmaple-marshalling-and-unmarshalling-list-or-set-of-objects/)
 * 
-* Last modified: 1-5-20 by Dmitri Smith
+* Last modified: 13-5-20 by Dmitri Smith
 *
 * Created: 28-4-20
 * @author  Dmitri Smith
@@ -31,11 +31,95 @@ public class MerchandiseWrapper {
 	private ArrayList<Merchandise> merchList = new ArrayList<Merchandise>();
 
  
-    public ArrayList<Merchandise> getMerchList() {
+    public ArrayList<Merchandise> getMerchList() 
+    {
         return merchList;
     }
  
-    public void setMerchList(ArrayList<Merchandise> merchList) {
+    public void setMerchList(ArrayList<Merchandise> merchList) 
+    {
         this.merchList = merchList;
     } 
+    
+    /**
+     * Overload getAnimals to default to the local merchList
+     * @return Arraylist of all animals in the local merchlist
+     */
+    public ArrayList<Animal> getAnimals()
+    {
+    	return getAnimals(merchList);
+    }
+    
+    /**
+     * Get all animals out of a Merchandise arraylist
+     * @param merchList Merchandise arraylist
+     * @return Arraylist of all animals in the param merchlist
+     */
+    public ArrayList<Animal> getAnimals(ArrayList<Merchandise> merchList)
+    {
+    	ArrayList<Animal> animals = new ArrayList<Animal>();
+    	for(Merchandise item : merchList)
+    	{
+    		if(item.getClass().getSimpleName() == "Animal")
+    		{
+    			animals.add((Animal)item);
+    		}
+    	}
+    	return animals;
+    }
+    
+    
+    /**
+     * Overload getCropss to default to the local merchList
+     * @return Arraylist of all crops in the local merchlist
+     */
+    public ArrayList<Crop> getCrops()
+    {
+    	return getCrops(merchList);
+    }
+    
+    /**
+     * Get all crops out of a Merchandise arraylist
+     * @param merchList Merchandise arraylist
+     * @return Arraylist of all crops in the param merchlist
+     */
+    public ArrayList<Crop> getCrops(ArrayList<Merchandise> merchList)
+    {
+    	ArrayList<Crop> crops = new ArrayList<Crop>();
+    	for(Merchandise item : merchList)
+    	{
+    		if(item.getClass().getSimpleName() == "Crop")
+    		{
+    			crops.add((Crop)item);
+    		}
+    	}
+    	return crops;
+    }
+    
+    /**
+     * Get all items out of a Merchandise arraylist
+     * @return Arraylist of all items in the local merchlist
+     */
+    public ArrayList<Item> getItems()
+    {
+    	return getItems(merchList);
+    }
+    
+    /**
+     * Get all items out of a Merchandise arraylist
+     * @param merchList Merchandise arraylist
+     * @return Arraylist of all items in the param merchlist
+     */
+    public ArrayList<Item> getItems(ArrayList<Merchandise> merchList)
+    {
+    	ArrayList<Item> items = new ArrayList<Item>();
+    	for(Merchandise item : merchList)
+    	{
+    		if(item.getClass().getSimpleName() == "Item")
+    		{
+    			items.add((Item)item);
+    		}
+    	}
+    	return items;
+    }
 }
