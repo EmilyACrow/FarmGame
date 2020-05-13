@@ -36,12 +36,12 @@ public class GameEnvironment {
 	
 	private void removeFromFarm(Merchandise merch)
 	{
-		
+		m_farm.removeMerchandise(merch);
 	}
 	
 	private void addToFarm(Merchandise merch)
 	{
-		
+		m_farm.addMerchandise(merch);
 	}
 	
 	private void addFarmMoney(int amount)
@@ -63,7 +63,26 @@ public class GameEnvironment {
 	
 	private void tendCrops(Crop crop)
 	{
-		
+		String cropName = crop.getName();
+		ArrayList<Crop> crops = m_farm.getCrops();
+		int counter = 0;
+		for(Crop c : crops)
+		{
+			if (c.getName() == cropName)
+			{
+				try
+				{
+					c.tendToCrop();
+					counter++;
+				}
+				//The only time an exception is thrown is if the crop is already ready to harvest
+				catch(Exception e)
+				{
+					System.out.println(e);
+				}
+			}
+		}
+		System.out.println(String.format("%d crops tended to.", counter));
 	}
 	
 	private void feedAnimal(Animal animal, Item item)
@@ -80,7 +99,7 @@ public class GameEnvironment {
 	
 	private void playWithAnimal(Animal animal)
 	{
-		animal.setHappiness(m_farm.getMAX_ANIMAL_HAPPINESS);
+		animal.setHappiness(m_farm.MAX_ANIMAL_HAPPINESS);
 	}
 	
 	private void harvestCrop(Crop crop)
@@ -133,7 +152,6 @@ public class GameEnvironment {
 		//Print all farm details
 		System.out.println(m_farm);
 		
-		
 	}
 	
 	public int takeAction(PossibleAction action, ArrayList<Merchandise> selection)
@@ -153,6 +171,10 @@ public class GameEnvironment {
 				case HARVEST_CROP: break;
 				case TEND_LAND: break;
 			}
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
 		}
 		return m_farm.getRemainingActions();
 	}

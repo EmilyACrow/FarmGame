@@ -320,7 +320,7 @@ public class Farm {
 //	}
 	public void addAnimal(Animal animal)
 	{
-		m_merch.add((Merchandise) animal);
+		addMerchandise((Merchandise) animal);
 	}
 	
 	/**
@@ -330,7 +330,7 @@ public class Farm {
 	 */
 	public boolean removeAnimal(Animal animal)
 	{
-		return m_merch.remove((Merchandise) animal);
+		return removeMerchandise((Merchandise) animal);
 	}
 	
 	/**
@@ -367,7 +367,7 @@ public class Farm {
 //	}
 	public void addCrop(Crop crop)
 	{
-		m_merch.add((Merchandise) crop);
+		addMerchandise((Merchandise) crop);
 	}
 	
 	/**
@@ -377,7 +377,7 @@ public class Farm {
 	 */
 	public boolean removeCrop(Crop crop)
 	{
-		return m_merch.remove((Merchandise) crop);
+		return removeMerchandise((Merchandise) crop);
 	}
 	
 //	public void setCropList(ArrayList<Crop> cropList) {
@@ -408,7 +408,7 @@ public class Farm {
 //	}
 	public void addItem(Item item)
 	{
-		m_merch.add((Merchandise) item);
+		addMerchandise((Merchandise) item);
 	}
 	
 	/**
@@ -418,7 +418,7 @@ public class Farm {
 	 */
 	public boolean removeItem(Item item)
 	{
-		return m_merch.remove((Merchandise) item);
+		return removeMerchandise((Merchandise) item);
 	}
 	
 	/**
@@ -429,7 +429,24 @@ public class Farm {
 //		m_items = itemList;
 //	}
 	
+	/**
+	 * 
+	 * @param merch merchandise to add to farm
+	 */
+	public void addMerchandise(Merchandise merch)
+	{
+		m_merch.add(merch);
+	}
 	
+	/**
+	 * 
+	 * @param merch merchandise to remove from farm
+	 * @return true if removal was successful
+	 */
+	public boolean removeMerchandise(Merchandise merch)
+	{
+		return m_merch.remove(merch);
+	}
 
 	/**
 	 * 
