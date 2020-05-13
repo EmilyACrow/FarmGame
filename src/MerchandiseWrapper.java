@@ -31,6 +31,19 @@ public class MerchandiseWrapper {
 	private ArrayList<Merchandise> merchList = new ArrayList<Merchandise>();
 
  
+	public MerchandiseWrapper()
+	{
+		
+	}
+	
+	public MerchandiseWrapper(ArrayList<Merchandise> source)
+	{
+		for(Merchandise item : source)
+    	{
+    		merchList.add(item);
+    	}
+	}
+	
     public ArrayList<Merchandise> getMerchList() 
     {
         return merchList;
@@ -40,6 +53,15 @@ public class MerchandiseWrapper {
     {
         this.merchList = merchList;
     } 
+    
+    public void clone(ArrayList<Merchandise> source)
+    {
+    	merchList.clear();
+    	for(Merchandise item : source)
+    	{
+    		merchList.add(item);
+    	}
+    }
     
     /**
      * Overload getAnimals to default to the local merchList

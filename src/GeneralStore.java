@@ -184,7 +184,7 @@ public class GeneralStore {
 	public ArrayList<Merchandise> checkout(Farm farm) {
 		
 		//local variable created to hold the merchandise being bought after cart is cleared.
-		ArrayList<Merchandise> purchasedMerch = new ArrayList<Merchandise>(m_shoppingCart.getCart());
+		MerchandiseWrapper purchasedMerch = new MerchandiseWrapper(m_shoppingCart.getCart());
 		
 		int playersMoney = farm.getMoney();
 		double discountPercent = farm.getPurchaseDiscountMod();
@@ -196,6 +196,22 @@ public class GeneralStore {
 		
 		//check player's balance
 		if (checkBalance(finalCost, playersMoney)) {
+			//Check that the farm can fit all of the animals in the cart
+			if(farm.getAnimals().size() + purchasedMerch.getAnimals().size() > farm.getMaxAnimalAmount())
+			{
+				throw new IllegalStateException(
+						String.format("Not enough room for all animals! %d animals in cart, but only %d spaces in farm."
+								, purchasedMerch.getAnimals().size()
+								, farm.getMaxAnimalAmount() - farm.getAnimals().size()));
+			}
+			//Check that the farm has space for all for the crops in the cart
+			if(farm.getCrops().size() + purchasedMerch.getCrops().size() > farm.getMaxCropAmount())
+			{
+				throw new IllegalStateException(
+						String.format("Not enough room for all crops! %d crops in cart, but only %d spaces in farm."
+								, purchasedMerch.getCrops().size()
+								, farm.getMaxCropAmount() - farm.getCrops().size()));
+			}
 			
 			// subtract the totalCost from the player's money.
 			farm.setMoney(playersMoney - finalCost);
@@ -204,13 +220,15 @@ public class GeneralStore {
 			//Empty the cart of the merch. 
 			m_shoppingCart.clearCart();
 			
-			return purchasedMerch;
+			return purchasedMerch.getMerchList();
 			
 		}
 		
 		else {
 			//Player can't afford the merch they have in the Cart.
-			throw new IllegalStateException("Not enough Money");
+			throw new IllegalStateException(String.format("Not enough Money. Total cost is %d but your only have %d in the bank"
+					, finalCost
+					, playersMoney));
 		}
 
 	}
