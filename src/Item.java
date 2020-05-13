@@ -171,14 +171,14 @@ public class Item implements Merchandise{
 	@Override
 	public String toString()
 	{
-		final StringBuffer sb = new StringBuffer("Item{");
-        sb.append("name=").append(m_name);
-        sb.append(", purchasePrice='").append(m_purchasePrice).append('\'');
-        sb.append(", boostAmount='").append(m_boostAmount).append('\'');
-        sb.append(", forAnimals='").append(m_forAnimals).append('\'');
-        sb.append(", forCrops='").append(m_forCrops).append('\'');
-        sb.append('}');
-        return sb.toString();
+		String output = "Item{";
+        output.concat("name=" + m_name);
+        output.concat(", purchasePrice='" + m_purchasePrice + '\'');
+        output.concat(", boostAmount='" + m_boostAmount + '\'');
+        output.concat(", forAnimals='" + m_forAnimals + '\'');
+        output.concat(", forCrops='" + m_forCrops + '\'');
+        output.concat("}");
+        return output;
 	}
 
 }

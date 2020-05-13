@@ -576,5 +576,29 @@ public class Farm {
 	}
 
 
+	@Override
+	public String toString() 
+	{
+		String output = "Farm {";
+		output.concat("m_name=" + m_name + ", ");
+		output.concat("m_type=" + m_type + ", ");
+		output.concat("m_farmer=" + m_farmer + ", ");
+		output.concat("m_crops=" + m_crops + ", ");
+		output.concat("m_animals=" + m_animals + ", ");
+		output.concat("m_items=" + m_items + ", ");
+		output.concat("m_money=" + m_money + ", ");
+		output.concat("m_maxCropAmount=" + m_maxCropAmount + ", ");
+		output.concat("m_maxAnimalAmount=" + m_maxAnimalAmount + ", ");
+		output.concat("m_growingSpeedMod=" + m_growingSpeedMod + ", ");
+		output.concat("m_cropCashMod=" + m_cropCashMod + ", ");
+		output.concat("m_animalHappinessMod=" + m_animalHappinessMod + ", ");
+		output.concat("m_purchaseDiscountMod=" + m_purchaseDiscountMod + ", ");
+		output.concat("m_remainingActions=" + m_remainingActions + ", ");
+		output.concat("m_remainingDays=" + m_remainingDays); 
+		output.concat("}");
+		return output;
+	}
+
+	
 
 }

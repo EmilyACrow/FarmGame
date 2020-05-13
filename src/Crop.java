@@ -66,7 +66,7 @@ public class Crop implements Merchandise{
 	/**
 	 * Attempt to use an item to reduce amount of time until crop is ready to harvest
 	 * @param item Item to be used to on Crop
-	 * @return message to output to user reporting whether or not the item was successfully used and additional info 
+	 * @return message to  to user reporting whether or not the item was successfully used and additional info 
 	 * @throws RuntimeException if item could not be used
 	 */
 	private boolean useItem(Item item)
@@ -271,13 +271,13 @@ public class Crop implements Merchandise{
 	@Override
 	public String toString()
 	{
-		final StringBuffer sb = new StringBuffer("Crop{");
-        sb.append("name=").append(m_name);
-        sb.append(", purchasePrice='").append(m_purchasePrice).append('\'');
-        sb.append(", sellPrice='").append(m_sellPrice).append('\'');
-        sb.append(", daysToGrow='").append(m_daysToGrow).append('\'');
-        sb.append(", daysUntilHarvest='").append(m_daysUntilHarvest).append('\'');
-        sb.append('}');
-        return sb.toString();
+		String output = "Crop{";
+        output.concat("name=" + m_name);
+        output.concat(", purchasePrice='" + m_purchasePrice + '\'');
+        output.concat(", sellPrice='" + m_sellPrice + '\'');
+        output.concat(", daysToGrow='" + m_daysToGrow + '\'');
+        output.concat(", daysUntilHarvest='" + m_daysUntilHarvest + '\'');
+        output.concat("}");
+        return output;
 	}
 }

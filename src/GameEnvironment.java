@@ -116,8 +116,25 @@ public class GameEnvironment {
 	
 	public void viewFarmStatus() 
 	{
-		ArrayList<Merchandise> merchList;
-		merchList = (ArrayList<Merchandise>) m_farm.getAnimals();
+		//Print all of the animals, items, and crops in the farm
+		System.out.println(m_farm.getAnimals());
+		System.out.println(m_farm.getCrops());
+		System.out.println(m_farm.getItems());
+		//Print the details of each animal, item, and crop
+		for(Animal animal : m_farm.getAnimals())
+		{
+			System.out.println(animal.toString());
+		}
+		for(Crop crop : m_farm.getCrops())
+		{
+			System.out.println(crop.toString());
+		}
+		for(Item item : m_farm.getItems())
+		{
+			System.out.println(item.toString());
+		}
+		System.out.println(m_farm);
+		
 		
 	}
 	
