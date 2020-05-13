@@ -41,21 +41,27 @@ public class Farm {
 	/**
 	 * Array list of Crop objects  the player owns.
 	 */	 
-	private ArrayList<Crop> m_crops;
+	//private ArrayList<Crop> m_crops;
 	
 	
 	
 	/**
 	 * ArrayList of Animal objects  the player owns. 
 	 */
-	private ArrayList<Animal> m_animals;
+	//private ArrayList<Animal> m_animals;
 	
 	
 	
 	/**
 	 * ArrayList of Item objects the player owns. 
 	 */
-	private ArrayList<Item> m_items; 
+	//private ArrayList<Item> m_items;
+	
+	
+	/**
+	 * Wrapper for arraylist of all farm items, crops, and animals
+	 */
+	private MerchandiseWrapper m_merch;
 	
 	
 
@@ -154,9 +160,10 @@ public class Farm {
 		
 		
 		//setting up the arrayLists. When the game starts, these must be empty
-		m_crops = new ArrayList<Crop>();
-		m_animals = new ArrayList<Animal>();
-		m_items = new ArrayList<Item>();		
+		//m_crops = new ArrayList<Crop>();
+		//m_animals = new ArrayList<Animal>();
+		//m_items = new ArrayList<Item>();
+		m_merch = new MerchandiseWrapper();
 		
 		
 		//Switch cases for FarmTypes determine starting values
@@ -294,31 +301,46 @@ public class Farm {
 	 * 
 	 * @return m_animals list of Animal objects representing the animals owned by player. 
 	 */
-	public ArrayList<Animal> getAnimals() {
-		return m_animals; 
+//	public ArrayList<Animal> getAnimals() {
+//		return m_animals; 
+//	}
+	public ArrayList<Animal> getAnimals()
+	{
+		return m_merch.getAnimals();
 	}
-	
 	
 	
 	/**
 	 * 
 	 * @param animal the new animal object player purchased from GeneralStore.
 	 */
-	public void addAnimal(Animal animal) {
-		m_animals.add(animal);
-		
+//	public void addAnimal(Animal animal) {
+//		m_animals.add(animal);
+//		
+//	}
+	public void addAnimal(Animal animal)
+	{
+		m_merch.add((Merchandise) animal);
 	}
 	
-	
+	/**
+	 * 
+	 * @param animal animal to remove from farm
+	 * @return true if removal was successful
+	 */
+	public boolean removeAnimal(Animal animal)
+	{
+		return m_merch.remove((Merchandise) animal);
+	}
 	
 	/**
 	 * 
 	 * @param animalList List of Animal objects.
 	 */
 	
-	public void setAnimalList(ArrayList<Animal> animalList) {
-		m_animals = animalList;
-	}
+//	public void setAnimalList(ArrayList<Animal> animalList) {
+//		m_animals = animalList;
+//	}
 
 	
 	
@@ -326,55 +348,87 @@ public class Farm {
 	 * 
 	 * @return m_crops	list of Crop objects representing the plants the player is growing.
 	 */
-	public ArrayList<Crop> getCrops() {
-		return m_crops;
+//	public ArrayList<Crop> getCrops() {
+//		return m_crops;
+//	}
+	public ArrayList<Crop> getCrops()
+	{
+		return m_merch.getCrops();
 	}
-	
 
 	
 	/**
 	 * 
 	 * @param crop	the new crop object the  player has purchased from GeneralStore.
 	 */
-	public void addCrop(Crop crop) {
-		m_crops.add(crop);
-		
+//	public void addCrop(Crop crop) {
+//		m_crops.add(crop);
+//		
+//	}
+	public void addCrop(Crop crop)
+	{
+		m_merch.add((Merchandise) crop);
 	}
 	
-	public void setCropList(ArrayList<Crop> cropList) {
-		m_crops = cropList;
+	/**
+	 * 
+	 * @param crop crop to remove from farm
+	 * @return true if removal was successful
+	 */
+	public boolean removeCrop(Crop crop)
+	{
+		return m_merch.remove((Merchandise) crop);
 	}
+	
+//	public void setCropList(ArrayList<Crop> cropList) {
+//		m_crops = cropList;
+//	}
 	
 	
 	/**
 	 * 
 	 * @return m_items list of item objects representing the items player owns.
 	 */
-	public ArrayList<Item> getItems() {
-		return m_items;
+//	public ArrayList<Item> getItems() {
+//		return m_items;
+//	}
+	public ArrayList<Item> getItems()
+	{
+		return m_merch.getItems();
 	}
-	
 	
 	
 	/**
 	 * 
 	 * @param item  new item object the player purchased from GeneralStore.
 	 */
-	public void addItem(Item item) {
-		m_items.add(item);
-		
+//	public void addItem(Item item) {
+//		m_items.add(item);
+//		
+//	}
+	public void addItem(Item item)
+	{
+		m_merch.add((Merchandise) item);
 	}
 	
-	
+	/**
+	 * 
+	 * @param item item to remove from farm
+	 * @return true if removal was successful
+	 */
+	public boolean removeItem(Item item)
+	{
+		return m_merch.remove((Merchandise) item);
+	}
 	
 	/**
 	 * 
 	 * @param itemList list of Item objects.
 	 */
-	public void setItemList(ArrayList<Item> itemList) {
-		m_items = itemList;
-	}
-
+//	public void setItemList(ArrayList<Item> itemList) {
+//		m_items = itemList;
+//	}
+	
 	
 
 	/**
@@ -583,9 +637,9 @@ public class Farm {
 		output.concat("m_name=" + m_name + ", ");
 		output.concat("m_type=" + m_type + ", ");
 		output.concat("m_farmer=" + m_farmer + ", ");
-		output.concat("m_crops=" + m_crops + ", ");
-		output.concat("m_animals=" + m_animals + ", ");
-		output.concat("m_items=" + m_items + ", ");
+		output.concat("m_crops=" + m_merch.getCrops() + ", ");
+		output.concat("m_animals=" + m_merch.getAnimals() + ", ");
+		output.concat("m_items=" + m_merch.getItems() + ", ");
 		output.concat("m_money=" + m_money + ", ");
 		output.concat("m_maxCropAmount=" + m_maxCropAmount + ", ");
 		output.concat("m_maxAnimalAmount=" + m_maxAnimalAmount + ", ");

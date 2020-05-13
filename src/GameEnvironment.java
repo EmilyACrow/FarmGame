@@ -116,10 +116,7 @@ public class GameEnvironment {
 	
 	public void viewFarmStatus() 
 	{
-		//Print all of the animals, items, and crops in the farm
-		System.out.println(m_farm.getAnimals());
-		System.out.println(m_farm.getCrops());
-		System.out.println(m_farm.getItems());
+
 		//Print the details of each animal, item, and crop
 		for(Animal animal : m_farm.getAnimals())
 		{
@@ -133,6 +130,7 @@ public class GameEnvironment {
 		{
 			System.out.println(item.toString());
 		}
+		//Print all farm details
 		System.out.println(m_farm);
 		
 		

@@ -144,4 +144,14 @@ public class MerchandiseWrapper {
     	}
     	return items;
     }
+    
+    public void add(Merchandise merch)
+    {
+    	merchList.add(merch);
+    }
+    
+    public boolean remove(Merchandise merch)
+    {
+    	return merchList.remove(merch);
+    }
 }
