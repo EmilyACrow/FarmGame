@@ -36,7 +36,7 @@ public class GeneralStore {
 		
 		try
 		{
-			File file = new File("config/test.xml");
+			File file = new File("config/store.xml");
 	        JAXBContext jaxbContext = JAXBContext.newInstance(MerchandiseWrapper.class);
 	        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
 	        m_merchWrapper = (MerchandiseWrapper) unmarshaller.unmarshal(file);

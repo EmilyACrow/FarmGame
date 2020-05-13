@@ -46,19 +46,18 @@ public class GameEnvironment {
 	
 	private void addFarmMoney(int amount)
 	{
-		m_farm.setMoney(m_farm.getMoney() + amount);
+		m_farm.addMoney(amount);
 	}
 	
 	private void removeFarmMoney(int amount)
 	{
-		int bank = m_farm.getMoney();
-		if(amount < bank)
+		try
 		{
-			m_farm.setMoney(0);
+			m_farm.subtractMoney(amount);
 		}
-		else
+		catch(Exception e)
 		{
-			m_farm.setMoney(bank - amount);
+			System.out.println(e);
 		}
 	}
 	
@@ -155,6 +154,7 @@ public class GameEnvironment {
 			return;
 		}
 		m_farm.setRemainingDays(m_farm.getRemainingDays() - 1);
+		
 	}
 	
 	public ArrayList<Merchandise> selectMerch()
