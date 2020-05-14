@@ -9,6 +9,8 @@ import maincode.Farmer;
 /**
  * makeFarm is a command line to create a Farm class via player's input.
  * uses a scanner
+ * To describe scanner: 
+ * https://alvinalexander.com/java/edu/pj/pj010005/
  * 
  * Created: 12-05-2020
  *
