@@ -45,7 +45,7 @@ public class GameEnvironment {
 		String farmName = askName();
 		
 		
-		
+		//Select a type of farm.
 		System.out.println("Enter number of a type of farm.");
 		System.out.println("Pick from: "+
 				"\n1.Ranch" +
@@ -55,8 +55,13 @@ public class GameEnvironment {
 		FarmType farmType = askFarmType();
 		
 		
+		//prompt for how many days the player wants to play
+		System.out.println("Enter number (5 - 10) of days you will play: ");
+		int remainingDays = askDays();
+		
+		
 		//Creates a new game
-		createNewGame(farmName, farmType, farmer);
+		createNewGame(farmName, farmType, farmer, remainingDays);
 		
 				
 		
@@ -75,9 +80,9 @@ public class GameEnvironment {
 	/**
 	 * 
 	 */
-	private void createNewGame(String farmName, FarmType farmType, Farmer farmer)
+	private void createNewGame(String farmName, FarmType farmType, Farmer farmer, int remainingDays)
 	{		
-		m_farm = new Farm(farmName, farmType, farmer);
+		m_farm = new Farm(farmName, farmType, farmer, remainingDays);
 		m_store = new GeneralStore();
 	}
 	
@@ -363,6 +368,36 @@ public class GameEnvironment {
 	}
 	
 	
+	/**
+	 * Ask the player to input how many days they want to play in-game.
+	 * They are restricted to only selecting between 5- 10 days.
+	 * @return the number of days they want to play.
+	 */
+	public int askDays() {
+		
+		int daysChosen = 0;
+		
+		
+		while( !(5 < daysChosen) && !(daysChosen < 10) ) {
+			
+			daysChosen = numberOnly();
+			
+			//Tells them if the chosen days is not possible.
+			if (!(5 < daysChosen)) {
+				
+				System.out.println(daysChosen + " is too small, select a number that is equal to or greater than 5:");
+			}
+			
+			else if (!(daysChosen < 10)) {
+				
+				System.out.println(daysChosen + " is too large, select a number that is equal to or less than 10: ");
+			}
+			
+		}
+		
+		
+		return daysChosen;
+	}
 
 	
 	/*
@@ -403,7 +438,7 @@ public class GameEnvironment {
 			
 			}
 
-			//assigns any skipped lines to nothing. so it should leave the scanner free of any characters.
+			//assigns any lines after first entered input to nothing. so it should leave the scanner free of any characters.
 			askPlayer.nextLine();
 			
 			isValid = true;
@@ -481,31 +516,13 @@ public class GameEnvironment {
 	*
 	*/
 	
-	
+	/**
+	 * scans something the player has typed in.
+	 * @return the scanner used to get input from console
+	 */
 	public Scanner getAskPlayer() {
 		return askPlayer;
 	}
 	
 	
-	
-	
-	
-	
-	/*
-	 * Run the game.
-	 */
-	public static void main(String[] args) {
-		
-		
-		//uncomment everything to run. 
-		//GameEnvironment newSession = new GameEnvironment();
-		
-		//System.out.println("Back from character creation");
-
-		
-		//closes the scanner once game finished.
-		//newSession.getAskPlayer().close();
-		
-
-	}
 }
