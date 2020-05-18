@@ -5,6 +5,9 @@ public class FarmGame {
 		// TODO Auto-generated method stub
 		GameEnvironment game = new GameEnvironment();
 		game.Run();
+		
+		//close the scanner once game ends.
+		game.getAskPlayer().close();
 	}
 
 }
