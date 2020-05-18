@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * TODO: Rig for JAXB
  * - Dmitri
  * 
- *Last modified: 13-05-2020
+ *Last modified: 18-05-2020
  *
  *Created 29-04-2020
  * @author Kenn Leen Duenas Fulgencio
@@ -151,12 +151,15 @@ public class Farm {
 	 * @param farmName	Name of the farm 
 	 * @param farmType 	the enumerator 'FarmType' the player has selected. 
 	 * @param farmer 	an object of the class Farmer. This is the character player created.
+	 * @param remainingDays how many days the player is playing the game.
 	 */
-	public Farm(String farmName, FarmType farmType, Farmer farmer) {
+	public Farm(String farmName, FarmType farmType, Farmer farmer, int remainingDays) {
 		
 		m_name = farmName;
 		m_farmer = farmer;
 		m_type = farmType;	
+		m_remainingDays = remainingDays;	
+		m_remainingActions = 2;
 		
 		
 		//setting up the arrayLists. When the game starts, these must be empty
