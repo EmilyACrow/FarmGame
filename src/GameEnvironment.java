@@ -23,12 +23,41 @@ public class GameEnvironment {
 	
 	
 	/**
-	 * the constructor method calls methods that use the scanner to prompt player to input data 
-	 * required to create the Farm class. 
+	 * the constructor method activates the scanner that will be used to get player's input
+	 * It also asks the player to input information to create a farm.
 	 */
 	public GameEnvironment()
 	{
 		askPlayer = new Scanner(System.in);
+				
+		
+	}
+	
+	public void Run()
+	{
+		
+		System.out.println("Creating a farm.");
+		showMainMenu();
+	}
+	
+	
+	
+	
+	
+	/*
+	 * Methods regarding visual screens begin here
+	 */
+	
+	
+	
+	
+	
+	/**
+	 * The mainmenu is where the player creates the farm. Using information given by the player, it creates an instance of the Farm class for the attribute 'm_farm'
+	 * 
+	 */
+	private void showMainMenu()
+	{
 		
 		System.out.println("Enter the farmer's name:");
 		String farmerName = askName();
@@ -36,11 +65,7 @@ public class GameEnvironment {
 		
 		System.out.println("Enter the farmer's age:");
 		int farmerAge = askAge();
-			
-		
-		//create a Farmer instance
-		Farmer farmer = new Farmer(farmerName, farmerAge);
-		
+
 		System.out.println("Enter name of Farm:");
 		String farmName = askName();
 		
@@ -58,26 +83,25 @@ public class GameEnvironment {
 		//prompt for how many days the player wants to play
 		System.out.println("Enter number (5 - 10) of days you will play: ");
 		int remainingDays = askDays();
+				
 		
 		
+		//create a Farmer instance
+		Farmer farmer = new Farmer(farmerName, farmerAge);
+		
+		System.out.println("New game is loading");
 		//Creates a new game
 		createNewGame(farmName, farmType, farmer, remainingDays);
 		
-				
+
 		
 	}
 	
-	public void Run()
-	{
-		showMainMenu();
-	}
 	
-	private void showMainMenu()
-	{
-		
-	}
 	
-	/**
+	
+	
+	/*
 	 * 
 	 */
 	private void createNewGame(String farmName, FarmType farmType, Farmer farmer, int remainingDays)
@@ -85,6 +109,9 @@ public class GameEnvironment {
 		m_farm = new Farm(farmName, farmType, farmer, remainingDays);
 		m_store = new GeneralStore();
 	}
+	
+	
+	
 	
 	private void removeFromFarm(Merchandise merch)
 	{
@@ -112,7 +139,7 @@ public class GameEnvironment {
 			System.out.println(e);
 		}
 	}
-	
+		
 	private void tendCrops(Crop crop)
 	{
 		String cropName = crop.getName();
@@ -252,14 +279,63 @@ public class GameEnvironment {
 		return selection;
 	}
 	
+	
+	/**
+	 * Player visits the generalStore. Here they can purchase items.
+	 */
 	public void visitGeneralStore()
 	{
 		
+		
+		int playerAnswer = 0; 
+		
+		// a backslash n for space from previous printed previous lines
+		System.out.println("\nWelcome to the general store!");
+		System.out.println("=".repeat(10));
+		System.out.println("Your current balance is: $" + m_farm.getMoney());
+		System.out.println("=".repeat(10));
+		System.out.println("1. view sales");
+		System.out.println("2. my inventory");
+		System.out.println("3. return to activity");
+		System.out.println("=".repeat(10));
+		System.out.println("input your action:");
+		
+		
+		
+		while (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) ) {
+			
+			
+			playerAnswer = numberOnly();
+			
+			//Is the length of the input number a length of 1?
+			if (isValidInput(playerAnswer) ) {
+				
+				//Tells reader if the number chosen is one that is available. 
+				if (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) ) {
+					System.out.println(playerAnswer + " is not a valid number, please select another: ");
+				}
+				
+	
+			}		
+			
+		}
+		
+		//type in if statements that will call the methods it represents.
+
+		
 	}
 	
+	
+	
+	/**
+	 * End of game. Shows player their final score.
+	 */
 	private void endGame()
 	{
-		
+			
+		System.out.println("The game has ended. Your score is: ");
+		// the scanner must close.		
+		askPlayer.close();
 	}
 	
 	
@@ -346,7 +422,7 @@ public class GameEnvironment {
 		
 		
 		
-		//Depending on the number selected, it will assign the Farm Type. 
+		//Depending on the number selected, it will assign the constant to farmType. 
 		if (playerSelection == 1) {
 			farmType = FarmType.RANCH;
 		}
@@ -398,12 +474,16 @@ public class GameEnvironment {
 		
 		return daysChosen;
 	}
+	
 
+	
+	
 	
 	/*
 	 * Methods that check if the player's input is valid begin below here
 	 * 
 	 */
+	
 	
 	
 	
@@ -454,6 +534,33 @@ public class GameEnvironment {
 	
 	
 	/**
+	 * Contains conditions that all Integer inputs representing an action must follow.
+	 * @param playerInput the integer player has typed in. 
+	 * @return True if it passes the conditions. False if it is the expected input.
+	 */
+	public Boolean isValidInput(int playerInput) {
+		
+		//chosenAction must be converted into an int so we can check length
+		
+		if (String.valueOf(playerInput).length() == 1) {
+			
+			return true;
+			
+		}
+		
+		else {
+			
+			System.out.println("Too many numbers, please input only one number");
+			return false;
+		}
+		
+	}
+	
+	
+	
+	
+	
+	/**
 	 * Checks if the string-value the player entered is valid.
 	 * 
 	 * @param playerInput Value player has typed in.
@@ -467,8 +574,7 @@ public class GameEnvironment {
 		for (int index = 0; index < playerInput.length(); index ++ ) {
 			
 			char check = playerInput.charAt(index);
-			
-			
+					
 			if(Character.isAlphabetic(check)) {
 				continue; // next iteration
 				
@@ -505,7 +611,188 @@ public class GameEnvironment {
 		}
 		
 	}
+	
+	
+	
+	
+	
+	/**
+	 * Methods representing different screens/forms begin here
+	 */
+	
+	
+	
+	
+	/**
+	 * Player gets to select an activity to do. They will continue being prompted until the end of the game.
+	 */
+	public void showActivityScreen() {
 		
+		int playerAnswer = 0;
+		
+		
+	
+		while(!(m_farm.getRemainingDays() < 0)) {
+		System.out.println("=".repeat(10));
+		System.out.println("showActivityScreen");
+		System.out.println("\n" + m_farm.getRemainingDays() +" Days left on " + m_farm.getFarmName());
+		System.out.println(String.format("You have %s remaining actions", m_farm.getRemainingActions()) );
+		System.out.println("=".repeat(10));
+		System.out.println("Activities:"
+				+ "\n1. Do Farm work"
+				+ "\n2. See farm status"
+				+ "\n3. Farm balance"
+				+ "\n4. visit general store"
+				+ "\n5. end day");
+		System.out.println("=".repeat(10));
+		System.out.println("Input a number:");
+		
+		
+		while (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5)) {
+			
+			
+			playerAnswer = numberOnly();
+			
+			//Is the length of the input number a length of 1?
+			if (isValidInput(playerAnswer) ) {
+				
+				//Tells player if the number chosen is one that is available. 
+				if (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5)) {
+					System.out.println(playerAnswer + " is not a valid number, please select another: ");
+				}
+				
+	
+			}
+			
+			
+			
+		}
+		
+		//escape the while loop when a valid number is selected. 
+		//below are if statements that will call the method the number represents.
+		
+		if (playerAnswer == 1) {
+			
+			farmWorkScreen();
+			
+			//remove one from action 
+			System.out.println("removed 1 from actions");
+
+		}
+		
+		
+		else if (playerAnswer == 2) {
+			//see farm status
+			viewFarmStatus();
+			
+		}
+		
+		else if (playerAnswer == 3) {
+			//see farm balance			
+			
+			System.out.println("Your current balance is: " +  m_farm.getMoney());
+		}
+		
+		else if (playerAnswer == 4) {
+			// visit general store.
+			visitGeneralStore();
+			
+		}
+		
+		else if (playerAnswer == 5) {
+			// end day
+			System.out.println("=".repeat(10));
+			System.out.println("The day has ended.\n");
+			
+			
+			
+			endDay();
+			
+			
+			//reset the actions
+			m_farm.setRemainingActions(2);
+				
+		}
+		
+		else {
+			
+			System.out.println("Error, while loop shouldn't have let this happen " + playerAnswer);
+
+		}
+		
+		
+		//RESET playerAnswer 
+		playerAnswer = 0;
+		
+		} // the closing bracket for "while remaining days isn't equal to 0.
+		
+
+		return; // returns to run()
+	}
+	
+	
+	
+	/**
+	 * Player can view chores they can do on the farm. Each will cost an action, excluding option to return
+	 */
+	public void farmWorkScreen() {
+		
+		
+		int playerAnswer = 0;
+		
+		//will keep asking the player until there are no more actions remaining. 
+		System.out.println("=".repeat(10));
+		System.out.println("Take action");
+		System.out.println(String.format("You have %s remaining", m_farm.getRemainingActions()) );
+		System.out.println("=".repeat(10));
+		
+		System.out.println("possible actions:"
+				+"\n1.Tend land "
+				+"\n2.Tend crop"
+				+"\n3.Play with animal"
+				+"\n4.Harvest Crop"
+				+"\n5.return to activities");
+		
+		System.out.println("=".repeat(10));
+		System.out.println("Input a number:");
+		
+		
+		
+		while (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5)) {
+			
+			
+			playerAnswer = numberOnly();
+			
+			//Is the length of the input number a length of 1?
+			if (isValidInput(playerAnswer) ) {
+				
+				//Tells player if the number chosen is one that is available. 
+				if (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5)) {
+					System.out.println(playerAnswer + " is not a valid number, please select another: ");
+				}
+				
+
+	
+			}
+			
+			
+			
+		}
+		
+		
+		//need to add if statements that will call the method takeAction with the correct parameters 
+		//takeAction(PossibleAction action, ArrayList<Merchandise> selection)
+		m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
+		// just to see if it is resetting.
+		//if playerAnswer == 5 or we have already processed the action then it just ends and goes back to activity
+			
+			
+		
+	}
+	
+	
+	
+	
 	
 	
 	
@@ -516,8 +803,10 @@ public class GameEnvironment {
 	*
 	*/
 	
+	
+	
 	/**
-	 * scans something the player has typed in.
+	 * scans the input the player has typed in.
 	 * @return the scanner used to get input from console
 	 */
 	public Scanner getAskPlayer() {
