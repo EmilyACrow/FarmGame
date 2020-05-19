@@ -178,7 +178,7 @@ public class GameEnvironment {
 	
 	private void playWithAnimal(Animal animal)
 	{
-		animal.setHappiness(m_farm.MAX_ANIMAL_HAPPINESS);
+		//animal.setHappiness(m_farm.MAX_ANIMAL_HAPPINESS);
 	}
 	
 	private void harvestCrop(Crop crop)
@@ -245,7 +245,7 @@ public class GameEnvironment {
 			switch(action) 
 			{
 				case TEND_CROP: tendCrops((Crop)selection.get(0)); break;
-				case FEED_ANIMAL: feedAnimal(); break;
+				//case FEED_ANIMAL: feedAnimal(); break;
 				case PLAY_WITH_ANIMAL: break;
 				case HARVEST_CROP: break;
 				case TEND_LAND: break;
@@ -291,13 +291,13 @@ public class GameEnvironment {
 		
 		// a backslash n for space from previous printed previous lines
 		System.out.println("\nWelcome to the general store!");
-		System.out.println("=".repeat(10));
+		System.out.println("\n");
 		System.out.println("Your current balance is: $" + m_farm.getMoney());
-		System.out.println("=".repeat(10));
+		System.out.println("\n");
 		System.out.println("1. view sales");
 		System.out.println("2. my inventory");
 		System.out.println("3. return to activity");
-		System.out.println("=".repeat(10));
+		System.out.println("\n");
 		System.out.println("input your action:");
 		
 		
@@ -633,18 +633,18 @@ public class GameEnvironment {
 		
 	
 		while(!(m_farm.getRemainingDays() < 0)) {
-		System.out.println("=".repeat(10));
+		System.out.println("\n");
 		System.out.println("showActivityScreen");
 		System.out.println("\n" + m_farm.getRemainingDays() +" Days left on " + m_farm.getFarmName());
 		System.out.println(String.format("You have %s remaining actions", m_farm.getRemainingActions()) );
-		System.out.println("=".repeat(10));
+		System.out.println("\n");
 		System.out.println("Activities:"
 				+ "\n1. Do Farm work"
 				+ "\n2. See farm status"
 				+ "\n3. Farm balance"
 				+ "\n4. visit general store"
 				+ "\n5. end day");
-		System.out.println("=".repeat(10));
+		System.out.println("\n");
 		System.out.println("Input a number:");
 		
 		
@@ -701,7 +701,7 @@ public class GameEnvironment {
 		
 		else if (playerAnswer == 5) {
 			// end day
-			System.out.println("=".repeat(10));
+			System.out.println("\n");
 			System.out.println("The day has ended.\n");
 			
 			
@@ -741,10 +741,10 @@ public class GameEnvironment {
 		int playerAnswer = 0;
 		
 		//will keep asking the player until there are no more actions remaining. 
-		System.out.println("=".repeat(10));
+		System.out.println("\n");
 		System.out.println("Take action");
 		System.out.println(String.format("You have %s remaining", m_farm.getRemainingActions()) );
-		System.out.println("=".repeat(10));
+		System.out.println("\n");
 		
 		System.out.println("possible actions:"
 				+"\n1.Tend land "
@@ -753,7 +753,7 @@ public class GameEnvironment {
 				+"\n4.Harvest Crop"
 				+"\n5.return to activities");
 		
-		System.out.println("=".repeat(10));
+		System.out.println("\n");
 		System.out.println("Input a number:");
 		
 		
