@@ -38,6 +38,9 @@ public class GameEnvironment {
 		
 		System.out.println("Creating a farm.");
 		showMainMenu();
+		
+		//now call the showActivityScreen.
+		showActivityScreen();
 	}
 	
 	
@@ -92,6 +95,7 @@ public class GameEnvironment {
 		System.out.println("New game is loading");
 		//Creates a new game
 		createNewGame(farmName, farmType, farmer, remainingDays);
+		
 		
 
 		
@@ -196,6 +200,10 @@ public class GameEnvironment {
 	private void tendLand()
 	{
 		
+		// remove one action
+		
+		//
+		
 	}
 	
 	public int getCropStatus(Crop crop)
@@ -245,7 +253,7 @@ public class GameEnvironment {
 			switch(action) 
 			{
 				case TEND_CROP: tendCrops((Crop)selection.get(0)); break;
-				//case FEED_ANIMAL: feedAnimal(); break;
+				case FEED_ANIMAL: feedAnimal(); break;
 				case PLAY_WITH_ANIMAL: break;
 				case HARVEST_CROP: break;
 				case TEND_LAND: break;
@@ -257,6 +265,8 @@ public class GameEnvironment {
 		}
 		return m_farm.getRemainingActions();
 	}
+	
+	
 	
 	/**
 	 * End the game day.
@@ -270,6 +280,8 @@ public class GameEnvironment {
 			return;
 		}
 		m_farm.setRemainingDays(m_farm.getRemainingDays() - 1);
+		//call activity screen.
+		showActivityScreen();
 		
 	}
 	
@@ -278,6 +290,7 @@ public class GameEnvironment {
 		ArrayList<Merchandise> selection = new ArrayList<Merchandise>();
 		return selection;
 	}
+	
 	
 	
 	/**
@@ -294,15 +307,20 @@ public class GameEnvironment {
 		System.out.println("\n");
 		System.out.println("Your current balance is: $" + m_farm.getMoney());
 		System.out.println("\n");
-		System.out.println("1. view sales");
-		System.out.println("2. my inventory");
-		System.out.println("3. return to activity");
+		System.out.println("Items in cart: " + m_store.getShoppingCart().getCart()); //need for loop here? for each item view item's name
+		System.out.println("\n");
+		System.out.println("1. view animals");
+		System.out.println("2. view crops");
+		System.out.println("3. view items");
+		System.out.println("4. my inventory");
+		System.out.println("5. purchase everything in cart");
+		System.out.println("6. return to activity");
 		System.out.println("\n");
 		System.out.println("input your action:");
 		
 		
 		
-		while (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) ) {
+		while (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5) && !(playerAnswer == 6) ) {
 			
 			
 			playerAnswer = numberOnly();
@@ -311,7 +329,7 @@ public class GameEnvironment {
 			if (isValidInput(playerAnswer) ) {
 				
 				//Tells reader if the number chosen is one that is available. 
-				if (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) ) {
+				if (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5) && !(playerAnswer == 6)  ) {
 					System.out.println(playerAnswer + " is not a valid number, please select another: ");
 				}
 				
@@ -321,6 +339,49 @@ public class GameEnvironment {
 		}
 		
 		//type in if statements that will call the methods it represents.
+		
+		if(playerAnswer == 1) {
+			//view animals for sale
+			System.out.println("Viewing animals for sale");
+			m_store.getAnimals();
+			
+			//ask player if there is anything from the provided list that they want to buy. New method. askAddCart??
+			
+		}
+		
+		else if(playerAnswer == 2) {
+			//my crops for sale
+			System.out.println("Viewing crops for sale");
+			m_store.getCrops();
+			
+		}	
+		
+		else if(playerAnswer == 3) {
+			//view items
+			System.out.println("viewing items for sale");
+			m_store.getItems();
+			
+		}
+		
+		else if(playerAnswer == 4) {
+			//view inventory
+			System.out.println("Viewing inventory");
+			m_farm.getItems();
+		}
+		
+		else if(playerAnswer == 5) {
+			
+			//purchase everything in cart and from the received list, add it to the farm.		
+			for(Merchandise merch: m_store.checkout(m_farm)) {
+				addToFarm(merch);
+			}
+			
+		}
+		
+		//because if the player selects 3 and when the code finished running 1 or 2, they all call show activity screen.
+		System.out.println("Calling acitivity screen");
+		showActivityScreen();
+		
 
 		
 	}
@@ -334,8 +395,7 @@ public class GameEnvironment {
 	{
 			
 		System.out.println("The game has ended. Your score is: ");
-		// the scanner must close.		
-		askPlayer.close();
+		
 	}
 	
 	
@@ -453,20 +513,27 @@ public class GameEnvironment {
 		
 		int daysChosen = 0;
 		
+		Boolean isValid = false;
 		
-		while( !(5 < daysChosen) && !(daysChosen < 10) ) {
+		
+		// continues looping until valid = true
+		while( !(isValid) ) {
 			
 			daysChosen = numberOnly();
 			
 			//Tells them if the chosen days is not possible.
-			if (!(5 < daysChosen)) {
+			if (!(5 <= daysChosen)) {
 				
 				System.out.println(daysChosen + " is too small, select a number that is equal to or greater than 5:");
 			}
 			
-			else if (!(daysChosen < 10)) {
+			else if (!(daysChosen <= 10)) {
 				
 				System.out.println(daysChosen + " is too large, select a number that is equal to or less than 10: ");
+			}
+			
+			else {
+				isValid = true;
 			}
 			
 		}
@@ -631,8 +698,8 @@ public class GameEnvironment {
 		int playerAnswer = 0;
 		
 		
-	
-		while(!(m_farm.getRemainingDays() < 0)) {
+		// discarded while loop idea. 
+		//while(!(m_farm.getRemainingDays() < 0)) {
 		System.out.println("\n");
 		System.out.println("showActivityScreen");
 		System.out.println("\n" + m_farm.getRemainingDays() +" Days left on " + m_farm.getFarmName());
@@ -683,8 +750,8 @@ public class GameEnvironment {
 		
 		else if (playerAnswer == 2) {
 			//see farm status
-			viewFarmStatus();
-			
+			//viewFarmStatus();
+			System.out.println("Seeing farm stats");
 		}
 		
 		else if (playerAnswer == 3) {
@@ -725,19 +792,18 @@ public class GameEnvironment {
 		playerAnswer = 0;
 		
 		} // the closing bracket for "while remaining days isn't equal to 0.
-		
 
-		return; // returns to run()
-	}
+	//}
 	
 	
 	
 	/**
-	 * Player can view chores they can do on the farm. Each will cost an action, excluding option to return
+	 * Player can view the work they can do on the farm. Each job will cost one action.
 	 */
 	public void farmWorkScreen() {
 		
-		
+		//avoiding the 'variable not resolved error', we preset some values 
+		PossibleAction action = PossibleAction.TEND_CROP;
 		int playerAnswer = 0;
 		
 		//will keep asking the player until there are no more actions remaining. 
@@ -766,26 +832,52 @@ public class GameEnvironment {
 			//Is the length of the input number a length of 1?
 			if (isValidInput(playerAnswer) ) {
 				
-				//Tells player if the number chosen is one that is available. 
+				//Tells player if the number chosen isn't available. 
 				if (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5)) {
 					System.out.println(playerAnswer + " is not a valid number, please select another: ");
 				}
 				
-
 	
 			}
 			
+					
+		}
 			
+		
+		//if statements that will call the method takeAction with the correct parameters 
+		//takeAction(PossibleAction action, ArrayList<Merchandise> selection)
+		
+		if(playerAnswer == 1) {
+			System.out.println("Tending land selected");
+			action = PossibleAction.TEND_LAND;
 			
+			//takeAction(action, ArrayList<Merchandise> selection);
 		}
 		
-		
-		//need to add if statements that will call the method takeAction with the correct parameters 
-		//takeAction(PossibleAction action, ArrayList<Merchandise> selection)
-		m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
-		// just to see if it is resetting.
-		//if playerAnswer == 5 or we have already processed the action then it just ends and goes back to activity
+		else if(playerAnswer == 2) {
+			System.out.println("Tend crop selected");
+			action = PossibleAction.TEND_CROP;
 			
+			//takeAction(action, ArrayList<Merchandise> selection);
+		}
+		
+		else if(playerAnswer == 3) {
+			System.out.println("Play with Animal selected");
+			action = PossibleAction.PLAY_WITH_ANIMAL;
+			
+			//takeAction(action, ArrayList<Merchandise> selection);
+		}
+		
+		else if(playerAnswer == 4) {
+			System.out.println("harvest crop selected");
+			action = PossibleAction.HARVEST_CROP;
+			
+			//takeAction(action, ArrayList<Merchandise> selection);		
+		
+		}
+		
+		//if playerAnswer == 5 or we have already processed the action then it just ends and calls the showactivityScreen.
+		showActivityScreen();
 			
 		
 	}
