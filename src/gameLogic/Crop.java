@@ -1,3 +1,4 @@
+package gameLogic;
 /**
 * The Crop class represents a crop that can be bought by the
 * player and planted on their farm.

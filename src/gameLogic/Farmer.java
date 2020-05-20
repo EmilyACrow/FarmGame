@@ -1,3 +1,4 @@
+package gameLogic;
 /**
  * The Farmer class holds the name and age of the player's character, the farmer. 
  * created at the start of the game.

@@ -1,3 +1,4 @@
+package gameLogic;
 /**
 * The Animal class represents an animal that can be bought by the
 * player and placed on their farm
