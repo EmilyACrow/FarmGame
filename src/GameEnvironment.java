@@ -101,7 +101,7 @@ public class GameEnvironment {
 		//create a Farmer instance
 		Farmer farmer = new Farmer(farmerName, farmerAge);
 		
-		System.out.println("New game is loading");
+		System.out.println("Creating game");
 		//Creates a new game
 		createNewGame(farmName, farmType, farmer, remainingDays);
 		
@@ -554,7 +554,7 @@ public class GameEnvironment {
 	public Boolean isValidInput(String playerInput) {
 		
 		
-		//First checks if there are only letters in the input
+		//Checks if there are only letters in the input
 		
 		for (int index = 0; index < playerInput.length(); index ++ ) {
 			
@@ -602,7 +602,7 @@ public class GameEnvironment {
 	
 	
 	/**
-	 * Methods representing different screens/forms begin here
+	 * Methods representing different screens/frames begin here
 	 */
 	
 	
@@ -617,7 +617,7 @@ public class GameEnvironment {
 		
 		
 		// discarded while loop idea. 
-		//while(!(m_farm.getRemainingDays() < 0)) {
+	
 		System.out.println("\n");
 		System.out.println("showActivityScreen");
 		System.out.println("\n" + m_farm.getRemainingDays() +" Days left on " + m_farm.getFarmName());
@@ -657,11 +657,8 @@ public class GameEnvironment {
 		//below are if statements that will call the method the number represents.
 		
 		if (playerAnswer == 1) {
-			
+			//see takeAction options
 			farmWorkScreen();
-			
-			//remove one from action 
-			System.out.println("removed 1 from actions");
 
 		}
 		
@@ -711,9 +708,8 @@ public class GameEnvironment {
 		//RESET playerAnswer 
 		playerAnswer = 0;
 		
-		} // the closing bracket for "while remaining days isn't equal to 0.
-
-	//}
+		} 
+	
 	
 	
 	
