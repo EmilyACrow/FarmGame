@@ -1,13 +1,3 @@
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-
-
-
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -414,7 +404,7 @@ public class GameEnvironment {
 		do
 		{
 			input = askPlayer.nextInt();
-		} while (input < 1 && input > crops.size() + 1);
+		} while (input < 1 || input > crops.size() + 1);
 		
 		if (input == crops.size() + 1)
 		{
@@ -470,7 +460,7 @@ public class GameEnvironment {
 		do
 		{
 			input = askPlayer.nextInt();
-		} while (input < validFloor && input > items.size() + 1);
+		} while (input < validFloor || input > items.size() + 1);
 		
 		if(input == 0)
 		{
@@ -512,7 +502,7 @@ public class GameEnvironment {
 		do
 		{
 			input = askPlayer.nextInt();
-		} while (input < 0 && input > animals.size() + 1);
+		} while (input < 1 || input > animals.size() + 1);
 		
 		if (input == animals.size() + 1)
 		{
@@ -875,7 +865,7 @@ public class GameEnvironment {
 		System.out.println("Input a number:");
 		
 		
-		while (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5)) {
+		while (playerAnswer < 1 || playerAnswer > 5) {
 			
 			
 			playerAnswer = numberOnly();

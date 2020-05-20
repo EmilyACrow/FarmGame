@@ -4,12 +4,66 @@
 		<species>Cow</species>
 		<purchasePrice>20</purchasePrice>
 		<dailyBonus>10</dailyBonus>
+		<happinessLossRate>20</happinessLossRate>
+		<healthLossRate>20</healthLossRate>
+	</animal>
+	<animal>
+		<name>Deogie</name>
+		<species>Dog</species>
+		<purchasePrice>5</purchasePrice>
+		<dailyBonus>2</dailyBonus>
+		<happinessLossRate>5</happinessLossRate>
+		<healthLossRate>5</healthLossRate>
+	</animal>
+	<animal>
+		<name>Socks</name>
+		<species>Cat</species>
+		<purchasePrice>5</purchasePrice>
+		<dailyBonus>2</dailyBonus>
+		<happinessLossRate>5</happinessLossRate>
+		<healthLossRate>5</healthLossRate>
+	</animal>
+	<animal>
+		<name>Bacon</name>
+		<species>Pig</species>
+		<purchasePrice>12</purchasePrice>
+		<dailyBonus>8</dailyBonus>
+		<happinessLossRate>15</happinessLossRate>
+		<healthLossRate>33</healthLossRate>
+	</animal>
+	<animal>
+		<name>Chicken</name>
+		<species>Dog</species>
+		<purchasePrice>5</purchasePrice>
+		<dailyBonus>5</dailyBonus>
+		<happinessLossRate>10</happinessLossRate>
+		<healthLossRate>15</healthLossRate>
+	</animal>
+	<animal>
+		<name>Cloud 9</name>
+		<species>Sheep</species>
+		<purchasePrice>15</purchasePrice>
+		<dailyBonus>9</dailyBonus>
+		<happinessLossRate>18</happinessLossRate>
+		<healthLossRate>15</healthLossRate>
 	</animal>
 	<crop>
-		<name>foo</name>
+		<name>Wheat</name>
 		<purchasePrice>5</purchasePrice>
 		<sellPrice>10</sellPrice>
-		<daysToGrow>3</daysToGrow>
+		<daysToGrow>2</daysToGrow>
+	</crop>
+	<crop>
+		<name>Carrots</name>
+		<purchasePrice>3</purchasePrice>
+		<sellPrice>8</sellPrice>
+		<daysToGrow>2</daysToGrow>
+	</crop>
+	<crop>
+		<name>Carrots</name>
+		<purchasePrice>3</purchasePrice>
+		<sellPrice>8</sellPrice>
+		<daysToGrow>2</daysToGrow>
 	</crop>
 	<item>
 		<name>bar</name>

@@ -8,7 +8,7 @@ public class FarmGame {
 		
 		//close the scanner once game ends.
 		game.getAskPlayer().close();
-		System.out.println("left the run method and have closed scanner.");
+		System.out.println("Thank you for playing!");
 	}
 
 }
