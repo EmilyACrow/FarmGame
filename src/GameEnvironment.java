@@ -11,7 +11,16 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
+/**
+ * Contains methods to run the farm game. Contains methods that allow the player's input to alter variables in the game. 
+ * 
+ * last modified: 20-05-2020
+ * 
+ * created:
+ * @author Dmitri Smith 
+ * @author Kenn Leen Duenas Fulgencio
+ *
+ */
 
 public class GameEnvironment {
 	private ArrayList<Merchandise> m_selectedMerchandise;
@@ -710,6 +719,8 @@ public class GameEnvironment {
 	
 	/**
 	 * Player can view the work they can do on the farm. Each job will cost one action.
+	 * They will be prompted to input a valid number. 
+	 * Farmwork screen will reprint itself unless player selects return to availableActivity
 	 */
 	public void farmWorkScreen() {
 		
@@ -762,12 +773,19 @@ public class GameEnvironment {
 			System.out.println("Tending land selected");
 			action = PossibleAction.TEND_LAND;
 			
+			//calling this method will returning the set the actions left to another amount.
+			//m_farm.setRemainingActions(takeAction(action,   ));
+
+			farmWorkScreen();
+			
 			//takeAction(action, ArrayList<Merchandise> selection);
 		}
 		
 		else if(playerAnswer == 2) {
 			System.out.println("Tend crop selected");
 			action = PossibleAction.TEND_CROP;
+			
+			farmWorkScreen();
 			
 			//takeAction(action, ArrayList<Merchandise> selection);
 		}
@@ -776,6 +794,8 @@ public class GameEnvironment {
 			System.out.println("Play with Animal selected");
 			action = PossibleAction.PLAY_WITH_ANIMAL;
 			
+			farmWorkScreen();
+			
 			//takeAction(action, ArrayList<Merchandise> selection);
 		}
 		
@@ -783,13 +803,16 @@ public class GameEnvironment {
 			System.out.println("harvest crop selected");
 			action = PossibleAction.HARVEST_CROP;
 			
+			farmWorkScreen();
 			//takeAction(action, ArrayList<Merchandise> selection);		
 		
 		}
 		
-		//if playerAnswer == 5 or we have already processed the action then it just ends and calls the showactivityScreen.
-		System.out.println("Returning to activity screen");
-		showActivityScreen();
+		else {
+			//if playerAnswer == 5 or we have already processed the action then it just ends and calls the showactivityScreen.
+			System.out.println("Returning to activity screen");
+			showActivityScreen();
+		}
 			
 		
 	}
@@ -958,10 +981,11 @@ public class GameEnvironment {
 			int merchCount = m_store.getItems().size();
 			int indexPosition = 0;
 			
-			System.out.println("Viewing items for sale");
-			
+			//Prints all items of this category for sale
 			for(Item available: m_store.getItems() ) {		
-				System.out.println(available.getName());
+				
+				System.out.println(indexPosition + "." + available.getName());
+				indexPosition += 1;
 			}
 			
 			//Because the amount of available merch will vary from each category the while loop condition must alter to fit this
@@ -1012,15 +1036,16 @@ public class GameEnvironment {
 			}
 			//check the merch has been bought. 
 			System.out.println("Purchase successful");
+			
 			visitGeneralStore();
 			
 		}
 		
 		else {		
 			//because if the player selects 6 they all call activity screen.
-			System.out.println("Calling acitivity screen");
+			System.out.println("Calling activity screen");
 			showActivityScreen();
-			return;
+		
 		}
 
 		
