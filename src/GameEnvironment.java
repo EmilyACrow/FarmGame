@@ -182,7 +182,7 @@ public class GameEnvironment {
 	
 	private void playWithAnimal(Animal animal)
 	{
-		//animal.setHappiness(m_farm.MAX_ANIMAL_HAPPINESS);
+		animal.setHappiness(m_farm.MAX_ANIMAL_HAPPINESS);
 	}
 	
 	private void harvestCrop(Crop crop)
@@ -239,6 +239,9 @@ public class GameEnvironment {
 		//Print all farm details
 		System.out.println(m_farm);
 		
+		//call activity screen
+		showActivityScreen();
+		
 	}
 	
 	public int takeAction(PossibleAction action, ArrayList<Merchandise> selection)
@@ -291,102 +294,7 @@ public class GameEnvironment {
 		return selection;
 	}
 	
-	
-	
-	/**
-	 * Player visits the generalStore. Here they can purchase items.
-	 */
-	public void visitGeneralStore()
-	{
-		
-		
-		int playerAnswer = 0; 
-		
-		// a backslash n for space from previous printed previous lines
-		System.out.println("\nWelcome to the general store!");
-		System.out.println("\n");
-		System.out.println("Your current balance is: $" + m_farm.getMoney());
-		System.out.println("\n");
-		System.out.println("Items in cart: " + m_store.getShoppingCart().getCart()); //need for loop here? for each item view item's name
-		System.out.println("\n");
-		System.out.println("1. view animals");
-		System.out.println("2. view crops");
-		System.out.println("3. view items");
-		System.out.println("4. my inventory");
-		System.out.println("5. purchase everything in cart");
-		System.out.println("6. return to activity");
-		System.out.println("\n");
-		System.out.println("input your action:");
-		
-		
-		
-		while (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5) && !(playerAnswer == 6) ) {
-			
-			
-			playerAnswer = numberOnly();
-			
-			//Is the length of the input number a length of 1?
-			if (isValidInput(playerAnswer) ) {
-				
-				//Tells reader if the number chosen is one that is available. 
-				if (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5) && !(playerAnswer == 6)  ) {
-					System.out.println(playerAnswer + " is not a valid number, please select another: ");
-				}
-				
-	
-			}		
-			
-		}
-		
-		//type in if statements that will call the methods it represents.
-		
-		if(playerAnswer == 1) {
-			//view animals for sale
-			System.out.println("Viewing animals for sale");
-			m_store.getAnimals();
-			
-			//ask player if there is anything from the provided list that they want to buy. New method. askAddCart??
-			
-		}
-		
-		else if(playerAnswer == 2) {
-			//my crops for sale
-			System.out.println("Viewing crops for sale");
-			m_store.getCrops();
-			
-		}	
-		
-		else if(playerAnswer == 3) {
-			//view items
-			System.out.println("viewing items for sale");
-			m_store.getItems();
-			
-		}
-		
-		else if(playerAnswer == 4) {
-			//view inventory
-			System.out.println("Viewing inventory");
-			m_farm.getItems();
-		}
-		
-		else if(playerAnswer == 5) {
-			
-			//purchase everything in cart and from the received list, add it to the farm.		
-			for(Merchandise merch: m_store.checkout(m_farm)) {
-				addToFarm(merch);
-			}
-			
-		}
-		
-		//because if the player selects 3 and when the code finished running 1 or 2, they all call show activity screen.
-		System.out.println("Calling acitivity screen");
-		showActivityScreen();
-		
 
-		
-	}
-	
-	
 	
 	/**
 	 * End of game. Shows player their final score.
@@ -577,6 +485,7 @@ public class GameEnvironment {
 			
 			//tells player if they enter something that isn't a number.
 			catch(InputMismatchException e) {
+				
 				System.out.println( "invalid input. Please only enter a number: ");
 				
 				//assigns any skipped lines to nothing. so it should leave the scanner free of any characters.
@@ -750,14 +659,16 @@ public class GameEnvironment {
 		
 		else if (playerAnswer == 2) {
 			//see farm status
-			//viewFarmStatus();
+			viewFarmStatus();
 			System.out.println("Seeing farm stats");
+
 		}
 		
 		else if (playerAnswer == 3) {
 			//see farm balance			
-			
 			System.out.println("Your current balance is: " +  m_farm.getMoney());
+			//call activity screen
+			showActivityScreen();
 		}
 		
 		else if (playerAnswer == 4) {
@@ -877,6 +788,7 @@ public class GameEnvironment {
 		}
 		
 		//if playerAnswer == 5 or we have already processed the action then it just ends and calls the showactivityScreen.
+		System.out.println("Returning to activity screen");
 		showActivityScreen();
 			
 		
@@ -884,16 +796,244 @@ public class GameEnvironment {
 	
 	
 	
+	/**
+	 * Player visits the generalStore. Here they can purchase items.
+	 */
+	public void visitGeneralStore()
+	{
+		
+		
+		int playerAnswer = 0; 
+		
+		// a backslash n for space from previous printed previous lines
+		System.out.println("\nWelcome to the general store!");
+		System.out.println("\n");
+		System.out.println("Your current balance is: $" + m_farm.getMoney());
+		System.out.println("\n");
+		System.out.println("Items in cart: " + m_store.getShoppingCart().getCart()); //need for loop here? for each item view item's name
+		System.out.println("\n");
+		System.out.println("1. view animals");
+		System.out.println("2. view crops");
+		System.out.println("3. view items");
+		System.out.println("4. my inventory");
+		System.out.println("5. purchase everything in cart");
+		System.out.println("6. return to activity");
+		System.out.println("\n");
+		System.out.println("input your action:");
+		
+		
+		
+		while (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5) && !(playerAnswer == 6) ) {
+			
+			
+			playerAnswer = numberOnly();
+			
+			//Is the length of the input number a length of 1?
+			if (isValidInput(playerAnswer) ) {
+				
+				//Tells reader if the number chosen is one that is available. 
+				if (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5) && !(playerAnswer == 6)  ) {
+					System.out.println(playerAnswer + " is not a valid number, please select another: ");
+				}
+				
 	
+			}		
+			
+		}
+		
+		//IF STATEMENTS REPRESENTING AN ACTION BEGIN BELOW
+		
+		if(playerAnswer == 1) {
+			//setting default values for variables that will be used
+			//the input number from player 
+			int chosenMerch = 100;
+			
+			//the length of the arraylist for this merch type.
+			int merchCount = m_store.getAnimals().size();
+			int indexPosition = 0;
+			//view animals for sale
+			System.out.println("Viewing animals for sale");
+			
+		
+			//Prints all items of this category for sale
+			for(Animal available: m_store.getAnimals() ) {		
+				
+				System.out.println(indexPosition + "." + available.getSpecies());
+				indexPosition += 1;
+			}
+				
+			
+			//Because the amount of available merch will vary from each category the while loop condition must alter to fit this
+			//originally meant to be a method but was getting a parameter type error.
+			while(chosenMerch >= merchCount) {
+				System.out.println("Pick a number:");
+				
+				chosenMerch = numberOnly();
+				
+				//Is the length of the input number a length of 1?
+				if (isValidInput(chosenMerch) ) {
+					
+					//Tells player if the number chosen isn't available. 
+					if (chosenMerch >=  merchCount) {
+						System.out.println(chosenMerch + " is not a valid number, please select another: ");
+					}			
+		
+				}
+								
+			}
+			
+			//adds to the cart. 
+			Animal animal = m_store.getAnimals().get(chosenMerch);
+			System.out.println("adding" + animal.getSpecies() + " to the cart");			
+			
+			m_store.addToCart(animal);
+			
+			//print the generalstore again
+			visitGeneralStore();
+			
+			
+		}
+		
+		else if(playerAnswer == 2) {
+			// crops for sale
+			
+			//setting default values for variables that will be used
+			//the input number from player 
+			int chosenMerch = 100;
+			
+			//the length of the arraylist for this merch type.
+			int merchCount = m_store.getCrops().size();
+			int indexPosition = 0;
+			
+			System.out.println("Viewing crops for sale");
+			
+			//Prints all items of this category for sale
+			for(Crop available: m_store.getCrops() ) {		
+				
+				System.out.println(indexPosition + "." + available.getName());
+				indexPosition += 1;
+			}
+			
+			//Because the amount of available merch will vary from each category the while loop condition must alter to fit this
+			//originally meant to be a method but was getting a parameter type error.
+			while(chosenMerch >= merchCount) {
+				System.out.println("Pick a number:");
+				
+				chosenMerch = numberOnly();
+				
+				//Is the length of the input number a length of 1?
+				if (isValidInput(chosenMerch) ) {
+					
+					//Tells player if the number chosen isn't available. 
+					if (chosenMerch >=  merchCount) {
+						System.out.println(chosenMerch + " is not a valid number, please select another: ");
+					}			
+		
+				}
+								
+			}
+			
+			
+			//adds to the cart. 
+			Crop plant = m_store.getCrops().get(chosenMerch);
+			System.out.println("adding " + plant.getName() + " to the cart");			
+			
+			m_store.addToCart(plant);
+			
+			//print the generalstore again
+			visitGeneralStore();
 	
+		}	
+		
+		else if(playerAnswer == 3) {
+			//view items
+			System.out.println("viewing items for sale");
+			
+			
+			//setting default values for variables that will be used
+			//the input number from player 
+			int chosenMerch = 100;
+			
+			//the length of the arraylist for this merch type.
+			int merchCount = m_store.getItems().size();
+			int indexPosition = 0;
+			
+			System.out.println("Viewing items for sale");
+			
+			for(Item available: m_store.getItems() ) {		
+				System.out.println(available.getName());
+			}
+			
+			//Because the amount of available merch will vary from each category the while loop condition must alter to fit this
+			//originally meant to be a method but was getting a parameter type error.
+			while(chosenMerch >= merchCount) {
+				System.out.println("Pick a number:");
+				
+				chosenMerch = numberOnly();
+				
+				//Is the length of the input number a length of 1?
+				if (isValidInput(chosenMerch) ) {
+					
+					//Tells player if the number chosen isn't available. 
+					if (chosenMerch >=  merchCount) {
+						System.out.println(chosenMerch + " is not a valid number, please select another: ");
+					}			
+		
+				}
+								
+			}
+						
+			
+			//adds to the cart. 
+			Item item = m_store.getItems().get(chosenMerch);
+			System.out.println("adding " + item.getName() + " to the cart");			
+			
+			m_store.addToCart(item);
+			
+			//print the generalstore again
+			visitGeneralStore();
+			
+		}
+		
+		else if(playerAnswer == 4) {
+			//view inventory
+			System.out.println("Viewing inventory");
+			m_farm.getItems();
+			
+			visitGeneralStore();
+		}
+		
+		else if(playerAnswer == 5) {
+			
+			
+			//purchase everything in cart and from the received list, add it to the farm.		
+			for(Merchandise bought: m_store.checkout(m_farm)) {
+				addToFarm(bought);
+			}
+			//check the merch has been bought. 
+			System.out.println("Purchase successful");
+			visitGeneralStore();
+			
+		}
+		
+		else {		
+			//because if the player selects 6 they all call activity screen.
+			System.out.println("Calling acitivity screen");
+			showActivityScreen();
+			return;
+		}
+
+		
+	}
 	
-	
-	
+
 	/*
 	* Getter and Setter methods begin below here
 	* 
 	*
 	*/
+	
+
 	
 	
 	
