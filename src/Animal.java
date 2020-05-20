@@ -39,7 +39,7 @@ public class Animal implements Merchandise{
 	/**
 	 * int representing the animal's happiness
 	 * scale of 0-100 with 100 being very happy and 0 being miserable
-	 * Factors into anima's bonus amount
+	 * Factors into animal's bonus amount
 	 * can be raised by playing with animal
 	 */
 	private int m_happiness;
@@ -49,6 +49,18 @@ public class Animal implements Merchandise{
 	 */
 	@XmlElement(name = "dailyBonus")
 	private int m_dailyBonus;
+	
+	/**
+	 * How much health the animal loses per day
+	 */
+	@XmlElement(name = "healthLossRate")
+	private int m_dailyHealthLoss;
+	
+	/**
+	 * How much happiness the animal loses at the end of each day
+	 */
+	@XmlElement(name = "happinessLossRate")
+	private int m_dailyHappinessLoss;
 	
 	/**
 	 * Empty default constructor for JAXB
@@ -232,5 +244,21 @@ public class Animal implements Merchandise{
         output.concat(", dailyBonus='" + m_dailyBonus + '\'');
         output.concat("}");
         return output.toString();
+	}
+
+	public int getDailyHealthLoss() {
+		return m_dailyHealthLoss;
+	}
+
+	public void setDailyHealthLoss(int m_dailyHealthLoss) {
+		this.m_dailyHealthLoss = m_dailyHealthLoss;
+	}
+
+	public int getDailyHappinessLoss() {
+		return m_dailyHappinessLoss;
+	}
+
+	public void setDailyHappinessLoss(int m_dailyHappinessLoss) {
+		this.m_dailyHappinessLoss = m_dailyHappinessLoss;
 	}
 }
