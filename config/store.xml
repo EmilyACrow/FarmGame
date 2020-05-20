@@ -60,10 +60,34 @@
 		<daysToGrow>2</daysToGrow>
 	</crop>
 	<crop>
-		<name>Carrots</name>
-		<purchasePrice>3</purchasePrice>
-		<sellPrice>8</sellPrice>
+		<name>Apples</name>
+		<purchasePrice>2</purchasePrice>
+		<sellPrice>4</sellPrice>
+		<daysToGrow>1</daysToGrow>
+	</crop>	
+	<crop>
+		<name>Corn</name>
+		<purchasePrice>10</purchasePrice>
+		<sellPrice>20</sellPrice>
 		<daysToGrow>2</daysToGrow>
+	</crop>
+	<crop>
+		<name>Cotton</name>
+		<purchasePrice>8</purchasePrice>
+		<sellPrice>10</sellPrice>
+		<daysToGrow>5</daysToGrow>
+	</crop>
+	<crop>
+		<name>Barley</name>
+		<purchasePrice>9</purchasePrice>
+		<sellPrice>20</sellPrice>
+		<daysToGrow>2</daysToGrow>
+	</crop>
+	<crop>
+		<name>Watermelon</name>
+		<purchasePrice>6</purchasePrice>
+		<sellPrice>10</sellPrice>
+		<daysToGrow>1</daysToGrow>
 	</crop>
 	<item>
 		<name>bar</name>
