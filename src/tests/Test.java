@@ -1,9 +1,15 @@
+package tests;
+
+import java.io.File;
+import java.io.FileNotFoundException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.FileNotFoundException;
+
+import gameLogic.Crop;
+import gameLogic.Merchandise;
+import gameLogic.MerchandiseWrapper;
 
 public class Test {
 

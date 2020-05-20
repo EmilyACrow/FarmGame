@@ -1,3 +1,4 @@
+package gameLogic;
 /**
 * Wrapper for a Merchandise Arraylist. Sole purpose is to enable JAXB XML Parsing
 * 

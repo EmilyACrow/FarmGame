@@ -1,3 +1,4 @@
+package gameLogic;
 /**
  * The FarmType is an enumerator that provides four options for 
  * the types of farms the player can select.

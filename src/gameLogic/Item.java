@@ -1,3 +1,4 @@
+package gameLogic;
 /**
 * The Item class represents any item that can be bought by the
 * player and used to provide some benefit to their farm

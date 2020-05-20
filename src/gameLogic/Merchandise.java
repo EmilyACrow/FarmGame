@@ -1,3 +1,4 @@
+package gameLogic;
 /**
 * The Merchandise interface represents any item that can be sold
 * in the General Store

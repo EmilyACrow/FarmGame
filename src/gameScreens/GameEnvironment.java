@@ -1,6 +1,17 @@
+package gameScreens;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import gameLogic.Animal;
+import gameLogic.Crop;
+import gameLogic.Farm;
+import gameLogic.FarmType;
+import gameLogic.Farmer;
+import gameLogic.GeneralStore;
+import gameLogic.Item;
+import gameLogic.Merchandise;
+import gameLogic.PossibleAction;
 /**
  * Contains methods to run the farm game. Contains methods that allow the player's input to alter variables in the game. 
  * 
