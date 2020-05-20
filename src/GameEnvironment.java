@@ -615,13 +615,13 @@ public class GameEnvironment {
 		int playerSelection = 0;
 		
 		//keeps asking player until a valid number is chosen.
-		while((!(playerSelection == 1)) && (!(playerSelection == 2)) && (!(playerSelection == 3) && (!(playerSelection == 4)) )) {
+		while(playerSelection < 1 || playerSelection > 4) {
 			
 			System.out.println("enter a number above:");
 			playerSelection = numberOnly();
 			
 			
-			if((!(playerSelection == 1)) && (!(playerSelection == 2)) && (!(playerSelection == 3) && (!(playerSelection == 4)) )) {
+			if(playerSelection < 1 || playerSelection > 4) {
 				
 				System.out.println(playerSelection + " is not a valid number.");
 			}
@@ -978,7 +978,7 @@ public class GameEnvironment {
 		
 		
 		
-		while (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5)) {
+		while (playerAnswer < 1 || playerAnswer > 5) {
 			
 			
 			playerAnswer = numberOnly();
@@ -987,7 +987,7 @@ public class GameEnvironment {
 			if (isValidInput(playerAnswer) ) {
 				
 				//Tells player if the number chosen isn't available. 
-				if (!(playerAnswer == 1) && !(playerAnswer == 2) && !(playerAnswer == 3) && !(playerAnswer == 4) && !(playerAnswer == 5)) {
+				if (playerAnswer < 1 || playerAnswer > 5) {
 					System.out.println(playerAnswer + " is not a valid number, please select another: ");
 				}
 				
