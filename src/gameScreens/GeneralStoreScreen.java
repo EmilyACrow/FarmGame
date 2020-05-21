@@ -46,25 +46,13 @@ public class GeneralStoreScreen extends GeneralStore{
 	private JTextField cartTotalTextField;
 	//private JScrollPane merchScrollPane;
 	private StoreDisplayPanel panel;
-	private MerchandiseWrapper playerInv;
+	private ArrayList<Merchandise> m_playerInventory;
 	private ArrayList<Merchandise> m_cart;
 	private JTextField amtInCartTextField;
 
 	/**
 	 * Launch the application.
 	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					GeneralStoreScreen window = new GeneralStoreScreen();
-//					window.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Create the application.
@@ -78,6 +66,7 @@ public class GeneralStoreScreen extends GeneralStore{
 	 */
 	private void initialize() {
 		
+		m_playerInventory = new ArrayList<Merchandise>();
 		m_cart = new ArrayList<Merchandise>();
 		
 		frame = new JFrame();
@@ -207,10 +196,14 @@ public class GeneralStoreScreen extends GeneralStore{
 		JButton buyBtn = new JButton("BUY");
 		buyBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//add all items from cart to player's inventory
+				//TODO: Don't do this until verified that the player can afford it
 				for(Merchandise m : m_cart)
 				{
+					m_playerInventory.add(m.clone());
 					System.out.println(m.toString());
 				}
+				populateFromFilter(((StoreFilter) filterComboBox.getSelectedItem()).name());
 			}
 		});
 		GridBagConstraints gbc_buyBtn = new GridBagConstraints();
@@ -243,8 +236,6 @@ public class GeneralStoreScreen extends GeneralStore{
 		panel.removeAll();
 		//Make a new merchandise wrapper that is a deep copy of the General Store's
 		MerchandiseWrapper merch = super.getMerchandise().clone();
-		//Temporary; makes playerInv match the store inventory
-		playerInv = merch.clone();		
 		if(filter != "ALL")
 		{
 			if(filter != "ANIMALS")
@@ -270,7 +261,7 @@ public class GeneralStoreScreen extends GeneralStore{
 			}
 		}
 		
-		panel.refreshDisplay(merch.getMerchList(), playerInv.getMerchList());
+		panel.refreshDisplay(merch.getMerchList(), m_playerInventory);
 		
 		//Refresh the panel to reflect the changes
 		panel.revalidate();
@@ -296,6 +287,16 @@ public class GeneralStoreScreen extends GeneralStore{
 	private void updateCartSize()
 	{
 		amtInCartTextField.setText(Integer.toString(m_cart.size()));
+	}
+	
+	/**
+	 * Tell the panel what to look at for the player's inventory
+	 * @param inventory ArrayList<Merchandise> representing the player's inventory
+	 */
+	public void updatePlayerInventory(ArrayList<Merchandise> inventory)
+	{
+		//Shallow copy
+		m_playerInventory = inventory;
 	}
 
 }
