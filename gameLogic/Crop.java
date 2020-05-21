@@ -272,13 +272,13 @@ public class Crop implements Merchandise{
 	@Override
 	public String toString()
 	{
-		String output = String.format("Crop{name=%s, purchasePrice=%d, daysToGrow=%d, daysUntilHarvest=%d}"
-				, m_name, m_purchasePrice, m_sellPrice, m_daysToGrow, m_daysUntilHarvest);
+		String output = "Crop{";
+        output.concat("name=" + m_name);
+        output.concat(", purchasePrice='" + m_purchasePrice + '\'');
+        output.concat(", sellPrice='" + m_sellPrice + '\'');
+        output.concat(", daysToGrow='" + m_daysToGrow + '\'');
+        output.concat(", daysUntilHarvest='" + m_daysUntilHarvest + '\'');
+        output.concat("}");
         return output;
-	}
-	
-	public Merchandise clone()
-	{
-		return new Crop(m_name, m_purchasePrice, m_sellPrice, m_daysToGrow);
 	}
 }

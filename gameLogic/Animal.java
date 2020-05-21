@@ -236,8 +236,14 @@ public class Animal implements Merchandise{
 	 */
 	public String toString()
 	{
-		String output = String.format("Animal{name=%s, specieces=%s, purchasePrice=%d, health=%d, happiness=%d, dailyBonus=%d}",
-				m_name,m_species,m_purchasePrice,m_health,m_happiness,m_dailyBonus);
+		String output = "Animal{";
+        output.concat("name=" + m_name);
+        output.concat(", specieces='" + m_species + '\'');
+        output.concat(", purchasePrice='" + m_purchasePrice + '\'');
+        output.concat(", health='" + m_health + '\'');
+        output.concat(", happiness'" + m_happiness + '\'');
+        output.concat(", dailyBonus='" + m_dailyBonus + '\'');
+        output.concat("}");
         return output.toString();
 	}
 
@@ -255,10 +261,5 @@ public class Animal implements Merchandise{
 
 	public void setDailyHappinessLoss(int m_dailyHappinessLoss) {
 		this.m_dailyHappinessLoss = m_dailyHappinessLoss;
-	}
-	
-	public Merchandise clone()
-	{
-		return new Animal(m_name, m_species, m_purchasePrice, m_dailyBonus);
 	}
 }

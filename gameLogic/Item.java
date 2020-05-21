@@ -172,13 +172,14 @@ public class Item implements Merchandise{
 	@Override
 	public String toString()
 	{
-		String output = String.format("Item{name=%s, purchasePrice=%d, boostAmount=%d, forAnimals=%s, forCrops=%s}"
-				, m_name, m_purchasePrice, m_boostAmount, m_forAnimals, m_forCrops);
+		String output = "Item{";
+        output.concat("name=" + m_name);
+        output.concat(", purchasePrice='" + m_purchasePrice + '\'');
+        output.concat(", boostAmount='" + m_boostAmount + '\'');
+        output.concat(", forAnimals='" + m_forAnimals + '\'');
+        output.concat(", forCrops='" + m_forCrops + '\'');
+        output.concat("}");
         return output;
 	}
 
-	public Merchandise clone()
-	{
-		return new Item(m_name, m_purchasePrice, m_boostAmount, m_forAnimals, m_forCrops);
-	}
 }

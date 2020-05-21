@@ -239,6 +239,79 @@ public class Farm {
 			
 
 	}
+	
+	/**
+	 * Method for getting all of the numerical values for farm modifiers
+	 * Array representing all of the starting modifiers:
+	 * 0: Starting money
+	 * 1: Max starting crop amount
+	 * 2: Max starting animal amount
+	 * 3: Growing speed modifier
+	 * 4: Crop sale price bonus
+	 * 5: Maximum animal happiness modifier
+	 * 6: Discount on store prices
+	 * @param type FarmType enum
+	 * @return Double array of all farm modifier values
+	 */
+	public static double[] getFarmModifierValues(FarmType type)
+	{
+		
+		double[] modifiers = new double[7];
+		
+		switch(type) {
+		case COMMERCIAL:
+			modifiers[0] = 100;
+			modifiers[1] = 6;
+			modifiers[2] = 6;
+			modifiers[3] = 0.4;
+			modifiers[4] = 0.4; 
+			modifiers[5] = 0.4; 
+			modifiers[6] = 0.0;
+			break;
+		case PRODUCE:
+			modifiers[0] = 500;
+			modifiers[1] = 6;
+			modifiers[2] = 2;
+			modifiers[3] = 0.4;
+			modifiers[4] = 0.5; 
+			modifiers[5] = 0.0; 
+			modifiers[6] = 0.0;
+			break;
+		case RANCH:
+			modifiers[0] = 500;
+			modifiers[1] = 2;
+			modifiers[2] = 6;
+			modifiers[3] = 0.0;
+			modifiers[4] = 0.0; 
+			modifiers[5] = 0.4; 
+			modifiers[6] = 0.0;
+			break;
+		case MIXED:
+			modifiers[0] = 1000;
+			modifiers[1] = 3;
+			modifiers[2] = 3;
+			modifiers[3] = 0.0;
+			modifiers[4] = 0.0; 
+			modifiers[5] = 0.0;
+			modifiers[6] = 0.2;
+			break;
+		}
+		
+		return modifiers;
+	}
+	
+	public static String[] getFarmModifierNames()
+	{
+		String[] names = new String[7];
+		names[0] = "Starting money";
+		names[1] = "Max starting crop amount";
+		names[2] = "Max starting animal amount";
+		names[3] = "Growing speed modifier";
+		names[4] = "Crop sale price bonus";
+		names[5] = "Maximum animal happiness modifier";
+		names[6] = "Store Discount";
+		return names;
+	}
 
 	
 	//Getters and Setters begin below this line.

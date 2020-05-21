@@ -1,4 +1,5 @@
 package gameLogic;
+import gameScreens.GeneralStoreScreen;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -25,6 +26,8 @@ public class GeneralStore {
 	 * Shopping cart variable
 	 */
 	private ShoppingCart m_shoppingCart;
+	
+	private GeneralStoreScreen m_storefront;
 	
 	
 	/**
@@ -260,7 +263,14 @@ public class GeneralStore {
 	
 	//getters and setters begin below this line 
 	
-	
+	/**
+	 * 
+	 * @return MerchadniseWrapper of all merchandise
+	 */
+	public MerchandiseWrapper getMerchandise()
+	{
+		return m_merchWrapper;
+	}
 	
 	/**
 	 * @return a list of available animals in store.

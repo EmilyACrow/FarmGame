@@ -41,7 +41,7 @@ public class MerchandiseWrapper {
 	{
 		for(Merchandise item : source)
     	{
-    		merchList.add(item.clone());
+    		merchList.add(item);
     	}
 	}
 	
@@ -65,16 +65,6 @@ public class MerchandiseWrapper {
     }
     
     /**
-     * Makes a deep copy of the MerchandiseWrapper
-     * @return
-     */
-    public MerchandiseWrapper clone()
-    {
-    	
-    	return new MerchandiseWrapper(merchList);
-    }
-    
-    /**
      * Overload getAnimals to default to the local merchList
      * @return Arraylist of all animals in the local merchlist
      */
@@ -93,7 +83,7 @@ public class MerchandiseWrapper {
     	ArrayList<Animal> animals = new ArrayList<Animal>();
     	for(Merchandise item : merchList)
     	{
-    		if(item.getClass().getSimpleName().contentEquals("Animal"))
+    		if(item.getClass().getSimpleName() == "Animal")
     		{
     			animals.add((Animal)item);
     		}
@@ -121,7 +111,7 @@ public class MerchandiseWrapper {
     	ArrayList<Crop> crops = new ArrayList<Crop>();
     	for(Merchandise item : merchList)
     	{
-    		if(item.getClass().getSimpleName().contentEquals("Crop"))
+    		if(item.getClass().getSimpleName() == "Crop")
     		{
     			crops.add((Crop)item);
     		}
@@ -148,8 +138,7 @@ public class MerchandiseWrapper {
     	ArrayList<Item> items = new ArrayList<Item>();
     	for(Merchandise item : merchList)
     	{
-    		//Use .contenEquals instead of == because for some reason == isn't working here
-    		if(item.getClass().getSimpleName().contentEquals("Item"))
+    		if(item.getClass().getSimpleName() == "Item")
     		{
     			items.add((Item)item);
     		}

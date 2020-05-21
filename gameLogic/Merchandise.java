@@ -16,5 +16,4 @@ public interface Merchandise {
 	public void setPurchasePrice(int price);
 	public String getName();
 	public void setName(String name);
-	public Merchandise clone();
 }

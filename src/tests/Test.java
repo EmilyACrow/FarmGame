@@ -2,14 +2,14 @@ package tests;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import gameLogic.Crop;
-import gameLogic.Merchandise;
-import gameLogic.MerchandiseWrapper;
+import gameLogic.*;
+import gameScreens.*;
 
 public class Test {
 
@@ -20,7 +20,10 @@ public class Test {
 		//System.out.println(crop1.toString());
 		try
 		{
-			test.testXmlToObj();
+			//test.testXmlToObj();
+			System.out.println("Testing GeneralStore screen");
+			test.testGeneralStoreScreen();
+			//test.testGeneralStore();
 			
 		}
 		catch(Exception e)
@@ -33,7 +36,7 @@ public class Test {
 	
 	public void testXmlToObj() throws JAXBException, FileNotFoundException
 	{		
-		File file = new File("config/test.xml");
+		File file = new File("config/store.xml");
         JAXBContext jaxbContext = JAXBContext.newInstance(MerchandiseWrapper.class);
         Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
         MerchandiseWrapper merchList = (MerchandiseWrapper) unmarshaller.unmarshal(file);
@@ -43,6 +46,30 @@ public class Test {
         	System.out.println(merch.toString());
         }
         
+	}
+	
+	public void testGeneralStore() throws Exception
+	{
+		GeneralStore store = new GeneralStore();
+
+		System.out.println(store.getAnimals().size());
+		for(Animal a : store.getAnimals())
+		{
+			System.out.println(a);
+		}
+		store.getMerchandise().remove((Merchandise)store.getAnimals().get(0));
+		System.out.println(store.getAnimals().size());
+		for(Animal a : store.getAnimals())
+		{
+			System.out.println(a);
+		}
+	}
+	
+	public void testGeneralStoreScreen()  throws Exception
+	{
+		GeneralStoreScreen storefront = new GeneralStoreScreen();
+		storefront.frame.setVisible(true);
+
 	}
 
 }
