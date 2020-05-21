@@ -37,6 +37,10 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
 
 public class GeneralStoreScreen extends GeneralStore{
 
@@ -44,6 +48,8 @@ public class GeneralStoreScreen extends GeneralStore{
 	private JTextField cartTotalTextField;
 	//private JScrollPane merchScrollPane;
 	private StoreDisplayPanel panel;
+	private MerchandiseWrapper playerInv;
+	private ArrayList<Merchandise> m_cart;
 
 	/**
 	 * Launch the application.
@@ -162,7 +168,7 @@ public class GeneralStoreScreen extends GeneralStore{
 //		gbc_merchScrollPane.gridy = 2;
 //		frame.getContentPane().add(merchScrollPane, gbc_merchScrollPane);
 		
-		panel = new StoreDisplayPanel();
+		panel = new StoreDisplayPanel(m_cart);
 		panel.setPreferredSize(new Dimension(400, 300));
 		GridBagConstraints gbc_merchScrollPane = new GridBagConstraints();
 		gbc_merchScrollPane.anchor = GridBagConstraints.NORTH;
@@ -185,7 +191,8 @@ public class GeneralStoreScreen extends GeneralStore{
 		panel.removeAll();
 		//Make a new merchandise wrapper that is a deep copy of the General Store's
 		MerchandiseWrapper merch = super.getMerchandise().clone();
-		
+		//Temporary; makes playerInv match the store inventory
+		playerInv = merch.clone();		
 		if(filter != "ALL")
 		{
 			if(filter != "ANIMALS")
@@ -210,36 +217,8 @@ public class GeneralStoreScreen extends GeneralStore{
 				}
 			}
 		}
-
 		
-		//Hashmap to keep track of each name that has been added
-		HashMap<String, Integer> merchMap = new HashMap<String, Integer>();
-		
-		for(Merchandise m : merch.getMerchList())
-		{
-			//Animals getName returns a given name rather than a type name
-			//So for now we're going to ignore that
-			//TODO: Change Merchandise getName to getType.
-			
-			//If the merch hasn't been added to the list, add it now, 
-			if(!merchMap.containsKey(m.getName()))
-			{
-				merchMap.put(m.getName(), 1);
-			}
-			else
-			{
-				merchMap.put(m.getName(), merchMap.get(m.getName()) + 1);
-			}
-		}
-			
-		/* Now populate panel from merchMap
-		 * Based on the code from the following:
-		 * https://stackoverflow.com/questions/46898/how-do-i-efficiently-iterate-over-each-entry-in-a-java-map
-		 */
-		for(Map.Entry<String, Integer> entry : merchMap.entrySet())
-		{
-			panel.addMerch(entry.getKey(), entry.getValue());
-		}
+		panel.refreshDisplay(merch, playerInv);
 		
 		//Refresh the panel to reflect the changes
 		panel.revalidate();

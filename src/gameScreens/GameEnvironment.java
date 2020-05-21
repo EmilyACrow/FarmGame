@@ -1124,7 +1124,7 @@ public class GameEnvironment {
 			//Prints all items of this category for sale
 			for(Animal available: m_store.getAnimals() ) {		
 				
-				System.out.println(indexPosition + "." + available.getSpecies());
+				System.out.println(indexPosition + "." + available.getName());
 				indexPosition += 1;
 			}
 				
@@ -1150,7 +1150,7 @@ public class GameEnvironment {
 			
 			//adds to the cart. 
 			Animal animal = m_store.getAnimals().get(chosenMerch);
-			System.out.println("adding" + animal.getSpecies() + " to the cart");			
+			System.out.println("adding" + animal.getName() + " to the cart");			
 			
 			m_store.addToCart(animal);
 			

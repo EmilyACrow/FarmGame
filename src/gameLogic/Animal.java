@@ -13,16 +13,16 @@ import javax.xml.bind.annotation.*;
 @XmlRootElement(name = "animal")
 public class Animal implements Merchandise{
 	/**
-	 * String representing the animal's name given by the player
+	 * String representing the animal's species
 	 */
 	@XmlElement(name = "name")
 	private String m_name;
 	
 	/**
-	 * String representing the animal's species
+	 * String representing the animal's player given name. Not currently implemented.
 	 */
-	@XmlElement(name = "species")
-	private String m_species;
+	@XmlElement(name = "nickname")
+	private String m_nickname;
 	
 	/**
 	 * int representing the price of the animal from the store
@@ -74,14 +74,14 @@ public class Animal implements Merchandise{
 	/**
 	 * 
 	 * @param name Name of the animal
-	 * @param species Species of the animal
+	 * @param nickname nickname of the animal
 	 * @param purchasePrice Price to buy the animal from the General Store
 	 * @param dailyBonus Amount of money given to the player at the end of each day
 	 */
-	public Animal(String name, String species, int purchasePrice, int dailyBonus)
+	public Animal(String name, String nickname, int purchasePrice, int dailyBonus)
 	{
 		m_name = name;
-		m_species = species;
+		m_nickname = nickname;
 		m_purchasePrice = purchasePrice;
 		m_dailyBonus = dailyBonus;
 		
@@ -140,20 +140,20 @@ public class Animal implements Merchandise{
 	
 	/**
 	 * 
-	 * @return Species of the animal
+	 * @return nickname of the animal
 	 */
-	public String getSpecies()
+	public String getnickname()
 	{
-		return m_species;
+		return m_nickname;
 	}
 	
 	/**
 	 * 
-	 * @param species New species to set the animal to
+	 * @param nickname New nickname to set the animal to
 	 */
-	public void setSpecies(String species)
+	public void setNickname(String nickname)
 	{
-		m_species = species;
+		m_nickname = nickname;
 	}
 	
 	/**
@@ -237,7 +237,7 @@ public class Animal implements Merchandise{
 	public String toString()
 	{
 		String output = String.format("Animal{name=%s, specieces=%s, purchasePrice=%d, health=%d, happiness=%d, dailyBonus=%d}",
-				m_name,m_species,m_purchasePrice,m_health,m_happiness,m_dailyBonus);
+				m_name,m_nickname,m_purchasePrice,m_health,m_happiness,m_dailyBonus);
         return output.toString();
 	}
 
@@ -259,6 +259,6 @@ public class Animal implements Merchandise{
 	
 	public Merchandise clone()
 	{
-		return new Animal(m_name, m_species, m_purchasePrice, m_dailyBonus);
+		return new Animal(m_name, m_nickname, m_purchasePrice, m_dailyBonus);
 	}
 }

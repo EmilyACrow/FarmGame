@@ -1,31 +1,31 @@
 <merch>
 	<animal>
-		<name>Slagathor</name>
-		<species>Cow</species>
+		<name>Cow</name>
+		<nickname>Slagathor</nickname>
 		<purchasePrice>20</purchasePrice>
 		<dailyBonus>10</dailyBonus>
 		<happinessLossRate>20</happinessLossRate>
 		<healthLossRate>20</healthLossRate>
 	</animal>
 	<animal>
-		<name>Deogie</name>
-		<species>Dog</species>
+		<name>Dog</name>
+		<nickname>Deogie</nickname>
 		<purchasePrice>5</purchasePrice>
 		<dailyBonus>2</dailyBonus>
 		<happinessLossRate>5</happinessLossRate>
 		<healthLossRate>5</healthLossRate>
 	</animal>
 	<animal>
-		<name>Socks</name>
-		<species>Cat</species>
+		<name>Cat</name>
+		<nickname>Socks</nickname>
 		<purchasePrice>5</purchasePrice>
 		<dailyBonus>2</dailyBonus>
 		<happinessLossRate>5</happinessLossRate>
 		<healthLossRate>5</healthLossRate>
 	</animal>
 	<animal>
-		<name>Bacon</name>
-		<species>Pig</species>
+		<name>Pig</name>
+		<nickname>Socks</nickname>
 		<purchasePrice>12</purchasePrice>
 		<dailyBonus>8</dailyBonus>
 		<happinessLossRate>15</happinessLossRate>
@@ -33,15 +33,15 @@
 	</animal>
 	<animal>
 		<name>Chicken</name>
-		<species>Dog</species>
+		<nickname>Dog</nickname>
 		<purchasePrice>5</purchasePrice>
 		<dailyBonus>5</dailyBonus>
 		<happinessLossRate>10</happinessLossRate>
 		<healthLossRate>15</healthLossRate>
 	</animal>
 	<animal>
-		<name>Cloud 9</name>
-		<species>Sheep</species>
+		<name>Sheep</name>
+		<nickname>Cloud 9</nickname>
 		<purchasePrice>15</purchasePrice>
 		<dailyBonus>9</dailyBonus>
 		<happinessLossRate>18</happinessLossRate>
