@@ -71,5 +71,10 @@ public class Test {
 		storefront.frame.setVisible(true);
 
 	}
+	
+	public void testWelcomScreen() throws Exception
+	{
+		//WelcomScreen
+	}
 
 }
