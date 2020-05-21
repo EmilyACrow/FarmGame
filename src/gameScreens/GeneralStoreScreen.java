@@ -40,7 +40,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
 
-public class GeneralStoreScreen extends GeneralStore{
+public class GeneralStoreScreen{
 
 	public JFrame frame;
 	private JTextField cartTotalTextField;
@@ -49,6 +49,7 @@ public class GeneralStoreScreen extends GeneralStore{
 	private ArrayList<Merchandise> m_playerInventory;
 	private ArrayList<Merchandise> m_cart;
 	private JTextField amtInCartTextField;
+	private GeneralStore m_backend;
 
 	/**
 	 * Launch the application.
@@ -57,7 +58,8 @@ public class GeneralStoreScreen extends GeneralStore{
 	/**
 	 * Create the application.
 	 */
-	public GeneralStoreScreen() {
+	public GeneralStoreScreen(GeneralStore store) {
+		m_backend = store;
 		initialize();
 	}
 
@@ -235,7 +237,7 @@ public class GeneralStoreScreen extends GeneralStore{
 	{
 		panel.removeAll();
 		//Make a new merchandise wrapper that is a deep copy of the General Store's
-		MerchandiseWrapper merch = super.getMerchandise().clone();
+		MerchandiseWrapper merch = m_backend.getMerchandise().clone();
 		if(filter != "ALL")
 		{
 			if(filter != "ANIMALS")
@@ -297,6 +299,25 @@ public class GeneralStoreScreen extends GeneralStore{
 	{
 		//Shallow copy
 		m_playerInventory = inventory;
+	}
+	
+
+	/**
+	 * Setter for the attached GeneralStore
+	 * @param store Instance of GeneralStore
+	 */
+	public void setBackend(GeneralStore store)
+	{
+		m_backend = store;
+	}
+	
+	/**
+	 * Getter for attached GeneralStore
+	 * @return Instance of GeneralStore
+	 */
+	public GeneralStore getBackend()
+	{
+		return m_backend;
 	}
 
 }
