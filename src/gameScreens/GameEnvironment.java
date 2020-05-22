@@ -11,6 +11,7 @@ import gameLogic.Farmer;
 import gameLogic.GeneralStore;
 import gameLogic.Item;
 import gameLogic.Merchandise;
+import gameLogic.MerchandiseWrapper;
 import gameLogic.PossibleAction;
 /**
  * Contains methods to run the farm game. Contains methods that allow the player's input to alter variables in the game. 
@@ -31,15 +32,14 @@ public class GameEnvironment {
 	//scanner as an attribute
 	private Scanner askPlayer;
 	
-	
 	/**
 	 * the constructor method activates the scanner that will be used to get player's input
 	 * It also asks the player to input information to create a farm.
 	 */
-	public GameEnvironment()
+	public GameEnvironment(String farmName, FarmType farmType, Farmer farmer, int remainingDays)
 	{
 		askPlayer = new Scanner(System.in);
-				
+		createNewGame(farmName, farmType, farmer, remainingDays);
 		
 	}
 	
@@ -122,6 +122,8 @@ public class GameEnvironment {
 	{		
 		m_farm = new Farm(farmName, farmType, farmer, remainingDays);
 		m_store = new GeneralStore();
+		m_store.setGameEnvironment(this);
+		m_store.createScreen();
 	}
 	
 	
@@ -1060,7 +1062,13 @@ public class GameEnvironment {
 		
 	}
 	
-	
+	/**
+	 * Display the General Store GUI
+	 */
+	public void displayGeneralStore()
+	{
+		m_store.setVisible(true);
+	}
 	
 	/**
 	 * Player visits the generalStore. Here they can purchase items.
@@ -1274,13 +1282,14 @@ public class GameEnvironment {
 			
 			
 			//purchase everything in cart and from the received list, add it to the farm.		
-			for(Merchandise bought: m_store.checkout(m_farm)) {
-				addToFarm(bought);
-			}
-			//check the merch has been bought. 
-			System.out.println("Purchase successful");
-			
-			visitGeneralStore();
+//			for(Merchandise bought: m_store.checkout()) {
+//				addToFarm(bought);
+//			}
+//			//check the merch has been bought. 
+//			System.out.println("Purchase successful");
+//			
+//			visitGeneralStore();
+			System.out.println("This section temporarily disabled\nSorry. -Dmitri");
 			
 		}
 		
@@ -1301,7 +1310,33 @@ public class GameEnvironment {
 	*
 	*/
 	
-
+	public int getPlayerMoney()
+	{
+		return m_farm.getMoney();
+	}
+	
+	public void setPlayerMoney(int amount)
+	{
+		m_farm.setMoney(amount);
+	}
+	
+	/**
+	 * 
+	 * @return purchaseDiscountMod A percentage discount off of prices when buying
+	 * 								 at GeneralStore.
+	 */
+	public double getPurchaseDiscountMod() {
+		return m_farm.getPurchaseDiscountMod();
+	}
+	
+	
+	/**
+	 * 
+	 * @param purchaseDiscount  percentage of the discount player gets.
+	 */
+	public void setPurchaseDiscountMod(double purchaseDiscount) {
+		m_farm.setPurchaseDiscountMod(purchaseDiscount);
+	}
 	
 	
 	
@@ -1311,6 +1346,53 @@ public class GameEnvironment {
 	 */
 	public Scanner getAskPlayer() {
 		return askPlayer;
+	}
+
+	public int getMaxAnimalAmount() {
+		return m_farm.getMaxAnimalAmount();
+	}
+	
+	public void setMaxAnimalAmount(int amount) {
+		m_farm.setMaxAnimalAmount(amount);;
+	}
+	
+	public int getMaxCropAmount() {
+		return m_farm.getMaxCropAmount();
+	}
+	
+	public void setMaxCropAmount(int amount) {
+		m_farm.setMaxCropAmount(amount);;
+	}
+
+	public ArrayList<Animal> getPlayerAnimals() {
+		return m_farm.getAnimals();
+	}
+	
+	public ArrayList<Crop> getPlayerCrops() {
+		return m_farm.getCrops();
+	}
+	
+	public ArrayList<Item> getPlayerItems() {
+		return m_farm.getItems();
+	}
+	
+	public void addPlayerAnimal(Animal animal)
+	{
+		m_farm.addAnimal(animal);
+	}
+	
+	public void addPlayerCrop(Crop crop)
+	{
+		m_farm.addCrop(crop);
+	}
+	
+	public void addPlayerItem(Item item)
+	{
+		m_farm.addItem(item);
+	}
+
+	public MerchandiseWrapper getPlayerMerchandise() {
+		return m_farm.getMerch();
 	}
 	
 	

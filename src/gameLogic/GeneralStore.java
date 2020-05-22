@@ -1,4 +1,6 @@
 package gameLogic;
+import gameScreens.ConfirmPurchaseDialog;
+import gameScreens.GameEnvironment;
 import gameScreens.GeneralStoreScreen;
 import java.io.File;
 import java.util.ArrayList;
@@ -27,10 +29,18 @@ public class GeneralStore {
 	 */
 	private ShoppingCart m_shoppingCart;
 	
-	private GeneralStoreScreen m_storefront;
+	private int m_playerMoney;
+	
+	private GeneralStoreScreen m_storeFront;
+	
+	/**
+	 * Enable the generalstore to access other classes through accessor methods
+	 */
+	private GameEnvironment m_game;
 	
 	
 	/**
+	 * RUN setGamEnvironment IMMEDIATELY AFTER THIS!
 	 * This constructor method reads in from an XML config file and populates the merchandise wrapper.
 	 * Also makes an instance of a ShoppingCart class.
 	 */
@@ -49,9 +59,48 @@ public class GeneralStore {
 		{
 			System.out.println(e);
 			throw new RuntimeException("Error configuring GeneralStore");
-		}
-		
+		}		
 	
+	}
+	
+	/**
+	 * Setter for GameEnviornment reference
+	 * This needs to be called as soon as the GeneralStore is created! It can't be initialized in the constructor but needs to be initialized.
+	 * @param game
+	 */
+	public void setGameEnvironment(GameEnvironment game)
+	{
+		m_game = game;
+	}
+	
+	public GameEnvironment getGameEnvironment()
+	{
+		return m_game;
+	}
+	
+	/**
+	 * Attach a new instance of GeneralStoreScreen to this GeneralStore.
+	 * Destroys old GeneralStoreScreen attached to this instance of GeneralStore.
+	 */
+	public void createScreen()
+	{
+		m_storeFront = new GeneralStoreScreen(this);
+	}
+	
+	/**
+	 * Sets atatched GeneralStoreScreen to visible
+	 * @param visible
+	 */
+	public void setVisible(boolean visible)
+	{
+		try
+		{
+			m_storeFront.setVisible(visible);
+		}
+		catch(NullPointerException e)
+		{
+			System.out.println("No Screen attached to GeneralStore!");
+		}
 	}
 
 	/*Using overloading on methods addToShop() and removeFromShop.
@@ -185,56 +234,56 @@ public class GeneralStore {
 	 * before giving merch to the player.
 	 * @return an ArrayList of merch player has purchased.
 	 */
-	public ArrayList<Merchandise> checkout(Farm farm) {
+	public void checkout() {
 		
 		//local variable created to hold the merchandise being bought after cart is cleared.
-		MerchandiseWrapper purchasedMerch = new MerchandiseWrapper(m_shoppingCart.getCart());
+		MerchandiseWrapper cart = new MerchandiseWrapper(m_shoppingCart.getCart());
 		
-		int playersMoney = farm.getMoney();
-		double discountPercent = farm.getPurchaseDiscountMod();
+		int playersMoney = m_game.getPlayerMoney();
+		double discountPercent = m_game.getPurchaseDiscountMod();
 		
 		//calculation for any discounts.
 		double amountRemoved = m_shoppingCart.getTotalCost() * discountPercent;
 		int finalCost = (int) (m_shoppingCart.getTotalCost() - amountRemoved); 
-		
-		
-		//check player's balance
+		ConfirmPurchaseDialog confirmDialog = new ConfirmPurchaseDialog(this, cart, playersMoney, finalCost);
+		confirmDialog.setVisible(true);
+
+	}
+	
+	/**
+	 * Checks if the player has the money and the space to buy everything in the cart
+	 * @param playersMoney Amount of money player has
+	 * @param finalCost Total cost of cart
+	 * @param purchasedMerch MerchandiseWrapper of merchandise in cart
+	 * @return true if player meets all criteria to purchase the cart
+	 */
+	public boolean canPurchaseCart(int playersMoney, int finalCost, MerchandiseWrapper purchasedMerch)
+	{
 		if (checkBalance(finalCost, playersMoney)) {
 			//Check that the farm can fit all of the animals in the cart
-			if(farm.getAnimals().size() + purchasedMerch.getAnimals().size() > farm.getMaxAnimalAmount())
+			if(m_game.getPlayerAnimals().size() + purchasedMerch.getAnimals().size() > m_game.getMaxAnimalAmount())
 			{
 				throw new IllegalStateException(
 						String.format("Not enough room for all animals! %d animals in cart, but only %d spaces in farm."
 								, purchasedMerch.getAnimals().size()
-								, farm.getMaxAnimalAmount() - farm.getAnimals().size()));
+								, m_game.getMaxAnimalAmount() - m_game.getPlayerAnimals().size()));
 			}
 			//Check that the farm has space for all for the crops in the cart
-			if(farm.getCrops().size() + purchasedMerch.getCrops().size() > farm.getMaxCropAmount())
+			if(m_game.getPlayerCrops().size() + purchasedMerch.getCrops().size() > m_game.getMaxCropAmount())
 			{
 				throw new IllegalStateException(
 						String.format("Not enough room for all crops! %d crops in cart, but only %d spaces in farm."
 								, purchasedMerch.getCrops().size()
-								, farm.getMaxCropAmount() - farm.getCrops().size()));
+								, m_game.getMaxCropAmount() - m_game.getPlayerCrops().size()));
 			}
-			
-			// subtract the totalCost from the player's money.
-			farm.setMoney(playersMoney - finalCost);
-			
-			
-			//Empty the cart of the merch. 
-			m_shoppingCart.clearCart();
-			
-			return purchasedMerch.getMerchList();
-			
 		}
-		
 		else {
 			//Player can't afford the merch they have in the Cart.
 			throw new IllegalStateException(String.format("Not enough Money. Total cost is %d but your only have %d in the bank"
 					, finalCost
 					, playersMoney));
 		}
-
+		return true;
 	}
 	
 	/**
@@ -258,6 +307,18 @@ public class GeneralStore {
 		
 	}
 	
+	public ArrayList<Merchandise> purchaseCart(ShoppingCart cart)
+	{
+		// subtract the totalCost from the player's money.
+		m_game.setPlayerMoney(m_game.getPlayerMoney() - cart.getTotalCost());
+					
+					
+		//Empty the cart of the merch. 
+		m_shoppingCart.clearCart();
+		
+		return cart.getCart();
+	}
+	
 
 	
 	
@@ -265,7 +326,7 @@ public class GeneralStore {
 	
 	/**
 	 * 
-	 * @return MerchadniseWrapper of all merchandise
+	 * @return MerchadniseWrapper of all store merchandise
 	 */
 	public MerchandiseWrapper getMerchandise()
 	{
@@ -305,5 +366,18 @@ public class GeneralStore {
 		return m_shoppingCart;
 	}
 	
+	public int getPlayerMoney()
+	{
+		return m_playerMoney;
+	}
+	
+	public void setPlayerMoney(int money)
+	{
+		m_playerMoney = money;
+	}
+
+	public MerchandiseWrapper getPlayerMerchandise() {
+		return m_game.getPlayerMerchandise();
+	}
 	
 }
