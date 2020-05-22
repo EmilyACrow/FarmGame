@@ -67,9 +67,15 @@ public class Test {
 	
 	public void testGeneralStoreScreen()  throws Exception
 	{
-		GeneralStoreScreen storefront = new GeneralStoreScreen();
+		GeneralStore store = new GeneralStore();
+		GeneralStoreScreen storefront = new GeneralStoreScreen(store);
 		storefront.frame.setVisible(true);
 
+	}
+	
+	public void testWelcomScreen() throws Exception
+	{
+		//WelcomScreen
 	}
 
 }

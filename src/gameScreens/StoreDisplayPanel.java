@@ -24,14 +24,15 @@ public class StoreDisplayPanel extends JPanel {
 	private JTextField amtInInvTextField;
 	private int numMerchInPanel = 0;
 	private ArrayList<Merchandise> merchDisplayed;
-	private ArrayList<Merchandise> m_cart;
 	private JTextField amtSelectedTextField;
+	//Textfield from containing panel - can attach listener to use as flag for when to update outer values
+	private JTextField m_outputField;
 
 	
 	/**
 	 * Create the panel.
 	 */
-	public StoreDisplayPanel(ArrayList<Merchandise> cart) {
+	public StoreDisplayPanel(JTextField output) {
 		
 		amountTextFields = new ArrayList<JTextField>();
 		merchDisplayed = new ArrayList<Merchandise>();
@@ -44,7 +45,7 @@ public class StoreDisplayPanel extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
-		m_cart = cart;
+		m_outputField = output;
 		
 	}
 	
@@ -54,7 +55,7 @@ public class StoreDisplayPanel extends JPanel {
 	 * @param name Name of the product to be put in
 	 * @param amtInInventory Amount of the product in the player's inventory
 	 */
-	public void refreshDisplay(MerchandiseWrapper storeMerch, MerchandiseWrapper playerMerch)
+	public void refreshDisplay(ArrayList<Merchandise> storeMerch, ArrayList<Merchandise> playerMerch)
 	{
 		//Clear current display
 		merchDisplayed.clear();
@@ -63,11 +64,11 @@ public class StoreDisplayPanel extends JPanel {
 		
 		addHeader();
 		
-		for(Merchandise display : storeMerch.getMerchList())
+		for(Merchandise display : storeMerch)
 		{
 			int invAmount = 0;
 			//Count how many of the particular merch exists in the player inventory
-			for(Merchandise inv : playerMerch.getMerchList())
+			for(Merchandise inv : playerMerch)
 			{
 				if (display.getName() == inv.getName())
 				{
@@ -75,7 +76,7 @@ public class StoreDisplayPanel extends JPanel {
 				}
 			}
 			
-			JLabel lblProductIndex = new JLabel(String.format("%d:",numMerchInPanel));
+			JLabel lblProductIndex = new JLabel(String.format("%d:",numMerchInPanel + 1));
 			GridBagConstraints gbc_lblProductIndex = new GridBagConstraints();
 			gbc_lblProductIndex.insets = new Insets(0, 0, 0, 5);
 			gbc_lblProductIndex.gridx = 0;
@@ -202,13 +203,26 @@ public class StoreDisplayPanel extends JPanel {
 		gbc_amtSelectedTextField.gridy = 0;
 		add(amtSelectedTextField, gbc_amtSelectedTextField);
 		amtSelectedTextField.setColumns(6);
+	}
+	
+	public ArrayList<Merchandise> addToCart()
+	{
+		ArrayList<Merchandise> cart = new ArrayList<Merchandise>();
 		
-		JButton btnAddToCart = new JButton("Add to Cart");
-		GridBagConstraints gbc_btnAddToCart = new GridBagConstraints();
-		gbc_btnAddToCart.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAddToCart.gridx = 4;
-		gbc_btnAddToCart.gridy = 0;
-		add(btnAddToCart, gbc_btnAddToCart);
+		for(int i = 0; i < merchDisplayed.size(); i++)
+		{
+			int amtToAdd = Integer.parseInt(amountTextFields.get(i).getText());
+			for(int j = 0; j < amtToAdd; j++)
+			{
+				//Add deep copy of merch
+				cart.add(merchDisplayed.get(i).clone());
+			}
+		}
+		
+		//Clear selection after adding to cart
+		//refreshDisplay(merchDisplayed, cart);
+		
+		return cart;
 	}
 
 }
