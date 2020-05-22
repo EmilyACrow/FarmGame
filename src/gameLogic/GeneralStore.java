@@ -217,28 +217,31 @@ public class GeneralStore {
 	 * before giving merch to the player.
 	 * @return an ArrayList of merch player has purchased.
 	 */
-	public ArrayList<Merchandise> checkout() {
+	public void checkout() {
 		
 		//local variable created to hold the merchandise being bought after cart is cleared.
-		MerchandiseWrapper purchasedMerch = new MerchandiseWrapper(m_shoppingCart.getCart());
+		MerchandiseWrapper cart = new MerchandiseWrapper(m_shoppingCart.getCart());
 		
 		int playersMoney = m_game.getPlayerMoney();
 		double discountPercent = m_game.getPurchaseDiscountMod();
-		//Important that this be an object rather than primitive so that it can be passed by refernce
-		Boolean purchaseConfirmed = false;
 		
 		//calculation for any discounts.
 		double amountRemoved = m_shoppingCart.getTotalCost() * discountPercent;
 		int finalCost = (int) (m_shoppingCart.getTotalCost() - amountRemoved); 
-		ConfirmPurchaseDialog confirmDialog = new ConfirmPurchaseDialog(purchasedMerch.getMerchList(), playersMoney, purchaseConfirmed);
+		ConfirmPurchaseDialog confirmDialog = new ConfirmPurchaseDialog(this, cart, playersMoney, finalCost);
 		confirmDialog.setVisible(true);
-		
-		if(!purchaseConfirmed)
-		{
-			throw new RuntimeException("Player cancelled out of operation");
-		}
-		
-		//check player's balance
+
+	}
+	
+	/**
+	 * Checks if the player has the money and the space to buy everything in the cart
+	 * @param playersMoney Amount of money player has
+	 * @param finalCost Total cost of cart
+	 * @param purchasedMerch MerchandiseWrapper of merchandise in cart
+	 * @return true if player meets all criteria to purchase the cart
+	 */
+	public boolean canPurchaseCart(int playersMoney, int finalCost, MerchandiseWrapper purchasedMerch)
+	{
 		if (checkBalance(finalCost, playersMoney)) {
 			//Check that the farm can fit all of the animals in the cart
 			if(m_game.getPlayerAnimals().size() + purchasedMerch.getAnimals().size() > m_game.getMaxAnimalAmount())
@@ -256,25 +259,14 @@ public class GeneralStore {
 								, purchasedMerch.getCrops().size()
 								, m_game.getMaxCropAmount() - m_game.getPlayerCrops().size()));
 			}
-			
-			// subtract the totalCost from the player's money.
-			m_game.setPlayerMoney(playersMoney - finalCost);
-			
-			
-			//Empty the cart of the merch. 
-			m_shoppingCart.clearCart();
-			
-			return purchasedMerch.getMerchList();
-			
 		}
-		
 		else {
 			//Player can't afford the merch they have in the Cart.
 			throw new IllegalStateException(String.format("Not enough Money. Total cost is %d but your only have %d in the bank"
 					, finalCost
 					, playersMoney));
 		}
-
+		return true;
 	}
 	
 	/**
@@ -296,6 +288,18 @@ public class GeneralStore {
 			return false;
 		}
 		
+	}
+	
+	public ArrayList<Merchandise> purchaseCart(ShoppingCart cart)
+	{
+		// subtract the totalCost from the player's money.
+		m_game.setPlayerMoney(m_game.getPlayerMoney() - cart.getTotalCost());
+					
+					
+		//Empty the cart of the merch. 
+		m_shoppingCart.clearCart();
+		
+		return cart.getCart();
 	}
 	
 

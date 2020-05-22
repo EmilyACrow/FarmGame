@@ -1280,13 +1280,14 @@ public class GameEnvironment {
 			
 			
 			//purchase everything in cart and from the received list, add it to the farm.		
-			for(Merchandise bought: m_store.checkout()) {
-				addToFarm(bought);
-			}
-			//check the merch has been bought. 
-			System.out.println("Purchase successful");
-			
-			visitGeneralStore();
+//			for(Merchandise bought: m_store.checkout()) {
+//				addToFarm(bought);
+//			}
+//			//check the merch has been bought. 
+//			System.out.println("Purchase successful");
+//			
+//			visitGeneralStore();
+			System.out.println("This section temporarily disabled\nSorry. -Dmitri");
 			
 		}
 		

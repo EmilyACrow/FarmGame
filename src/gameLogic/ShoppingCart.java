@@ -33,6 +33,31 @@ public class ShoppingCart {
 	
 	/**
 	 * 
+	 * Shopping Cart constructor for pre-populated ArrayList<Merchandise>
+	 */
+	public ShoppingCart(ArrayList<Merchandise> merchList)
+	{
+		m_cart = new ArrayList<Merchandise>();
+		m_totalCost = 0;
+		for(Merchandise m : merchList)
+		{
+			addToCart(m, m.getPurchasePrice());
+		}
+	}
+	
+	public ShoppingCart clone(ShoppingCart cart)
+	{
+		ShoppingCart newCart = new ShoppingCart();
+		for(Merchandise m : cart.getCart())
+		{
+			Merchandise clonedMerch = m.clone();
+			newCart.addToCart(clonedMerch, clonedMerch.getPurchasePrice());
+		}
+		return newCart;
+	}
+	
+	/**
+	 * 
 	 * @param merch an instance of Merchandise. It could be a Crop, Item or Animal.
 	 * @param amount cost of the merchandise player has added to the Cart.
 	 */

@@ -74,7 +74,7 @@ public class GeneralStoreScreen{
 	private void initialize() {
 		
 		m_playerInventory = new ArrayList<Merchandise>();
-		m_cart = new ArrayList<Merchandise>();
+		m_cart = m_backend.getShoppingCart().getCart();
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 530, 570);
@@ -211,8 +211,8 @@ public class GeneralStoreScreen{
 				catch(Exception e)
 				{
 					System.out.println(e);
-					populateFromFilter(((StoreFilter) comboBoxFilter.getSelectedItem()).name());
 				}
+				populateFromFilter(((StoreFilter) comboBoxFilter.getSelectedItem()).name());
 				//add all items from cart to player's inventory
 				//TODO: Don't do this until verified that the player can afford it
 				//popupMenuConfirmPurchase.add(new new ConfirmPurchaseScreen(m_cart, playerMoney, purchaseConfirmed))

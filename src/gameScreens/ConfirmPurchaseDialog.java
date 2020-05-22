@@ -18,6 +18,8 @@ import javax.swing.border.EmptyBorder;
 
 import gameLogic.GeneralStore;
 import gameLogic.Merchandise;
+import gameLogic.MerchandiseWrapper;
+import gameLogic.ShoppingCart;
 
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -29,9 +31,9 @@ public class ConfirmPurchaseDialog extends JDialog {
 	
 	private JTextField textFieldTotalCost;
 	private JTextField textFieldPlayerMoney;
-	private ArrayList<Merchandise> m_cart;
+	private MerchandiseWrapper m_cart;
 	private Integer m_playerMoney;
-	private Boolean confirmPurchase;
+	private GeneralStore m_backend;
 
 	/**
 	 * Launch the application.
@@ -49,14 +51,10 @@ public class ConfirmPurchaseDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ConfirmPurchaseDialog(ArrayList<Merchandise> cart, int playerMoney, Boolean confirm) {
+	public ConfirmPurchaseDialog(GeneralStore store, MerchandiseWrapper cart, int playerMoney, int finalPrice) {
+		m_backend = store;
 		m_playerMoney = playerMoney;
-		confirmPurchase = confirm;
-		m_cart = new ArrayList<Merchandise>();
-		for(Merchandise m : cart)
-		{
-			m_cart.add(m);
-		}
+		m_cart = cart.clone();
 		
 		setBounds(100, 100, 450, 500);
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -75,7 +73,7 @@ public class ConfirmPurchaseDialog extends JDialog {
 		gbc_lblCartList.gridy = 0;
 		getContentPane().add(lblCartList, gbc_lblCartList);
 		
-		JScrollPane scrollPaneCart = new JScrollPane(new CartPanel(m_cart));
+		JScrollPane scrollPaneCart = new JScrollPane(new CartPanel(m_cart.getMerchList()));
 		GridBagConstraints gbc_scrollPaneCart = new GridBagConstraints();
 		gbc_scrollPaneCart.gridwidth = 3;
 		gbc_scrollPaneCart.insets = new Insets(0, 0, 5, 5);
@@ -93,7 +91,7 @@ public class ConfirmPurchaseDialog extends JDialog {
 		gbc_lblTotalCost.gridy = 2;
 		getContentPane().add(lblTotalCost, gbc_lblTotalCost);
 		
-		textFieldTotalCost = new JTextField(Integer.toString(getCartPrice()));
+		textFieldTotalCost = new JTextField(Integer.toString(finalPrice));
 		textFieldTotalCost.setEditable(false);
 		GridBagConstraints gbc_textFieldTotalCost = new GridBagConstraints();
 		gbc_textFieldTotalCost.insets = new Insets(0, 0, 5, 5);
@@ -149,13 +147,16 @@ public class ConfirmPurchaseDialog extends JDialog {
 		getContentPane().add(buttonHStrut, gbc_buttonHStrut);
 		
 		JButton btnConfirm = new JButton("CONFIRM");
-		if(!playerHasEnoughMoney())
+		if(finalPrice > playerMoney)
 		{
 			btnConfirm.setEnabled(false);
 		}
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				confirmPurchase = true;
+				if(m_backend.canPurchaseCart(playerMoney, finalPrice, m_cart))
+				{
+					m_backend.purchaseCart(new ShoppingCart(cart.getMerchList()));
+				}
 				dispose();
 			}
 		});
@@ -173,22 +174,7 @@ public class ConfirmPurchaseDialog extends JDialog {
 		gbc_horizontalGlue.gridy = 4;
 		getContentPane().add(horizontalGlue, gbc_horizontalGlue);
 		
-		scrollPaneCart.add(new CartPanel(m_cart));
-	}
-	
-	private int getCartPrice()
-	{
-		int price = 0;
-		for(Merchandise m : m_cart)
-		{
-			price += m.getPurchasePrice();
-		}
-		return price;
-	}
-	
-	private boolean playerHasEnoughMoney()
-	{
-		return (m_playerMoney > getCartPrice()); 
+		scrollPaneCart.add(new CartPanel(m_cart.getMerchList()));
 	}
 
 }
