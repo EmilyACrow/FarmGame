@@ -27,6 +27,8 @@ public class GeneralStore {
 	 */
 	private ShoppingCart m_shoppingCart;
 	
+	private int m_playerMoney;
+	
 	private GeneralStoreScreen m_storefront;
 	
 	
@@ -305,5 +307,14 @@ public class GeneralStore {
 		return m_shoppingCart;
 	}
 	
+	public int getPlayerMoney()
+	{
+		return m_playerMoney;
+	}
+	
+	public void setPlayerMoney(int money)
+	{
+		m_playerMoney = money;
+	}
 	
 }
