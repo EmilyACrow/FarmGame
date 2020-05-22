@@ -49,7 +49,7 @@ public class ConfirmPurchaseDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public ConfirmPurchaseDialog(ArrayList<Merchandise> cart, int playerMoney, Boolean confirm, GeneralStore store) {
+	public ConfirmPurchaseDialog(ArrayList<Merchandise> cart, int playerMoney, Boolean confirm) {
 		m_playerMoney = playerMoney;
 		confirmPurchase = confirm;
 		m_cart = new ArrayList<Merchandise>();
@@ -155,11 +155,8 @@ public class ConfirmPurchaseDialog extends JDialog {
 		}
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(playerHasEnoughMoney())
-				{
-					confirmPurchase = true;
-					dispose();
-				}
+				confirmPurchase = true;
+				dispose();
 			}
 		});
 		GridBagConstraints gbc_btnConfirm = new GridBagConstraints();

@@ -1,4 +1,6 @@
 package gameLogic;
+import gameScreens.ConfirmPurchaseDialog;
+import gameScreens.GameEnvironment;
 import gameScreens.GeneralStoreScreen;
 import java.io.File;
 import java.util.ArrayList;
@@ -29,10 +31,16 @@ public class GeneralStore {
 	
 	private int m_playerMoney;
 	
-	private GeneralStoreScreen m_storefront;
+	private GeneralStoreScreen m_storeFront;
+	
+	/**
+	 * Enable the generalstore to access other classes through accessor methods
+	 */
+	private GameEnvironment m_game;
 	
 	
 	/**
+	 * RUN setGamEnvironment IMMEDIATELY AFTER THIS!
 	 * This constructor method reads in from an XML config file and populates the merchandise wrapper.
 	 * Also makes an instance of a ShoppingCart class.
 	 */
@@ -53,7 +61,29 @@ public class GeneralStore {
 			throw new RuntimeException("Error configuring GeneralStore");
 		}
 		
+		m_storeFront = new GeneralStoreScreen(this);
+		
 	
+	}
+	
+	/**
+	 * Setter for GameEnviornment reference
+	 * This needs to be called as soon as the GeneralStore is created! It can't be initialized in the constructor but needs to be initialised.
+	 * @param game
+	 */
+	public void setGameEnvironment(GameEnvironment game)
+	{
+		m_game = game;
+	}
+	
+	public GameEnvironment getGameEnvironment()
+	{
+		return m_game;
+	}
+	
+	public void setVisible(boolean visible)
+	{
+		m_storeFront.setVisible(visible);
 	}
 
 	/*Using overloading on methods addToShop() and removeFromShop.
@@ -187,40 +217,48 @@ public class GeneralStore {
 	 * before giving merch to the player.
 	 * @return an ArrayList of merch player has purchased.
 	 */
-	public ArrayList<Merchandise> checkout(Farm farm) {
+	public ArrayList<Merchandise> checkout() {
 		
 		//local variable created to hold the merchandise being bought after cart is cleared.
 		MerchandiseWrapper purchasedMerch = new MerchandiseWrapper(m_shoppingCart.getCart());
 		
-		int playersMoney = farm.getMoney();
-		double discountPercent = farm.getPurchaseDiscountMod();
+		int playersMoney = m_game.getPlayerMoney();
+		double discountPercent = m_game.getPurchaseDiscountMod();
+		//Important that this be an object rather than primitive so that it can be passed by refernce
+		Boolean purchaseConfirmed = false;
 		
 		//calculation for any discounts.
 		double amountRemoved = m_shoppingCart.getTotalCost() * discountPercent;
 		int finalCost = (int) (m_shoppingCart.getTotalCost() - amountRemoved); 
+		ConfirmPurchaseDialog confirmDialog = new ConfirmPurchaseDialog(purchasedMerch.getMerchList(), playersMoney, purchaseConfirmed);
+		confirmDialog.setVisible(true);
 		
+		if(!purchaseConfirmed)
+		{
+			throw new RuntimeException("Player cancelled out of operation");
+		}
 		
 		//check player's balance
 		if (checkBalance(finalCost, playersMoney)) {
 			//Check that the farm can fit all of the animals in the cart
-			if(farm.getAnimals().size() + purchasedMerch.getAnimals().size() > farm.getMaxAnimalAmount())
+			if(m_game.getPlayerAnimals().size() + purchasedMerch.getAnimals().size() > m_game.getMaxAnimalAmount())
 			{
 				throw new IllegalStateException(
 						String.format("Not enough room for all animals! %d animals in cart, but only %d spaces in farm."
 								, purchasedMerch.getAnimals().size()
-								, farm.getMaxAnimalAmount() - farm.getAnimals().size()));
+								, m_game.getMaxAnimalAmount() - m_game.getPlayerAnimals().size()));
 			}
 			//Check that the farm has space for all for the crops in the cart
-			if(farm.getCrops().size() + purchasedMerch.getCrops().size() > farm.getMaxCropAmount())
+			if(m_game.getPlayerCrops().size() + purchasedMerch.getCrops().size() > m_game.getMaxCropAmount())
 			{
 				throw new IllegalStateException(
 						String.format("Not enough room for all crops! %d crops in cart, but only %d spaces in farm."
 								, purchasedMerch.getCrops().size()
-								, farm.getMaxCropAmount() - farm.getCrops().size()));
+								, m_game.getMaxCropAmount() - m_game.getPlayerCrops().size()));
 			}
 			
 			// subtract the totalCost from the player's money.
-			farm.setMoney(playersMoney - finalCost);
+			m_game.setPlayerMoney(playersMoney - finalCost);
 			
 			
 			//Empty the cart of the merch. 

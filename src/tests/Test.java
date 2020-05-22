@@ -22,7 +22,7 @@ public class Test {
 		{
 			//test.testXmlToObj();
 			System.out.println("Testing GeneralStore screen");
-			test.testGeneralStoreScreen();
+			test.testWelcome();
 			//test.testGeneralStore();
 			
 		}
@@ -48,6 +48,12 @@ public class Test {
         
 	}
 	
+	public void testWelcome() throws Exception
+	{
+		Welcome welcome = new Welcome();
+		welcome.run(welcome);
+	}
+	
 	public void testGeneralStore() throws Exception
 	{
 		GeneralStore store = new GeneralStore();
@@ -65,13 +71,15 @@ public class Test {
 		}
 	}
 	
-	public void testGeneralStoreScreen()  throws Exception
-	{
-		GeneralStore store = new GeneralStore();
-		GeneralStoreScreen storefront = new GeneralStoreScreen(store);
-		storefront.frame.setVisible(true);
-
-	}
+//	public void testGeneralStoreScreen()  throws Exception
+//	{
+//		GameEnvironment game = new GameEnvironment();
+//		GeneralStore store = new GeneralStore();
+//		store.setGameEnvironment(game);
+//		GeneralStoreScreen storefront = new GeneralStoreScreen(store);
+//		storefront.frame.setVisible(true);
+//
+//	}
 	
 	public void testWelcomScreen() throws Exception
 	{

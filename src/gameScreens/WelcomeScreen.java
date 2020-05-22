@@ -1,7 +1,14 @@
 package gameScreens;
 
+/**
+ * Regex matching based on code found here:
+ * https://www.vogella.com/tutorials/JavaRegularExpressions/article.html
+ * 
+ */
+
 import gameLogic.Farm;
 import gameLogic.FarmType;
+import gameLogic.Welcome;
 
 import java.awt.EventQueue;
 
@@ -24,34 +31,26 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JTextPane;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class WelcomeScreen {
 
 	private JFrame frmCreateAFarm;
-	private JTextField farmerNameTextField;
-	private JTextField farmerAgeTextField;
-	private JTextField farmNameTextField;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					WelcomeScreen window = new WelcomeScreen();
-					window.frmCreateAFarm.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private JTextField textFieldFarmerName;
+	private JTextField textFieldFarmerAge;
+	private JTextField textFieldFarmName;
+	private JComboBox comboBoxFarmType;
+	private JSlider sliderNumDays;
+	private JButton btnStartGame;
+	private Welcome m_backend;
+	private final int MAX_NAME_LENGTH = 64;
 
 	/**
 	 * Create the application.
 	 */
-	public WelcomeScreen() {
+	public WelcomeScreen(Welcome backend) {
+		m_backend = backend;
 		initialize();
 	}
 
@@ -59,6 +58,9 @@ public class WelcomeScreen {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		
+		
+		String validAgeRegex = "\\d{2}";
 		
 		frmCreateAFarm = new JFrame();
 		frmCreateAFarm.setTitle("Begin Game");
@@ -122,40 +124,66 @@ public class WelcomeScreen {
 		gbc_verticalStrut_1.gridy = 3;
 		frmCreateAFarm.getContentPane().add(verticalStrut_1, gbc_verticalStrut_1);
 		
-		farmerNameTextField = new JTextField();
-		GridBagConstraints gbc_farmerNameTextField = new GridBagConstraints();
-		gbc_farmerNameTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_farmerNameTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_farmerNameTextField.gridx = 2;
-		gbc_farmerNameTextField.gridy = 3;
-		frmCreateAFarm.getContentPane().add(farmerNameTextField, gbc_farmerNameTextField);
-		farmerNameTextField.setColumns(10);
+		textFieldFarmerName = new JTextField();
+		textFieldFarmerName.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				verifyName(textFieldFarmerName);
+				checkReadyToStart();
+			}
+		});
+		textFieldFarmerName.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				verifyName(textFieldFarmerName);
+				checkReadyToStart();
+			}
+		});
+		GridBagConstraints gbc_textFieldFarmerName = new GridBagConstraints();
+		gbc_textFieldFarmerName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldFarmerName.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldFarmerName.gridx = 2;
+		gbc_textFieldFarmerName.gridy = 3;
+		frmCreateAFarm.getContentPane().add(textFieldFarmerName, gbc_textFieldFarmerName);
+		textFieldFarmerName.setColumns(10);
 		
-		JTextPane farmModifiersTextPane = new JTextPane();
-		farmModifiersTextPane.setEditable(false);
-		GridBagConstraints gbc_farmModifiersTextPane = new GridBagConstraints();
-		gbc_farmModifiersTextPane.gridheight = 5;
-		gbc_farmModifiersTextPane.insets = new Insets(0, 0, 5, 5);
-		gbc_farmModifiersTextPane.fill = GridBagConstraints.BOTH;
-		gbc_farmModifiersTextPane.gridx = 3;
-		gbc_farmModifiersTextPane.gridy = 3;
-		frmCreateAFarm.getContentPane().add(farmModifiersTextPane, gbc_farmModifiersTextPane);
+		JTextPane textPaneModifiers = new JTextPane();
+		textPaneModifiers.setEditable(false);
+		GridBagConstraints gbc_textPaneModifiers = new GridBagConstraints();
+		gbc_textPaneModifiers.gridheight = 5;
+		gbc_textPaneModifiers.insets = new Insets(0, 0, 5, 5);
+		gbc_textPaneModifiers.fill = GridBagConstraints.BOTH;
+		gbc_textPaneModifiers.gridx = 3;
+		gbc_textPaneModifiers.gridy = 3;
+		frmCreateAFarm.getContentPane().add(textPaneModifiers, gbc_textPaneModifiers);
 		
-		JLabel lblFarmerAge = new JLabel("Age:");
+		JLabel lblFarmerAge = new JLabel("Age (10-99):");
 		GridBagConstraints gbc_lblFarmerAge = new GridBagConstraints();
 		gbc_lblFarmerAge.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFarmerAge.gridx = 1;
 		gbc_lblFarmerAge.gridy = 4;
 		frmCreateAFarm.getContentPane().add(lblFarmerAge, gbc_lblFarmerAge);
 		
-		farmerAgeTextField = new JTextField();
-		GridBagConstraints gbc_farmerAgeTextField = new GridBagConstraints();
-		gbc_farmerAgeTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_farmerAgeTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_farmerAgeTextField.gridx = 2;
-		gbc_farmerAgeTextField.gridy = 4;
-		frmCreateAFarm.getContentPane().add(farmerAgeTextField, gbc_farmerAgeTextField);
-		farmerAgeTextField.setColumns(10);
+		textFieldFarmerAge = new JTextField();
+		textFieldFarmerAge.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				verifyAge(textFieldFarmerAge);
+				checkReadyToStart();
+			}
+		});
+		textFieldFarmerAge.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				verifyAge(textFieldFarmerAge);
+				checkReadyToStart();
+			}
+		});
+		GridBagConstraints gbc_textFieldFarmerAge = new GridBagConstraints();
+		gbc_textFieldFarmerAge.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldFarmerAge.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldFarmerAge.gridx = 2;
+		gbc_textFieldFarmerAge.gridy = 4;
+		frmCreateAFarm.getContentPane().add(textFieldFarmerAge, gbc_textFieldFarmerAge);
+		textFieldFarmerAge.setColumns(10);
 		
 		Component verticalStrut_2 = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut_2 = new GridBagConstraints();
@@ -171,11 +199,11 @@ public class WelcomeScreen {
 		gbc_lblSelectFarmType.gridy = 6;
 		frmCreateAFarm.getContentPane().add(lblSelectFarmType, gbc_lblSelectFarmType);
 		
-		JComboBox farmTypeComboBox = new JComboBox();
-		farmTypeComboBox.addActionListener(new ActionListener() {
+		comboBoxFarmType = new JComboBox();
+		comboBoxFarmType.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String output = "";
-				double[] modifiers = Farm.getFarmModifierValues((FarmType)farmTypeComboBox.getSelectedItem());
+				double[] modifiers = Farm.getFarmModifierValues((FarmType)comboBoxFarmType.getSelectedItem());
 				String[] names = Farm.getFarmModifierNames();
 				if(modifiers.length == names.length)
 				{
@@ -190,16 +218,16 @@ public class WelcomeScreen {
 				}
 				
 				System.out.println(output);
-				farmModifiersTextPane.setText(output);
+				textPaneModifiers.setText(output);
 			}
 		});
-		farmTypeComboBox.setModel(new DefaultComboBoxModel(FarmType.values()));
-		GridBagConstraints gbc_farmTypeComboBox = new GridBagConstraints();
-		gbc_farmTypeComboBox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_farmTypeComboBox.insets = new Insets(0, 0, 5, 5);
-		gbc_farmTypeComboBox.gridx = 2;
-		gbc_farmTypeComboBox.gridy = 6;
-		frmCreateAFarm.getContentPane().add(farmTypeComboBox, gbc_farmTypeComboBox);
+		comboBoxFarmType.setModel(new DefaultComboBoxModel(FarmType.values()));
+		GridBagConstraints gbc_comboBoxFarmType = new GridBagConstraints();
+		gbc_comboBoxFarmType.fill = GridBagConstraints.HORIZONTAL;
+		gbc_comboBoxFarmType.insets = new Insets(0, 0, 5, 5);
+		gbc_comboBoxFarmType.gridx = 2;
+		gbc_comboBoxFarmType.gridy = 6;
+		frmCreateAFarm.getContentPane().add(comboBoxFarmType, gbc_comboBoxFarmType);
 		
 		JLabel lblFarmName = new JLabel("Name your farm: ");
 		GridBagConstraints gbc_lblFarmName = new GridBagConstraints();
@@ -208,14 +236,27 @@ public class WelcomeScreen {
 		gbc_lblFarmName.gridy = 7;
 		frmCreateAFarm.getContentPane().add(lblFarmName, gbc_lblFarmName);
 		
-		farmNameTextField = new JTextField();
-		GridBagConstraints gbc_farmNameTextField = new GridBagConstraints();
-		gbc_farmNameTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_farmNameTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_farmNameTextField.gridx = 2;
-		gbc_farmNameTextField.gridy = 7;
-		frmCreateAFarm.getContentPane().add(farmNameTextField, gbc_farmNameTextField);
-		farmNameTextField.setColumns(10);
+		textFieldFarmName = new JTextField();
+		textFieldFarmName.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				verifyName(textFieldFarmName);
+				checkReadyToStart();
+			}
+		});
+		textFieldFarmerName.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				verifyName(textFieldFarmName);
+				checkReadyToStart();
+			}
+		});
+		GridBagConstraints gbc_textFieldFarmName = new GridBagConstraints();
+		gbc_textFieldFarmName.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textFieldFarmName.insets = new Insets(0, 0, 5, 5);
+		gbc_textFieldFarmName.gridx = 2;
+		gbc_textFieldFarmName.gridy = 7;
+		frmCreateAFarm.getContentPane().add(textFieldFarmName, gbc_textFieldFarmName);
+		textFieldFarmName.setColumns(10);
 		
 		Component textSliderVStrut = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_textSliderVStrut = new GridBagConstraints();
@@ -232,22 +273,22 @@ public class WelcomeScreen {
 		gbc_lblDaysToPlay.gridy = 9;
 		frmCreateAFarm.getContentPane().add(lblDaysToPlay, gbc_lblDaysToPlay);
 		
-		JSlider numDaysSlider = new JSlider();
-		numDaysSlider.setMajorTickSpacing(1);
-		numDaysSlider.setMinorTickSpacing(1);
-		numDaysSlider.setPaintLabels(true);
-		numDaysSlider.setPaintTicks(true);
-		numDaysSlider.setSnapToTicks(true);
-		numDaysSlider.setValue(7);
-		numDaysSlider.setMinimum(4);
-		numDaysSlider.setMaximum(10);
-		GridBagConstraints gbc_numDaysSlider = new GridBagConstraints();
-		gbc_numDaysSlider.fill = GridBagConstraints.HORIZONTAL;
-		gbc_numDaysSlider.gridwidth = 3;
-		gbc_numDaysSlider.insets = new Insets(0, 0, 5, 5);
-		gbc_numDaysSlider.gridx = 1;
-		gbc_numDaysSlider.gridy = 10;
-		frmCreateAFarm.getContentPane().add(numDaysSlider, gbc_numDaysSlider);
+		sliderNumDays = new JSlider();
+		sliderNumDays.setMajorTickSpacing(1);
+		sliderNumDays.setMinorTickSpacing(1);
+		sliderNumDays.setPaintLabels(true);
+		sliderNumDays.setPaintTicks(true);
+		sliderNumDays.setSnapToTicks(true);
+		sliderNumDays.setValue(7);
+		sliderNumDays.setMinimum(4);
+		sliderNumDays.setMaximum(10);
+		GridBagConstraints gbc_sliderNumDays = new GridBagConstraints();
+		gbc_sliderNumDays.fill = GridBagConstraints.HORIZONTAL;
+		gbc_sliderNumDays.gridwidth = 3;
+		gbc_sliderNumDays.insets = new Insets(0, 0, 5, 5);
+		gbc_sliderNumDays.gridx = 1;
+		gbc_sliderNumDays.gridy = 10;
+		frmCreateAFarm.getContentPane().add(sliderNumDays, gbc_sliderNumDays);
 		
 		Component verticalStrut_6 = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut_6 = new GridBagConstraints();
@@ -256,14 +297,15 @@ public class WelcomeScreen {
 		gbc_verticalStrut_6.gridy = 11;
 		frmCreateAFarm.getContentPane().add(verticalStrut_6, gbc_verticalStrut_6);
 		
-		JButton btnNewButton = new JButton("Start Game");
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.fill = GridBagConstraints.BOTH;
-		gbc_btnNewButton.gridwidth = 3;
-		gbc_btnNewButton.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 12;
-		frmCreateAFarm.getContentPane().add(btnNewButton, gbc_btnNewButton);
+		btnStartGame = new JButton("Start Game");
+		btnStartGame.setEnabled(false);
+		GridBagConstraints gbc_btnStartGame = new GridBagConstraints();
+		gbc_btnStartGame.fill = GridBagConstraints.BOTH;
+		gbc_btnStartGame.gridwidth = 3;
+		gbc_btnStartGame.insets = new Insets(0, 0, 5, 5);
+		gbc_btnStartGame.gridx = 1;
+		gbc_btnStartGame.gridy = 12;
+		frmCreateAFarm.getContentPane().add(btnStartGame, gbc_btnStartGame);
 		
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_horizontalStrut_1 = new GridBagConstraints();
@@ -278,6 +320,76 @@ public class WelcomeScreen {
 		gbc_verticalStrut_5.gridx = 0;
 		gbc_verticalStrut_5.gridy = 13;
 		frmCreateAFarm.getContentPane().add(verticalStrut_5, gbc_verticalStrut_5);
+	}
+	
+	private boolean verifyName(JTextField str)
+	{
+		String validNameRegex = "[a-zA-Z][a-zA-Z\\d\\s]+";
+		if(!str.getText().matches(validNameRegex))
+		{
+			str.setText("");
+			return false;
+		}
+		if(str.getText().length() > MAX_NAME_LENGTH)
+		{
+			str.setText(str.getText().substring(0, MAX_NAME_LENGTH));
+		}
+		return true;
+	}
+	
+	private boolean verifyAge(JTextField age)
+	{
+		String validAgeRegex = "\\d{2}";
+		if(!age.getText().matches(validAgeRegex))
+		{
+			age.setText("");
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Enable the start game button if all fields have valid inputs
+	 */
+	private void checkReadyToStart()
+	{
+		btnStartGame.setEnabled(verifyName(textFieldFarmerName) && verifyAge(textFieldFarmerAge) && verifyName(textFieldFarmName));
+
+	}
+	
+	public void setVisible(boolean visible)
+	{
+		frmCreateAFarm.setVisible(visible);
+	}
+	
+	public String getFarmerName()
+	{
+		return textFieldFarmerName.getSelectedText();
+	}
+	
+	public int getFarmerAge()
+	{
+		return Integer.parseInt(textFieldFarmerAge.getSelectedText());
+	}
+	
+	public FarmType getFarmType()
+	{
+		return (FarmType)comboBoxFarmType.getSelectedItem();
+	}
+	
+	public String getFarmName()
+	{
+		return textFieldFarmName.getSelectedText();
+	}
+	
+	public int getNumDays()
+	{
+		return sliderNumDays.getValue();
+	}
+	
+	private void startGame()
+	{
+		m_backend.startGame();
 	}
 
 }

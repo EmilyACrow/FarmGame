@@ -1,3 +1,4 @@
+
 package gameScreens;
 
 import java.awt.EventQueue;
@@ -77,10 +78,7 @@ public class GeneralStoreScreen{
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 530, 570);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		JPopupMenu popupMenuConfirmPurchase = new JPopupMenu();
-		addPopup(frame.getContentPane(), popupMenuConfirmPurchase);
+		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 125, 46, 73, 74, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{31, 0, 0, 0, 0};
@@ -206,19 +204,28 @@ public class GeneralStoreScreen{
 		JButton btnBuy = new JButton("BUY");
 		btnBuy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				try
+				{
+					m_backend.checkout();
+				}
+				catch(Exception e)
+				{
+					System.out.println(e);
+					populateFromFilter(((StoreFilter) comboBoxFilter.getSelectedItem()).name());
+				}
 				//add all items from cart to player's inventory
 				//TODO: Don't do this until verified that the player can afford it
 				//popupMenuConfirmPurchase.add(new new ConfirmPurchaseScreen(m_cart, playerMoney, purchaseConfirmed))
-				Boolean purchase = false;
-				if(confirmPurchase(purchase))
-				{
-					for(Merchandise m : m_cart)
-					{
-						m_playerInventory.add(m.clone());
-						System.out.println(m.toString());
-					}
-					populateFromFilter(((StoreFilter) comboBoxFilter.getSelectedItem()).name());
-				}
+//				Boolean purchase = false;
+//				if(confirmPurchase(purchase))
+//				{
+//					for(Merchandise m : m_cart)
+//					{
+//						m_playerInventory.add(m.clone());
+//						System.out.println(m.toString());
+//					}
+//					populateFromFilter(((StoreFilter) comboBoxFilter.getSelectedItem()).name());
+//				}
 				
 			}
 		});
@@ -332,35 +339,9 @@ public class GeneralStoreScreen{
 	{
 		return m_backend;
 	}
-	
-	private Boolean confirmPurchase(Boolean confirmed)
-	{
-		Boolean purchaseConfirmed = false;
-		int playerMoney = m_backend.getPlayerMoney();
-		
-		System.out.println("Dialog please");
-		ConfirmPurchaseDialog confirmDialog = new ConfirmPurchaseDialog(m_cart, playerMoney, purchaseConfirmed, m_backend);
-		//confirmDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		confirmDialog.setVisible(true);
-		
-		return purchaseConfirmed;
-	}
 
-	private static void addPopup(Component component, final JPopupMenu popup) {
-		component.addMouseListener(new MouseAdapter() {
-			public void mousePressed(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			public void mouseReleased(MouseEvent e) {
-				if (e.isPopupTrigger()) {
-					showMenu(e);
-				}
-			}
-			private void showMenu(MouseEvent e) {
-				popup.show(e.getComponent(), e.getX(), e.getY());
-			}
-		});
+	public void setVisible(boolean visible) {
+		frame.setVisible(visible);
 	}
 }
+
