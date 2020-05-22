@@ -73,7 +73,7 @@ public class GeneralStoreScreen{
 		
 		frame = new JFrame();
 		frame.setBounds(100, 100, 534, 570);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 125, 46, 73, 74, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{31, 0, 0, 0, 0};
@@ -299,6 +299,11 @@ public class GeneralStoreScreen{
 	{
 		//Shallow copy
 		m_playerInventory = inventory;
+	}
+	
+	private void confirmPurchase(boolean confirmed)
+	{
+		
 	}
 	
 
