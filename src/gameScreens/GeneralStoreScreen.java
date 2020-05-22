@@ -19,6 +19,7 @@ import gameLogic.GeneralStore;
 import gameLogic.Item;
 import gameLogic.Merchandise;
 import gameLogic.MerchandiseWrapper;
+import gameLogic.ShoppingCart;
 import javafx.scene.control.ComboBox;
 
 import java.awt.Insets;
@@ -52,7 +53,7 @@ public class GeneralStoreScreen{
 	//private JScrollPane merchScrollPane;
 	private StoreDisplayPanel panelStoreDisplay;
 	private ArrayList<Merchandise> m_playerInventory;
-	private ArrayList<Merchandise> m_cart;
+	private ShoppingCart m_cart;
 	private JTextField textFieldAmtInCart;
 	private GeneralStore m_backend;
 
@@ -73,14 +74,14 @@ public class GeneralStoreScreen{
 	 */
 	private void initialize() {
 		
-		m_playerInventory = new ArrayList<Merchandise>();
-		m_cart = m_backend.getShoppingCart().getCart();
+		m_playerInventory = m_backend.getPlayerMerchandise().getMerchList();
+		m_cart = m_backend.getShoppingCart();
 		
 		frame = new JFrame();
-		frame.setBounds(100, 100, 530, 570);
+		frame.setBounds(100, 100, 401, 570);
 		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 125, 46, 73, 74, 0, 0, 0};
+		gridBagLayout.columnWidths = new int[]{0, 63, 81, 35, 74, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{31, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
@@ -148,7 +149,7 @@ public class GeneralStoreScreen{
 				ArrayList<Merchandise> newMerch = panelStoreDisplay.addToCart();
 				for(Merchandise m : newMerch)
 				{
-					m_cart.add(m);
+					m_cart.addToCart(m);
 				}
 				updateCartSize();
 				updateCartTotal();
@@ -189,7 +190,7 @@ public class GeneralStoreScreen{
 		JButton btnClearCart = new JButton("CLEAR");
 		btnClearCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				m_cart.clear();
+				m_cart.getCart().clear();
 				updateCartSize();
 				updateCartTotal();
 				populateFromFilter(((StoreFilter) comboBoxFilter.getSelectedItem()).name());
@@ -213,19 +214,6 @@ public class GeneralStoreScreen{
 					System.out.println(e);
 				}
 				populateFromFilter(((StoreFilter) comboBoxFilter.getSelectedItem()).name());
-				//add all items from cart to player's inventory
-				//TODO: Don't do this until verified that the player can afford it
-				//popupMenuConfirmPurchase.add(new new ConfirmPurchaseScreen(m_cart, playerMoney, purchaseConfirmed))
-//				Boolean purchase = false;
-//				if(confirmPurchase(purchase))
-//				{
-//					for(Merchandise m : m_cart)
-//					{
-//						m_playerInventory.add(m.clone());
-//						System.out.println(m.toString());
-//					}
-//					populateFromFilter(((StoreFilter) comboBoxFilter.getSelectedItem()).name());
-//				}
 				
 			}
 		});
@@ -257,7 +245,7 @@ public class GeneralStoreScreen{
 	private void populateFromFilter(String filter)
 	{
 		panelStoreDisplay.removeAll();
-		//Make a new merchandise wrapper that is a deep copy of the General Store's
+		//Make a deep copy of the GeneralStore merchandise wrapper
 		MerchandiseWrapper merch = m_backend.getMerchandise().clone();
 		if(filter != "ALL")
 		{

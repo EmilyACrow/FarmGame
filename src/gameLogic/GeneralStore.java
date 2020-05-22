@@ -59,16 +59,13 @@ public class GeneralStore {
 		{
 			System.out.println(e);
 			throw new RuntimeException("Error configuring GeneralStore");
-		}
-		
-		m_storeFront = new GeneralStoreScreen(this);
-		
+		}		
 	
 	}
 	
 	/**
 	 * Setter for GameEnviornment reference
-	 * This needs to be called as soon as the GeneralStore is created! It can't be initialized in the constructor but needs to be initialised.
+	 * This needs to be called as soon as the GeneralStore is created! It can't be initialized in the constructor but needs to be initialized.
 	 * @param game
 	 */
 	public void setGameEnvironment(GameEnvironment game)
@@ -81,9 +78,29 @@ public class GeneralStore {
 		return m_game;
 	}
 	
+	/**
+	 * Attach a new instance of GeneralStoreScreen to this GeneralStore.
+	 * Destroys old GeneralStoreScreen attached to this instance of GeneralStore.
+	 */
+	public void createScreen()
+	{
+		m_storeFront = new GeneralStoreScreen(this);
+	}
+	
+	/**
+	 * Sets atatched GeneralStoreScreen to visible
+	 * @param visible
+	 */
 	public void setVisible(boolean visible)
 	{
-		m_storeFront.setVisible(visible);
+		try
+		{
+			m_storeFront.setVisible(visible);
+		}
+		catch(NullPointerException e)
+		{
+			System.out.println("No Screen attached to GeneralStore!");
+		}
 	}
 
 	/*Using overloading on methods addToShop() and removeFromShop.
@@ -309,7 +326,7 @@ public class GeneralStore {
 	
 	/**
 	 * 
-	 * @return MerchadniseWrapper of all merchandise
+	 * @return MerchadniseWrapper of all store merchandise
 	 */
 	public MerchandiseWrapper getMerchandise()
 	{
@@ -357,6 +374,10 @@ public class GeneralStore {
 	public void setPlayerMoney(int money)
 	{
 		m_playerMoney = money;
+	}
+
+	public MerchandiseWrapper getPlayerMerchandise() {
+		return m_game.getPlayerMerchandise();
 	}
 	
 }

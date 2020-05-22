@@ -21,99 +21,58 @@ public class Farm {
 	 * The name of the Farm
 	 */	
 	private String m_name;
-	
-	
-	
+
 	/**
 	 * The type of farm the player selected. It represents the selected FarmType identifier 
 	 *
 	 */
 	 private FarmType m_type;
-	 
-	 
-	 
+	  
 	/**
 	 * The farmer the player created in creation menu. 
 	 */	 
 	private Farmer m_farmer;
 	
-	
-	
-	/**
-	 * Array list of Crop objects  the player owns.
-	 */	 
-	//private ArrayList<Crop> m_crops;
-	
-	
-	
-	/**
-	 * ArrayList of Animal objects  the player owns. 
-	 */
-	//private ArrayList<Animal> m_animals;
-	
-	
-	
-	/**
-	 * ArrayList of Item objects the player owns. 
-	 */
-	//private ArrayList<Item> m_items;
-	
-	
 	/**
 	 * Wrapper for arraylist of all farm items, crops, and animals
 	 */
 	private MerchandiseWrapper m_merch;
-	
-	
 
 	/**
 	 * Player's current monetary balance.
 	 */
 	private int m_money;
-	
-	
-	
+
 	/**
 	 * The maximum amount of crops the player can own.
 	 */
 	private int m_maxCropAmount;
-	
-	
-	
+
 	/**
 	 * The maximum amount of animals the player can own.
 	 */
 	private int m_maxAnimalAmount;
-	
-	
-	
+
 	/**
 	 * Speed bonus farm provides to growing crops.
 	 */
 	private double m_growingSpeedMod;
-	
-	
-	
+
 	/**
 	 * Harvest bonus farm provides to growing crops. 
 	 */
 	private double m_cropCashMod;
-	
-	
-	
+
 	/**
 	 * Happiness bonus farm provides to animals.
 	 */
 	private double m_animalHappinessMod;
-	
-	
-	
+
 	/**
 	 * Discount-bonus farm provides when player purchases from General Store. 
 	 */
 	private double m_purchaseDiscountMod; 
-	
-	
+
 	/** 
 	 * remaining actions player has left for the day. 
 	 */
@@ -162,11 +121,6 @@ public class Farm {
 		m_remainingDays = remainingDays;	
 		m_remainingActions = 2;
 		
-		
-		//setting up the arrayLists. When the game starts, these must be empty
-		//m_crops = new ArrayList<Crop>();
-		//m_animals = new ArrayList<Animal>();
-		//m_items = new ArrayList<Item>();
 		m_merch = new MerchandiseWrapper();
 		
 		
@@ -474,15 +428,19 @@ public class Farm {
 		return m_merch.getItems();
 	}
 	
+	/**
+	 * 
+	 * @return MerchandiseWrapper containing all of the player owned merchandise
+	 */
+	public MerchandiseWrapper getMerch()
+	{
+		return m_merch;
+	}
 	
 	/**
 	 * 
 	 * @param item  new item object the player purchased from GeneralStore.
 	 */
-//	public void addItem(Item item) {
-//		m_items.add(item);
-//		
-//	}
 	public void addItem(Item item)
 	{
 		addMerchandise((Merchandise) item);
@@ -497,14 +455,6 @@ public class Farm {
 	{
 		return removeMerchandise((Merchandise) item);
 	}
-	
-	/**
-	 * 
-	 * @param itemList list of Item objects.
-	 */
-//	public void setItemList(ArrayList<Item> itemList) {
-//		m_items = itemList;
-//	}
 	
 	/**
 	 * 
@@ -586,8 +536,6 @@ public class Farm {
 		m_maxCropAmount = maxCrop;
 	}
 
-
-	
 	/**
 	 * 
 	 * @return m_maxAnimalAmount the maximum animals player can have in farm. 
@@ -596,8 +544,6 @@ public class Farm {
 		return m_maxAnimalAmount;
 	}
 
-	
-
 	/**
 	 * 
 	 * @param maxAnimal sets the maximum amount of animals in player's farm.
@@ -605,9 +551,7 @@ public class Farm {
 	public void setMaxAnimalAmount(int maxAnimal) {
 		m_maxAnimalAmount = maxAnimal;
 	}
-
 	
-
 	/**
 	 * 
 	 * @return m_growingSpeedMod gives growth speed bonus for crops in farm.
@@ -615,8 +559,6 @@ public class Farm {
 	public double getGrowingSpeedMod() {
 		return m_growingSpeedMod;
 	}
-
-
 	
 	/**
 	 * 
@@ -626,8 +568,6 @@ public class Farm {
 	public void setGrowingSpeedMod(double growingSpeed) {
 		m_growingSpeedMod = growingSpeed;
 	}
-
-
 	
 	/**
 	 * 
@@ -638,8 +578,6 @@ public class Farm {
 		return m_cropCashMod;
 	}
 
-	
-
 	/**
 	 * 
 	 * @param m_cropCashMod sets the bonus percentage
@@ -649,8 +587,6 @@ public class Farm {
 		m_cropCashMod = cropCash;
 	}
 	
-	
-
 	/**
 	 * 
 	 * @return m_animalHappinessMod percentage bonus for animal's happiness.
@@ -658,8 +594,6 @@ public class Farm {
 	public double getAnimalHappinessMod() {
 		return m_animalHappinessMod;
 	}
-
-	
 	
 	/**
 	 * 
@@ -669,8 +603,6 @@ public class Farm {
 	public void setAnimalHappinessMod(double animalHappiness) {
 		m_animalHappinessMod = animalHappiness;
 	}
-	
-	
 
 	/**
 	 * 
@@ -680,7 +612,6 @@ public class Farm {
 	public double getPurchaseDiscountMod() {
 		return m_purchaseDiscountMod;
 	}
-	
 	
 	/**
 	 * 

@@ -11,6 +11,7 @@ import gameLogic.Farmer;
 import gameLogic.GeneralStore;
 import gameLogic.Item;
 import gameLogic.Merchandise;
+import gameLogic.MerchandiseWrapper;
 import gameLogic.PossibleAction;
 /**
  * Contains methods to run the farm game. Contains methods that allow the player's input to alter variables in the game. 
@@ -122,6 +123,7 @@ public class GameEnvironment {
 		m_farm = new Farm(farmName, farmType, farmer, remainingDays);
 		m_store = new GeneralStore();
 		m_store.setGameEnvironment(this);
+		m_store.createScreen();
 	}
 	
 	
@@ -1387,6 +1389,10 @@ public class GameEnvironment {
 	public void addPlayerItem(Item item)
 	{
 		m_farm.addItem(item);
+	}
+
+	public MerchandiseWrapper getPlayerMerchandise() {
+		return m_farm.getMerch();
 	}
 	
 	

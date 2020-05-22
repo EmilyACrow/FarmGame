@@ -26,11 +26,13 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import javax.swing.JTextPane;
 
 public class ConfirmPurchaseDialog extends JDialog {
 	
 	private JTextField textFieldTotalCost;
 	private JTextField textFieldPlayerMoney;
+	private JTextPane textPaneMsgDisplay;
 	private MerchandiseWrapper m_cart;
 	private Integer m_playerMoney;
 	private GeneralStore m_backend;
@@ -56,10 +58,10 @@ public class ConfirmPurchaseDialog extends JDialog {
 		m_playerMoney = playerMoney;
 		m_cart = cart.clone();
 		
-		setBounds(100, 100, 450, 500);
+		setBounds(100, 100, 450, 530);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{40, 125, 50, 108, 53, 0};
-		gridBagLayout.rowHeights = new int[]{56, 0, 0, 0, 60, 0, 0};
+		gridBagLayout.rowHeights = new int[]{56, 0, 0, 0, 60, 50, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 1.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		getContentPane().setLayout(gridBagLayout);
@@ -153,11 +155,19 @@ public class ConfirmPurchaseDialog extends JDialog {
 		}
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(m_backend.canPurchaseCart(playerMoney, finalPrice, m_cart))
+				try
 				{
-					m_backend.purchaseCart(new ShoppingCart(cart.getMerchList()));
+					if(m_backend.canPurchaseCart(playerMoney, finalPrice, m_cart))
+					{
+						m_backend.purchaseCart(new ShoppingCart(cart.getMerchList()));
+						dispose();
+					}
 				}
-				dispose();
+				catch(Exception except)
+				{
+					textPaneMsgDisplay.setEnabled(true);
+					textPaneMsgDisplay.setText(except.getMessage());
+				}
 			}
 		});
 		GridBagConstraints gbc_btnConfirm = new GridBagConstraints();
@@ -175,6 +185,17 @@ public class ConfirmPurchaseDialog extends JDialog {
 		getContentPane().add(horizontalGlue, gbc_horizontalGlue);
 		
 		scrollPaneCart.add(new CartPanel(m_cart.getMerchList()));
+		
+		textPaneMsgDisplay = new JTextPane();
+		textPaneMsgDisplay.setEnabled(false);
+		textPaneMsgDisplay.setEditable(false);
+		GridBagConstraints gbc_textPaneMsgDisplay = new GridBagConstraints();
+		gbc_textPaneMsgDisplay.gridwidth = 3;
+		gbc_textPaneMsgDisplay.insets = new Insets(0, 0, 0, 5);
+		gbc_textPaneMsgDisplay.fill = GridBagConstraints.BOTH;
+		gbc_textPaneMsgDisplay.gridx = 1;
+		gbc_textPaneMsgDisplay.gridy = 5;
+		getContentPane().add(textPaneMsgDisplay, gbc_textPaneMsgDisplay);
 	}
 
 }

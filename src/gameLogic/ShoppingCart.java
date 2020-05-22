@@ -68,6 +68,13 @@ public class ShoppingCart {
 		m_cart.add(merch);		
 	}
 	
+	public void addToCart(Merchandise merch) {
+		// add amount to the totalSum and add to the list.
+		m_totalCost += merch.getPurchasePrice();
+		m_cart.add(merch);	
+		
+	}
+	
 	/**
 	 * Removes the merch from arraylist and the merch's price from totalCost
 	 * @param merch A crop, item or Animal the player has removed from cart.

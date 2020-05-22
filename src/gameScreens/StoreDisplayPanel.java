@@ -201,6 +201,7 @@ public class StoreDisplayPanel extends JPanel {
 		gbc_amtSelectedTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_amtSelectedTextField.gridx = 2;
 		gbc_amtSelectedTextField.gridy = 0;
+		gbc_amtSelectedTextField.gridwidth = 3;
 		add(amtSelectedTextField, gbc_amtSelectedTextField);
 		amtSelectedTextField.setColumns(6);
 	}
