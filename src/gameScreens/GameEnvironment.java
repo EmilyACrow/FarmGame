@@ -1084,7 +1084,7 @@ public class GameEnvironment {
 		System.out.println("\n");
 		System.out.println("Your current balance is: $" + m_farm.getMoney());
 		System.out.println("\n");
-		System.out.println("Items in cart: " + m_store.getShoppingCart().getCart()); //need for loop here? for each item view item's name
+		System.out.println("Items in cart: " + m_store.getShoppingCart().getMerchList()); //need for loop here? for each item view item's name
 		System.out.println("\n");
 		System.out.println("1. view animals");
 		System.out.println("2. view crops");

@@ -22,12 +22,12 @@ public class GeneralStore {
 	/**
 	 * Wrapper for all merchandise in shop
 	 */
-	private MerchandiseWrapper m_merchWrapper;
+	private MerchandiseWrapper m_storeInventory;
 	
 	/**
 	 * Shopping cart variable
 	 */
-	private ShoppingCart m_shoppingCart;
+	private MerchandiseWrapper m_shoppingCart;
 	
 	private int m_playerMoney;
 	
@@ -42,18 +42,18 @@ public class GeneralStore {
 	/**
 	 * RUN setGamEnvironment IMMEDIATELY AFTER THIS!
 	 * This constructor method reads in from an XML config file and populates the merchandise wrapper.
-	 * Also makes an instance of a ShoppingCart class.
+	 * Also makes an instance of a MerchandiseWrapper class.
 	 */
 	public GeneralStore() {
 		
-		m_shoppingCart = new ShoppingCart();
+		m_shoppingCart = new MerchandiseWrapper();
 		
 		try
 		{
 			File file = new File("config/store.xml");
 	        JAXBContext jaxbContext = JAXBContext.newInstance(MerchandiseWrapper.class);
 	        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-	        m_merchWrapper = (MerchandiseWrapper) unmarshaller.unmarshal(file);
+	        m_storeInventory = (MerchandiseWrapper) unmarshaller.unmarshal(file);
 		}
 		catch(Exception e)
 		{
@@ -145,7 +145,7 @@ public class GeneralStore {
 	public void addToShop(Merchandise merch)
 	{
 		//Create shallow copy of Arraylist inside merchwrapper
-		ArrayList<Merchandise> tempList = m_merchWrapper.getMerchList();
+		ArrayList<Merchandise> tempList = m_storeInventory.getMerchList();
 		//Since it is a shallow copy, this will affect the original as well
 		tempList.add(merch);
 	}
@@ -189,7 +189,7 @@ public class GeneralStore {
 	public void removeFromShop(Merchandise merch) 
 	{
 		//Create shallow copy of Arraylist inside merchwrapper
-		ArrayList<Merchandise> tempList = m_merchWrapper.getMerchList();
+		ArrayList<Merchandise> tempList = m_storeInventory.getMerchList();
 		//Since it is a shallow copy, this will affect the original as well
 		tempList.remove(merch);
 	}
@@ -200,11 +200,11 @@ public class GeneralStore {
 	
 	
 	/**  
-	 * @return An arrayList of merch currently in cart.
+	 * @return ArrayList<Merchandise> deep copy of merch currently in cart.
 	 */
 	public ArrayList<Merchandise> viewCart() {
 	
-		return m_shoppingCart.getCart();
+		return m_shoppingCart.getMerchList();
 	}
 	
 	/**
@@ -212,7 +212,7 @@ public class GeneralStore {
 	 */
 	public void addToCart(Merchandise merch) {
 		
-		m_shoppingCart.addToCart(merch, merch.getPurchasePrice());
+		m_shoppingCart.add(merch);
 	}
 	
 	/**
@@ -220,7 +220,7 @@ public class GeneralStore {
 	 */
 	public void removeFromCart(Merchandise merch) {
 		
-		m_shoppingCart.removeFromCart(merch);
+		m_shoppingCart.remove(merch);
 	}
 	
 	
@@ -236,16 +236,13 @@ public class GeneralStore {
 	 */
 	public void checkout() {
 		
-		//local variable created to hold the merchandise being bought after cart is cleared.
-		MerchandiseWrapper cart = new MerchandiseWrapper(m_shoppingCart.getCart());
-		
 		int playersMoney = m_game.getPlayerMoney();
 		double discountPercent = m_game.getPurchaseDiscountMod();
 		
 		//calculation for any discounts.
-		double amountRemoved = m_shoppingCart.getTotalCost() * discountPercent;
-		int finalCost = (int) (m_shoppingCart.getTotalCost() - amountRemoved); 
-		ConfirmPurchaseDialog confirmDialog = new ConfirmPurchaseDialog(this, cart, playersMoney, finalCost);
+		double amountRemoved = m_shoppingCart.getCartPrice() * discountPercent;
+		int finalCost = (int) (m_shoppingCart.getCartPrice() - amountRemoved); 
+		ConfirmPurchaseDialog confirmDialog = new ConfirmPurchaseDialog(this, m_shoppingCart, playersMoney, finalCost);
 		confirmDialog.setVisible(true);
 
 	}
@@ -257,23 +254,23 @@ public class GeneralStore {
 	 * @param purchasedMerch MerchandiseWrapper of merchandise in cart
 	 * @return true if player meets all criteria to purchase the cart
 	 */
-	public boolean canPurchaseCart(int playersMoney, int finalCost, MerchandiseWrapper purchasedMerch)
+	public boolean canPurchaseCart(int playersMoney, int finalCost, MerchandiseWrapper cart)
 	{
 		if (checkBalance(finalCost, playersMoney)) {
 			//Check that the farm can fit all of the animals in the cart
-			if(m_game.getPlayerAnimals().size() + purchasedMerch.getAnimals().size() > m_game.getMaxAnimalAmount())
+			if(m_game.getPlayerAnimals().size() + cart.getAnimals().size() > m_game.getMaxAnimalAmount())
 			{
 				throw new IllegalStateException(
 						String.format("Not enough room for all animals! %d animals in cart, but only %d spaces in farm."
-								, purchasedMerch.getAnimals().size()
+								, cart.getAnimals().size()
 								, m_game.getMaxAnimalAmount() - m_game.getPlayerAnimals().size()));
 			}
 			//Check that the farm has space for all for the crops in the cart
-			if(m_game.getPlayerCrops().size() + purchasedMerch.getCrops().size() > m_game.getMaxCropAmount())
+			if(m_game.getPlayerCrops().size() + cart.getCrops().size() > m_game.getMaxCropAmount())
 			{
 				throw new IllegalStateException(
 						String.format("Not enough room for all crops! %d crops in cart, but only %d spaces in farm."
-								, purchasedMerch.getCrops().size()
+								, cart.getCrops().size()
 								, m_game.getMaxCropAmount() - m_game.getPlayerCrops().size()));
 			}
 		}
@@ -307,16 +304,16 @@ public class GeneralStore {
 		
 	}
 	
-	public ArrayList<Merchandise> purchaseCart(ShoppingCart cart)
+	public ArrayList<Merchandise> purchaseCart(MerchandiseWrapper cart)
 	{
 		// subtract the totalCost from the player's money.
-		m_game.setPlayerMoney(m_game.getPlayerMoney() - cart.getTotalCost());
+		m_game.setPlayerMoney(m_game.getPlayerMoney() - cart.getCartPrice());
 					
 					
 		//Empty the cart of the merch. 
-		m_shoppingCart.clearCart();
+		m_shoppingCart.clear();
 		
-		return cart.getCart();
+		return cart.getMerchList();
 	}
 	
 
@@ -330,7 +327,7 @@ public class GeneralStore {
 	 */
 	public MerchandiseWrapper getMerchandise()
 	{
-		return m_merchWrapper;
+		return m_storeInventory;
 	}
 	
 	/**
@@ -338,7 +335,7 @@ public class GeneralStore {
 	 */
 	public ArrayList<Animal> getAnimals() {
 		
-		return m_merchWrapper.getAnimals();
+		return m_storeInventory.getAnimals();
 	}
 	
 	/**
@@ -347,7 +344,7 @@ public class GeneralStore {
 	
 	public ArrayList<Item> getItems() {
 		
-		return m_merchWrapper.getItems();
+		return m_storeInventory.getItems();
 	}
 
 	/**
@@ -355,13 +352,13 @@ public class GeneralStore {
 	 */
 	public ArrayList<Crop> getCrops() {
 		
-		return m_merchWrapper.getCrops();
+		return m_storeInventory.getCrops();
 	}	
 	
 	/**
 	 * @return The instance of m_shoppingCart. Has the attributes totalCost and Price.
 	 */
-	public ShoppingCart getShoppingCart() {
+	public MerchandiseWrapper getShoppingCart() {
 		
 		return m_shoppingCart;
 	}

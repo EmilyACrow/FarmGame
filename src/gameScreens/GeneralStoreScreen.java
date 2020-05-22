@@ -19,7 +19,6 @@ import gameLogic.GeneralStore;
 import gameLogic.Item;
 import gameLogic.Merchandise;
 import gameLogic.MerchandiseWrapper;
-import gameLogic.ShoppingCart;
 import javafx.scene.control.ComboBox;
 
 import java.awt.Insets;
@@ -53,7 +52,7 @@ public class GeneralStoreScreen{
 	//private JScrollPane merchScrollPane;
 	private StoreDisplayPanel panelStoreDisplay;
 	private ArrayList<Merchandise> m_playerInventory;
-	private ShoppingCart m_cart;
+	private MerchandiseWrapper m_cart;
 	private JTextField textFieldAmtInCart;
 	private GeneralStore m_backend;
 
@@ -149,7 +148,7 @@ public class GeneralStoreScreen{
 				ArrayList<Merchandise> newMerch = panelStoreDisplay.addToCart();
 				for(Merchandise m : newMerch)
 				{
-					m_cart.addToCart(m);
+					m_cart.add(m);
 				}
 				updateCartSize();
 				updateCartTotal();
@@ -190,7 +189,7 @@ public class GeneralStoreScreen{
 		JButton btnClearCart = new JButton("CLEAR");
 		btnClearCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				m_cart.getCart().clear();
+				m_cart.clear();
 				updateCartSize();
 				updateCartTotal();
 				populateFromFilter(((StoreFilter) comboBoxFilter.getSelectedItem()).name());
@@ -284,12 +283,7 @@ public class GeneralStoreScreen{
 	 */
 	private void updateCartTotal()
 	{
-		Integer totalPrice = 0;
-		for(Merchandise m : m_cart)
-		{
-			totalPrice += m.getPurchasePrice();
-		}
-		textFieldCartTotal.setText(totalPrice.toString());
+		textFieldCartTotal.setText(Integer.toString(m_cart.getCartPrice()));
 	}
 	
 	/**

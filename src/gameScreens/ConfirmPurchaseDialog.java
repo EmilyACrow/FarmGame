@@ -159,7 +159,7 @@ public class ConfirmPurchaseDialog extends JDialog {
 				{
 					if(m_backend.canPurchaseCart(playerMoney, finalPrice, m_cart))
 					{
-						m_backend.purchaseCart(new ShoppingCart(cart.getMerchList()));
+						m_backend.purchaseCart(cart);
 						dispose();
 					}
 				}
