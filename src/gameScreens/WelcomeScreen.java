@@ -298,6 +298,16 @@ public class WelcomeScreen {
 		frmCreateAFarm.getContentPane().add(verticalStrut_6, gbc_verticalStrut_6);
 		
 		btnStartGame = new JButton("Start Game");
+		btnStartGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Double check that the user hasn't tried something sneaky
+				//Like entering a valid string, then changing it to an invalid one and hitting start before focusLost or ActionEvent trigger
+				if(checkReadyToStart())
+				{
+					startGame();
+				}
+			}
+		});
 		btnStartGame.setEnabled(false);
 		GridBagConstraints gbc_btnStartGame = new GridBagConstraints();
 		gbc_btnStartGame.fill = GridBagConstraints.BOTH;
@@ -351,9 +361,11 @@ public class WelcomeScreen {
 	/**
 	 * Enable the start game button if all fields have valid inputs
 	 */
-	private void checkReadyToStart()
+	private boolean checkReadyToStart()
 	{
-		btnStartGame.setEnabled(verifyName(textFieldFarmerName) && verifyAge(textFieldFarmerAge) && verifyName(textFieldFarmName));
+		boolean ready = (verifyName(textFieldFarmerName) && verifyAge(textFieldFarmerAge) && verifyName(textFieldFarmName));
+		btnStartGame.setEnabled(ready);
+		return ready;
 
 	}
 	
@@ -364,12 +376,12 @@ public class WelcomeScreen {
 	
 	public String getFarmerName()
 	{
-		return textFieldFarmerName.getSelectedText();
+		return textFieldFarmerName.getText();
 	}
 	
 	public int getFarmerAge()
 	{
-		return Integer.parseInt(textFieldFarmerAge.getSelectedText());
+		return Integer.parseInt(textFieldFarmerAge.getText());
 	}
 	
 	public FarmType getFarmType()
@@ -379,7 +391,7 @@ public class WelcomeScreen {
 	
 	public String getFarmName()
 	{
-		return textFieldFarmName.getSelectedText();
+		return textFieldFarmName.getText();
 	}
 	
 	public int getNumDays()
