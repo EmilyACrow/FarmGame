@@ -9,16 +9,21 @@ import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
+import gameLogic.Animal;
 import gameLogic.Crop;
 import gameLogic.Farm;
+import gameLogic.Merchandise;
 
 /**
  * Interface to show player the actions they can do in the game
  * Currently just testing the labels and buttons are calling methods correctly so it's calling an Instance of a FarnClass
+ *
  * Remember - change JFrame mainFrame to private and Farm to GameEnvironment
  * Search and replace Farm with GameEnvironment
+ * 
  * last modified: 22-05-2020
  * created: 21-05-2020 
  * @author Kenn Leen Duenas Fulgencio
@@ -29,7 +34,7 @@ public class MainScreen {
 	public JFrame mainFrame;
 	private Farm gameEnvironment;
 
-	/**
+	/*
 	 * Launch the application.
 	 
 	public static void main(String[] args) {
@@ -80,29 +85,15 @@ public class MainScreen {
 		dtrpnSelectiondetails.setBounds(342, 74, 141, 255);
 		mainFrame.getContentPane().add(dtrpnSelectiondetails);
 		
-		/*
-		
-		//make a list model to hold data.
-		DefaultListModel<Crop> optionListModel = new DefaultListModel<>();
-		optionListModel.addAll(gameEnvironment.getCrops() );
-		
-		astronautListModel.addAll(astronauts);
-		gameEnvironment.getCrops()
-		*/
-		
-		// stores crops for the Jlist
-		DefaultListModel<Crop> ownedCropsListModel = new DefaultListModel<>();
+
 		
 		
-		for (Crop crop : gameEnvironment.getCrops() ) {
-			
-			ownedCropsListModel.addElement(crop);
-		}
 		
-		
-		JList<Crop> subOption = new JList<Crop>(ownedCropsListModel);
+		// The list model that will be used by subOption
+		DefaultListModel<Merchandise> ownedMerchListModel = new DefaultListModel<>();
+		JList<Merchandise> subOption = new JList<Merchandise>(ownedMerchListModel);
 		subOption.setBounds(198, 119, 118, 210);
-		//subOption.setSelectionMode(optionListModel.SINGLE_SELECTION);
+		subOption.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		mainFrame.getContentPane().add(subOption);
 		
 		
@@ -110,33 +101,100 @@ public class MainScreen {
 		/*buttons begin here */
 		
 		
+		/* 
+		 * tending crops interactions
+		 * */
 		JButton btnTendCrop = new JButton("Tend crops");
 		btnTendCrop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				//pop up box
-				System.out.println("Tend crops clicked");
+				//shows crops player owns.
+				
+				ownedMerchListModel.removeAllElements();
+				for (Crop crop : gameEnvironment.getCrops() ) {
+					
+					ownedMerchListModel.addElement(crop);
+				}		
+				
 			}		
-		});
-		
-	
-		
+		});	
 		btnTendCrop.setBounds(28, 119, 141, 21);
 		mainFrame.getContentPane().add(btnTendCrop);
 		
+		
+		/* 
+		 * feeding animal interactions
+		 * */
 		JButton btnFeedAnimal = new JButton("Feed animals");
+		btnFeedAnimal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//show a list of animals player can feed
+				
+				ownedMerchListModel.removeAllElements();
+				for (Animal animal : gameEnvironment.getAnimals() ) {
+					
+					ownedMerchListModel.addElement(animal);
+				}
+			}
+		});
 		btnFeedAnimal.setBounds(28, 169, 141, 21);
 		mainFrame.getContentPane().add(btnFeedAnimal);
 		
+		
+		/* 
+		 * Playing with animal interactions
+		 * */
 		JButton btnPlayAnimal = new JButton("Play with animals");
+		btnPlayAnimal.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				ownedMerchListModel.removeAllElements();
+				for (Animal animal : gameEnvironment.getAnimals() ) {
+					
+					ownedMerchListModel.addElement(animal);
+				}
+			}
+		});
 		btnPlayAnimal.setBounds(30, 304, 139, 25);
 		mainFrame.getContentPane().add(btnPlayAnimal);
 		
+		
+		
+		/* 
+		 * Harvesting crops interactions
+		 * */
 		JButton btnHarvestCrop = new JButton("Harvest crops");
+		btnHarvestCrop.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				//shows crops player owns.
+				
+				ownedMerchListModel.removeAllElements();
+				for (Crop crop : gameEnvironment.getCrops() ) {
+					
+					ownedMerchListModel.addElement(crop);
+				}	
+				
+			}
+		});
 		btnHarvestCrop.setBounds(28, 256, 141, 21);
 		mainFrame.getContentPane().add(btnHarvestCrop);
 		
+		
+		
+		/* 
+		 * Tending land interactions
+		 * */
 		JButton btnTendLand = new JButton("Tend land");
+		btnTendLand.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				System.out.println("Tend land clicked");
+				//make a call to tendLand()
+			}
+		});
 		btnTendLand.setBounds(28, 211, 141, 21);
 		mainFrame.getContentPane().add(btnTendLand);
 		

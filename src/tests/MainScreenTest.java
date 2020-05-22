@@ -1,5 +1,6 @@
 package tests;
 
+import gameLogic.Animal;
 import gameLogic.Crop;
 import gameLogic.Farm;
 import gameLogic.FarmType;
@@ -10,16 +11,14 @@ public class MainScreenTest {
 
 	public static void main(String[] args) {
 		
-		
+		System.out.println("Testing main screen");
 		//sets up values for farmer and farm.
 		Farmer hank = new Farmer("Hank", 53);
 		
 		Farm farmTest = new Farm("Acres", FarmType.PRODUCE, hank, 5);
 		
-		//making some farm plants in their inventory 
-		// We have some list of items already
-		//String name, int purchasePrice, int sellPrice, int daysToGrow
-		
+
+		// things farmer owns. 
 		
 		Crop apples = new Crop("apples", 3, 5, 1);	
 		farmTest.addCrop(apples);
@@ -29,6 +28,9 @@ public class MainScreenTest {
 		
 		Crop tomato = new Crop("tomato", 10, 18, 4);
 		farmTest.addCrop(tomato);
+		
+		Animal rabbit = new Animal("rabbit", "fluff", 0, 10);
+		farmTest.addAnimal(rabbit);
 	
 		
 		//System.out.println("Print " + farmTest.getCrops());
@@ -36,10 +38,7 @@ public class MainScreenTest {
 		//Trying out the mainScreen
 		MainScreen window = new MainScreen(farmTest);
 		window.mainFrame.setVisible(true);
-		
-		
-		System.out.println(farmTest.toString());
-		
+	
 		//lost money
 		//farmTest.setMoney(10);
 	}
