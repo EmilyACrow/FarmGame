@@ -5,19 +5,25 @@ import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import gameLogic.Animal;
 import gameLogic.Crop;
 import gameLogic.Farm;
+import gameLogic.Item;
 import gameLogic.Merchandise;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import javax.swing.ScrollPaneConstants;
 
 /**
  * shows player the actions they can do in the game
@@ -35,6 +41,7 @@ public class MainScreen {
 
 	public JFrame frmSelectActivity;
 	private Farm gameEnvironment;
+	private OptionalItemDialog askForItem;
 	
 	
 
@@ -70,6 +77,7 @@ public class MainScreen {
 		initialize();
 		frmSelectActivity.setVisible(true);
 		
+		
 	}
 
 	/**
@@ -83,9 +91,14 @@ public class MainScreen {
 		frmSelectActivity.getContentPane().setLayout(null);
 		
 		
+		
+		
 		/*
 		 * Components to aid in player selecting one crop or animal are below here.
 		 */
+		
+		
+		
 		
 		//text panes
 		JEditorPane dtrpnSelectiondetails = new JEditorPane();
@@ -108,37 +121,62 @@ public class MainScreen {
 		
 		
 		
-		// The list model that will be used by the subOption JList
+		// The list model that will be used by the subOption JList.
 		DefaultListModel<Merchandise> ownedMerchListModel = new DefaultListModel<>();
+		
+		//ScrollPane for Jlist subOption
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setBounds(198, 119, 118, 210);
+		frmSelectActivity.getContentPane().add(scrollPane);
 		JList<Merchandise> subOption = new JList<Merchandise>(ownedMerchListModel);
+		scrollPane.setViewportView(subOption);
+
+		
+		
 		subOption.addMouseListener(new MouseAdapter() {
 			
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				
+				
 				btnConfirm.setVisible(true);
+				//shows items info in selection Details
+				dtrpnSelectiondetails.setText(subOption.getSelectedValue().toString() );
 				
 			}
 		});
-
-		subOption.setBounds(198, 119, 118, 210);
 		subOption.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		frmSelectActivity.getContentPane().add(subOption);
 		
 		
-		// Confirm buttons action listener method must be made after the subOption is created. 
+		// btnConfirm actionListener must be below subOption, otherwise it'll read supOption as uncreated.
 		btnConfirm.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					
+
 				
+				
+				askForItem = new OptionalItemDialog(gameEnvironment.getItems() ); 
+				
+				//askForItem.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);				
+				askForItem.setVisible(true);
+				
+				
+				
+				
+				//clears the selectionDetails text. 
+				dtrpnSelectiondetails.setText("");
 				System.out.println("Button pressed! Currently selected crop/animal is:");
 				System.out.println(subOption.getSelectedValue());
 				
-				//calls the method to check for remaining actions
+				
+				//calls the method of the button and uses the selected animal as the required parameter.
 				//System.out.println("Call the method needed");	
 				
+				
+				ownedMerchListModel.removeAllElements();
 				//turn invisible again
 				btnConfirm.setVisible(false);
+				
 			}
 		});
 		
@@ -156,7 +194,7 @@ public class MainScreen {
 				//shows crops player owns.
 				
 				ownedMerchListModel.removeAllElements();
-				for (Crop crop : gameEnvironment.getCrops() ) {
+				for (Merchandise crop : gameEnvironment.getCrops() ) {
 					
 					ownedMerchListModel.addElement(crop);
 				}		
@@ -236,10 +274,13 @@ public class MainScreen {
 		btnTendLand.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				
+				//empties anything in selection details
+				dtrpnSelectiondetails.setText("");
 				ownedMerchListModel.removeAllElements();
 				System.out.println("Tend land clicked");
-				//maybe add a message?
-				//make a call to tendLand()
+				//make a call to tendLand() in Farm class
+
 			}
 		});
 		btnTendLand.setBounds(28, 211, 141, 21);
