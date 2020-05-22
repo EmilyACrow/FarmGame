@@ -9,6 +9,7 @@ import gameLogic.Item;
 import gameLogic.Merchandise;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -20,7 +21,7 @@ import javax.swing.ScrollPaneConstants;
 
 /**
  * 
- * A dialog button that will give the player the option to use an Item on the selected crop.
+ * A dialog box that will give the player the option to use an Item on the selected crop.
  * @author Kenn Leen Duenas Fulgencio
  *
  */
@@ -84,4 +85,15 @@ public class OptionalItemDialog extends JDialog {
 		
 
 	}
+	
+	/*
+	public static void main(String[] args) {
+	            
+	    
+	    JOptionPane OptionalItemDialog = new JOptionPane();
+	    Item exampleWater = JOptionPane.showInputDialog(OptionalItemDialog, message);
+		
+		
+	}
+	} */
 }

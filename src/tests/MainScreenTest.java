@@ -7,6 +7,7 @@ import gameLogic.FarmType;
 import gameLogic.Farmer;
 import gameLogic.Item;
 import gameLogic.Merchandise;
+import gameScreens.GameEnvironment;
 import gameScreens.MainScreen;
 
 public class MainScreenTest {
@@ -31,7 +32,11 @@ public class MainScreenTest {
 		
 		Farm farmTest = new Farm("Acres", FarmType.PRODUCE, hank, 5);
 		
-
+		
+		//GameEnvironment testEnviron = new GameEnvironment();
+		//testEnviron.
+		
+		// GameEnvironment(String farmName, FarmType farmType, Farmer farmer, int remainingDays)
 		// fill in farmer's inventory
 		
 		Crop apples = new Crop("apples", 3, 5, 1);	
@@ -69,12 +74,6 @@ public class MainScreenTest {
 		window.frmSelectActivity.setVisible(true);
 		
 		
-		//lost money
-		//farmTest.setMoney(10); */
-		
-		//for(items in)
-		// if item not in list
-		//add to list
 		
 		
 	}
