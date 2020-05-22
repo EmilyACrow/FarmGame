@@ -216,8 +216,6 @@ public class WelcomeScreen {
 				{
 					output = "Could not load modifiers.";
 				}
-				
-				System.out.println(output);
 				textPaneModifiers.setText(output);
 			}
 		});

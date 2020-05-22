@@ -2,7 +2,6 @@ package gameLogic;
 
 import java.awt.EventQueue;
 
-import gameScreens.GameEnvironment;
 import gameScreens.WelcomeScreen;
 
 public class Welcome {

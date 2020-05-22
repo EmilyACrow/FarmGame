@@ -47,11 +47,10 @@ import java.awt.event.MouseEvent;
 
 public class GeneralStoreScreen{
 
-	public JFrame frame;
+	public JFrame frameGeneralStore;
 	private JTextField textFieldCartTotal;
-	//private JScrollPane merchScrollPane;
 	private StoreDisplayPanel panelStoreDisplay;
-	private ArrayList<Merchandise> m_playerInventory;
+	private JComboBox comboBoxFilter;
 	private MerchandiseWrapper m_cart;
 	private JTextField textFieldAmtInCart;
 	private GeneralStore m_backend;
@@ -72,33 +71,33 @@ public class GeneralStoreScreen{
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
-		m_playerInventory = m_backend.getPlayerMerchandise().getMerchList();
+
 		m_cart = m_backend.getShoppingCart();
 		
-		frame = new JFrame();
-		frame.setBounds(100, 100, 401, 570);
-		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		frameGeneralStore = new JFrame();
+		frameGeneralStore.setTitle("General Store");
+		frameGeneralStore.setBounds(100, 100, 401, 570);
+		frameGeneralStore.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 63, 81, 35, 74, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{31, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{31, 0, 0, 0, 40, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
-		frame.getContentPane().setLayout(gridBagLayout);
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
+		frameGeneralStore.getContentPane().setLayout(gridBagLayout);
 		
 		Component leftHStrut = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_leftHStrut = new GridBagConstraints();
 		gbc_leftHStrut.insets = new Insets(0, 0, 5, 5);
 		gbc_leftHStrut.gridx = 0;
 		gbc_leftHStrut.gridy = 0;
-		frame.getContentPane().add(leftHStrut, gbc_leftHStrut);
+		frameGeneralStore.getContentPane().add(leftHStrut, gbc_leftHStrut);
 		
 		Component middleHStrut = Box.createHorizontalStrut(20);
 		GridBagConstraints gbc_middleHStrut = new GridBagConstraints();
 		gbc_middleHStrut.insets = new Insets(0, 0, 5, 5);
 		gbc_middleHStrut.gridx = 3;
 		gbc_middleHStrut.gridy = 0;
-		frame.getContentPane().add(middleHStrut, gbc_middleHStrut);
+		frameGeneralStore.getContentPane().add(middleHStrut, gbc_middleHStrut);
 		
 		JLabel lblItemsInCart = new JLabel("Items in Cart:");
 		GridBagConstraints gbc_lblItemsInCart = new GridBagConstraints();
@@ -106,7 +105,7 @@ public class GeneralStoreScreen{
 		gbc_lblItemsInCart.insets = new Insets(0, 0, 5, 5);
 		gbc_lblItemsInCart.gridx = 4;
 		gbc_lblItemsInCart.gridy = 0;
-		frame.getContentPane().add(lblItemsInCart, gbc_lblItemsInCart);
+		frameGeneralStore.getContentPane().add(lblItemsInCart, gbc_lblItemsInCart);
 		
 		textFieldAmtInCart = new JTextField();
 		textFieldAmtInCart.setEditable(false);
@@ -115,7 +114,7 @@ public class GeneralStoreScreen{
 		gbc_textFieldAmtInCart.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textFieldAmtInCart.gridx = 5;
 		gbc_textFieldAmtInCart.gridy = 0;
-		frame.getContentPane().add(textFieldAmtInCart, gbc_textFieldAmtInCart);
+		frameGeneralStore.getContentPane().add(textFieldAmtInCart, gbc_textFieldAmtInCart);
 		textFieldAmtInCart.setColumns(10);
 		
 		JLabel lblFilter = new JLabel("Filter");
@@ -124,13 +123,13 @@ public class GeneralStoreScreen{
 		gbc_lblFilter.insets = new Insets(0, 0, 5, 5);
 		gbc_lblFilter.gridx = 1;
 		gbc_lblFilter.gridy = 1;
-		frame.getContentPane().add(lblFilter, gbc_lblFilter);
+		frameGeneralStore.getContentPane().add(lblFilter, gbc_lblFilter);
 		
-		JComboBox comboBoxFilter = new JComboBox();
+		comboBoxFilter = new JComboBox();
 		//Refresh store display whenever the filter changes
 		comboBoxFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				populateFromFilter(((StoreFilter) comboBoxFilter.getSelectedItem()).name());
+				refreshDisplay();
 			}
 		});
 		
@@ -140,7 +139,7 @@ public class GeneralStoreScreen{
 		gbc_comboBoxFilter.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBoxFilter.gridx = 2;
 		gbc_comboBoxFilter.gridy = 1;
-		frame.getContentPane().add(comboBoxFilter, gbc_comboBoxFilter);
+		frameGeneralStore.getContentPane().add(comboBoxFilter, gbc_comboBoxFilter);
 		
 		JButton btnAddToCart = new JButton("Add to Cart");
 		btnAddToCart.addActionListener(new ActionListener() {
@@ -152,13 +151,14 @@ public class GeneralStoreScreen{
 				}
 				updateCartSize();
 				updateCartTotal();
+				refreshDisplay();
 			}
 		});
 		GridBagConstraints gbc_btnAddToCart = new GridBagConstraints();
 		gbc_btnAddToCart.insets = new Insets(0, 0, 5, 5);
 		gbc_btnAddToCart.gridx = 2;
 		gbc_btnAddToCart.gridy = 2;
-		frame.getContentPane().add(btnAddToCart, gbc_btnAddToCart);
+		frameGeneralStore.getContentPane().add(btnAddToCart, gbc_btnAddToCart);
 		
 		JLabel lblCartTotal = new JLabel("Total($):");
 		GridBagConstraints gbc_lblCartTotal = new GridBagConstraints();
@@ -166,7 +166,7 @@ public class GeneralStoreScreen{
 		gbc_lblCartTotal.anchor = GridBagConstraints.EAST;
 		gbc_lblCartTotal.gridx = 4;
 		gbc_lblCartTotal.gridy = 1;
-		frame.getContentPane().add(lblCartTotal, gbc_lblCartTotal);
+		frameGeneralStore.getContentPane().add(lblCartTotal, gbc_lblCartTotal);
 		
 		textFieldCartTotal = new JTextField();
 		textFieldCartTotal.setEditable(false);
@@ -176,7 +176,7 @@ public class GeneralStoreScreen{
 		gbc_textFieldCartTotal.insets = new Insets(0, 0, 5, 5);
 		gbc_textFieldCartTotal.gridx = 5;
 		gbc_textFieldCartTotal.gridy = 1;
-		frame.getContentPane().add(textFieldCartTotal, gbc_textFieldCartTotal);
+		frameGeneralStore.getContentPane().add(textFieldCartTotal, gbc_textFieldCartTotal);
 		textFieldCartTotal.setColumns(10);		
 		
 		Component rightHStrut = Box.createHorizontalStrut(20);
@@ -184,22 +184,19 @@ public class GeneralStoreScreen{
 		gbc_rightHStrut.insets = new Insets(0, 0, 5, 0);
 		gbc_rightHStrut.gridx = 6;
 		gbc_rightHStrut.gridy = 0;
-		frame.getContentPane().add(rightHStrut, gbc_rightHStrut);
+		frameGeneralStore.getContentPane().add(rightHStrut, gbc_rightHStrut);
 		
 		JButton btnClearCart = new JButton("CLEAR");
 		btnClearCart.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				m_cart.clear();
-				updateCartSize();
-				updateCartTotal();
-				populateFromFilter(((StoreFilter) comboBoxFilter.getSelectedItem()).name());
+				m_backend.clearCart();
 			}
 		});
 		GridBagConstraints gbc_btnClearCart = new GridBagConstraints();
 		gbc_btnClearCart.insets = new Insets(0, 0, 5, 5);
 		gbc_btnClearCart.gridx = 4;
 		gbc_btnClearCart.gridy = 2;
-		frame.getContentPane().add(btnClearCart, gbc_btnClearCart);
+		frameGeneralStore.getContentPane().add(btnClearCart, gbc_btnClearCart);
 		
 		JButton btnBuy = new JButton("BUY");
 		btnBuy.addActionListener(new ActionListener() {
@@ -211,9 +208,7 @@ public class GeneralStoreScreen{
 				catch(Exception e)
 				{
 					System.out.println(e);
-				}
-				populateFromFilter(((StoreFilter) comboBoxFilter.getSelectedItem()).name());
-				
+				}				
 			}
 		});
 		GridBagConstraints gbc_btnBuy = new GridBagConstraints();
@@ -221,19 +216,34 @@ public class GeneralStoreScreen{
 		gbc_btnBuy.insets = new Insets(0, 0, 5, 5);
 		gbc_btnBuy.gridx = 5;
 		gbc_btnBuy.gridy = 2;
-		frame.getContentPane().add(btnBuy, gbc_btnBuy);
+		frameGeneralStore.getContentPane().add(btnBuy, gbc_btnBuy);
 		
-		panelStoreDisplay = new StoreDisplayPanel(textFieldAmtInCart);
+		panelStoreDisplay = new StoreDisplayPanel(m_backend.getPurchaseDiscountMod());
 		panelStoreDisplay.setPreferredSize(new Dimension(400, 300));
 		GridBagConstraints gbc_panelStoreDisplay = new GridBagConstraints();
 		gbc_panelStoreDisplay.anchor = GridBagConstraints.NORTH;
 		gbc_panelStoreDisplay.gridwidth = 5;
-		gbc_panelStoreDisplay.insets = new Insets(0, 0, 0, 5);
+		gbc_panelStoreDisplay.insets = new Insets(0, 0, 5, 5);
 		gbc_panelStoreDisplay.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panelStoreDisplay.gridx = 1;
 		gbc_panelStoreDisplay.gridy = 3;
-		populateFromFilter("ALL");
-		frame.getContentPane().add(panelStoreDisplay, gbc_panelStoreDisplay);
+		refreshDisplay();
+		frameGeneralStore.getContentPane().add(panelStoreDisplay, gbc_panelStoreDisplay);
+		
+		JButton btnExit = new JButton("Exit");
+		btnExit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				m_backend.clearCart();
+				setVisible(false);
+			}
+		});
+		GridBagConstraints gbc_btnExit = new GridBagConstraints();
+		gbc_btnExit.anchor = GridBagConstraints.NORTH;
+		gbc_btnExit.fill = GridBagConstraints.HORIZONTAL;
+		gbc_btnExit.insets = new Insets(0, 0, 0, 5);
+		gbc_btnExit.gridx = 5;
+		gbc_btnExit.gridy = 4;
+		frameGeneralStore.getContentPane().add(btnExit, gbc_btnExit);
 	}
 	
 	/**
@@ -241,37 +251,11 @@ public class GeneralStoreScreen{
 	 * Displaying player inventory count currently broken.
 	 * @param filter Store filter for items
 	 */
-	private void populateFromFilter(String filter)
+	public void refreshDisplay()
 	{
-		panelStoreDisplay.removeAll();
-		//Make a deep copy of the GeneralStore merchandise wrapper
-		MerchandiseWrapper merch = m_backend.getMerchandise().clone();
-		if(filter != "ALL")
-		{
-			if(filter != "ANIMALS")
-			{
-				for(Animal animal : merch.getAnimals())
-				{
-					merch.remove((Merchandise) animal);
-				}
-			}
-			if(filter != "CROPS")
-			{
-				for(Crop crop : merch.getCrops())
-				{
-					merch.remove((Merchandise) crop);
-				}
-			}
-			if(filter != "ITEMS")
-			{
-				for(Item item : merch.getItems())
-				{
-					merch.remove((Merchandise) item);
-				}
-			}
-		}
-		
-		panelStoreDisplay.refreshDisplay(merch.getMerchList(), m_playerInventory);
+		panelStoreDisplay.refreshDisplay(getStoreFilter()
+											, m_backend.getMerchandise().getMerchList()
+											, m_backend.getPlayerMerchandise().getMerchList());
 		
 		//Refresh the panel to reflect the changes
 		panelStoreDisplay.revalidate();
@@ -293,16 +277,6 @@ public class GeneralStoreScreen{
 	{
 		textFieldAmtInCart.setText(Integer.toString(m_cart.size()));
 	}
-	
-	/**
-	 * Tell the panel what to look at for the player's inventory
-	 * @param inventory ArrayList<Merchandise> representing the player's inventory
-	 */
-	public void updatePlayerInventory(ArrayList<Merchandise> inventory)
-	{
-		//Shallow copy
-		m_playerInventory = inventory;
-	}	
 
 	/**
 	 * Setter for the attached GeneralStore
@@ -322,8 +296,25 @@ public class GeneralStoreScreen{
 		return m_backend;
 	}
 
+	/**
+	 * Set visibility of the GeneralStoreScreen
+	 * @param visible
+	 */
 	public void setVisible(boolean visible) {
-		frame.setVisible(visible);
+		frameGeneralStore.setVisible(visible);
+	}
+	
+	/**
+	 * Get store filter
+	 */
+	public StoreFilter getStoreFilter()
+	{
+		return (StoreFilter)comboBoxFilter.getSelectedItem();
+	}
+	
+	public void refreshCart() {
+		updateCartSize();
+		updateCartTotal();
 	}
 }
 

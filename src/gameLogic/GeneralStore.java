@@ -1,7 +1,9 @@
 package gameLogic;
 import gameScreens.ConfirmPurchaseDialog;
-import gameScreens.GameEnvironment;
 import gameScreens.GeneralStoreScreen;
+import gameScreens.StoreFilter;
+
+import java.awt.LayoutManager;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -304,19 +306,32 @@ public class GeneralStore {
 		
 	}
 	
-	public ArrayList<Merchandise> purchaseCart(MerchandiseWrapper cart)
+	public ArrayList<Merchandise> purchaseCart(MerchandiseWrapper cart, int finalPrice)
 	{
 		// subtract the totalCost from the player's money.
-		m_game.setPlayerMoney(m_game.getPlayerMoney() - cart.getCartPrice());
-					
-					
+		m_game.setPlayerMoney(m_game.getPlayerMoney() - finalPrice);
+		
+		for(Merchandise m : cart.getMerchList())	
+		{
+			m_game.addPlayerMerchandise(m);
+		}
+		
 		//Empty the cart of the merch. 
-		m_shoppingCart.clear();
+		clearCart();
+		m_storeFront.refreshCart();
+		m_storeFront.refreshDisplay();
 		
 		return cart.getMerchList();
 	}
 	
-
+	/**
+	 * Clears content of GeneralStore cart
+	 */
+	public void clearCart()
+	{
+		m_shoppingCart.clear();
+		m_storeFront.refreshCart();
+	}
 	
 	
 	//getters and setters begin below this line 
@@ -363,18 +378,34 @@ public class GeneralStore {
 		return m_shoppingCart;
 	}
 	
+	/**
+	 * 
+	 * @return int Amount of money player has
+	 */
 	public int getPlayerMoney()
 	{
 		return m_playerMoney;
 	}
 	
+	/**
+	 * 
+	 * @param money amount to set to
+	 */
 	public void setPlayerMoney(int money)
 	{
 		m_playerMoney = money;
 	}
 
+	/**
+	 * 
+	 * @return MerchandiseWrapper All of player's merchandise
+	 */
 	public MerchandiseWrapper getPlayerMerchandise() {
 		return m_game.getPlayerMerchandise();
+	}
+
+	public double getPurchaseDiscountMod() {
+		return m_game.getPurchaseDiscountMod();
 	}
 	
 }
