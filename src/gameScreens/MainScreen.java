@@ -16,12 +16,14 @@ import gameLogic.Animal;
 import gameLogic.Crop;
 import gameLogic.Farm;
 import gameLogic.Merchandise;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
- * Interface to show player the actions they can do in the game
+ * shows player the actions they can do in the game
  * Currently just testing the labels and buttons are calling methods correctly so it's calling an Instance of a FarnClass
  *
- * Remember - change JFrame mainFrame to private and Farm to GameEnvironment
+ * Remember - change JFrame frmSelectActivity to private and Farm to GameEnvironment
  * Search and replace Farm with GameEnvironment
  * 
  * last modified: 22-05-2020
@@ -31,8 +33,10 @@ import gameLogic.Merchandise;
  */
 public class MainScreen {
 
-	public JFrame mainFrame;
+	public JFrame frmSelectActivity;
 	private Farm gameEnvironment;
+	
+	
 
 	/*
 	 * Launch the application.
@@ -42,7 +46,7 @@ public class MainScreen {
 			public void run() {
 				try {
 					MainScreen window = new MainScreen();
-					window.mainFrame.setVisible(true);
+					window.frmSelectActivity.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -64,7 +68,7 @@ public class MainScreen {
 		
 		gameEnvironment = newGame;
 		initialize();
-		mainFrame.setVisible(true);
+		frmSelectActivity.setVisible(true);
 		
 	}
 
@@ -72,33 +76,74 @@ public class MainScreen {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		mainFrame = new JFrame();
-		mainFrame.setTitle("main");
-		mainFrame.setBounds(100, 100, 531, 428);
-		mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainFrame.getContentPane().setLayout(null);
+		frmSelectActivity = new JFrame();
+		frmSelectActivity.setTitle("main");
+		frmSelectActivity.setBounds(100, 100, 531, 428);
+		frmSelectActivity.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmSelectActivity.getContentPane().setLayout(null);
 		
+		
+		/*
+		 * Components to aid in player selecting one crop or animal are below here.
+		 */
 		
 		//text panes
 		JEditorPane dtrpnSelectiondetails = new JEditorPane();
 		dtrpnSelectiondetails.setEditable(false);
 		dtrpnSelectiondetails.setBounds(342, 74, 141, 255);
-		mainFrame.getContentPane().add(dtrpnSelectiondetails);
+		frmSelectActivity.getContentPane().add(dtrpnSelectiondetails);
 		
-
+			
+		
+		/* The confirm button appears when an animal or crop from subOption is selected
+		 * It will become invisible again when it has been clicked. 
+		*/
+		JButton btnConfirm = new JButton("Confirm");
+		
+		btnConfirm.addMouseListener(new MouseAdapter() {
+		});
+		btnConfirm.setBounds(113, 349, 127, 21);
+		btnConfirm.setVisible(false);
+		frmSelectActivity.getContentPane().add(btnConfirm);
 		
 		
 		
-		// The list model that will be used by subOption
+		// The list model that will be used by the subOption JList
 		DefaultListModel<Merchandise> ownedMerchListModel = new DefaultListModel<>();
 		JList<Merchandise> subOption = new JList<Merchandise>(ownedMerchListModel);
+		subOption.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				btnConfirm.setVisible(true);
+				
+			}
+		});
+
 		subOption.setBounds(198, 119, 118, 210);
 		subOption.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		mainFrame.getContentPane().add(subOption);
+		frmSelectActivity.getContentPane().add(subOption);
 		
 		
+		// Confirm buttons action listener method must be made after the subOption is created. 
+		btnConfirm.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					
+				
+				System.out.println("Button pressed! Currently selected crop/animal is:");
+				System.out.println(subOption.getSelectedValue());
+				
+				//calls the method to check for remaining actions
+				//System.out.println("Call the method needed");	
+				
+				//turn invisible again
+				btnConfirm.setVisible(false);
+			}
+		});
 		
-		/*buttons begin here */
+		
+		/*buttons on the left of the screen are below */
 		
 		
 		/* 
@@ -119,7 +164,7 @@ public class MainScreen {
 			}		
 		});	
 		btnTendCrop.setBounds(28, 119, 141, 21);
-		mainFrame.getContentPane().add(btnTendCrop);
+		frmSelectActivity.getContentPane().add(btnTendCrop);
 		
 		
 		/* 
@@ -139,7 +184,7 @@ public class MainScreen {
 			}
 		});
 		btnFeedAnimal.setBounds(28, 169, 141, 21);
-		mainFrame.getContentPane().add(btnFeedAnimal);
+		frmSelectActivity.getContentPane().add(btnFeedAnimal);
 		
 		
 		/* 
@@ -158,7 +203,7 @@ public class MainScreen {
 			}
 		});
 		btnPlayAnimal.setBounds(30, 304, 139, 25);
-		mainFrame.getContentPane().add(btnPlayAnimal);
+		frmSelectActivity.getContentPane().add(btnPlayAnimal);
 		
 		
 		
@@ -180,7 +225,7 @@ public class MainScreen {
 			}
 		});
 		btnHarvestCrop.setBounds(28, 256, 141, 21);
-		mainFrame.getContentPane().add(btnHarvestCrop);
+		frmSelectActivity.getContentPane().add(btnHarvestCrop);
 		
 		
 		
@@ -191,21 +236,16 @@ public class MainScreen {
 		btnTendLand.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				ownedMerchListModel.removeAllElements();
 				System.out.println("Tend land clicked");
+				//maybe add a message?
 				//make a call to tendLand()
 			}
 		});
 		btnTendLand.setBounds(28, 211, 141, 21);
-		mainFrame.getContentPane().add(btnTendLand);
+		frmSelectActivity.getContentPane().add(btnTendLand);
 		
-		
-		
-		// Should only be visible if something from subOption is selected
-		JButton btnConfirm = new JButton("Confirm");
-		btnConfirm.setBounds(113, 349, 127, 21);
-		//btnConfirm.setVisible(false);
-		mainFrame.getContentPane().add(btnConfirm);
-		
+			
 		
 		
 		
@@ -218,7 +258,7 @@ public class MainScreen {
 		});
 		
 		btnStore.setBounds(31, 41, 92, 39);
-		mainFrame.getContentPane().add(btnStore);
+		frmSelectActivity.getContentPane().add(btnStore);
 		
 		
 		
@@ -233,36 +273,38 @@ public class MainScreen {
 			}
 		});
 		btnFarmStatus.setBounds(199, 41, 103, 39);
-		mainFrame.getContentPane().add(btnFarmStatus);
+		frmSelectActivity.getContentPane().add(btnFarmStatus);
 		
 		
 		
 		/* 
-		 * Text labels begin below here
+		 * Upper frame labels for game status begin below here
 		 * */
+		
+		
 		JLabel lblMoney = new JLabel();
 		lblMoney.setText(String.format("Money: $ %d", gameEnvironment.getMoney() ) );		
 		lblMoney.setBounds(167, 6, 92, 25);
-		mainFrame.getContentPane().add(lblMoney);
+		frmSelectActivity.getContentPane().add(lblMoney);
 		
 		
-		JLabel btnActionsRemaining = new JLabel();
-		btnActionsRemaining.setText(String.format("Actions remaining: %d", gameEnvironment.getRemainingActions() ) );
-		btnActionsRemaining.setBounds(28, 84, 141, 25);
-		mainFrame.getContentPane().add(btnActionsRemaining);
+		JLabel lblActionsRemaining = new JLabel();
+		lblActionsRemaining.setText(String.format("Actions remaining: %d", gameEnvironment.getRemainingActions() ) );
+		lblActionsRemaining.setBounds(28, 84, 141, 25);
+		frmSelectActivity.getContentPane().add(lblActionsRemaining);
 		
 		
 		JLabel lblCrops = new JLabel();
 		lblCrops.setText(String.format("Crops: %d", gameEnvironment.getCrops().size() ));
 		lblCrops.setBounds(289, 6, 80, 25);
-		mainFrame.getContentPane().add(lblCrops);
+		frmSelectActivity.getContentPane().add(lblCrops);
 		
 		
 		
 		JLabel lblAnimals = new JLabel("Animals");
 		lblAnimals.setText(String.format("Animals: %d", gameEnvironment.getAnimals().size() ) );
 		lblAnimals.setBounds(403, 6, 80, 25);
-		mainFrame.getContentPane().add(lblAnimals);
+		frmSelectActivity.getContentPane().add(lblAnimals);
 		
 		
 		
@@ -270,7 +312,7 @@ public class MainScreen {
 		lblDaysRemaining.setText(String.format("Days remaining %d", gameEnvironment.getRemainingDays()) );
 		lblDaysRemaining.setHorizontalTextPosition(SwingConstants.LEFT);
 		lblDaysRemaining.setBounds(28, 6, 129, 25);		
-		mainFrame.getContentPane().add(lblDaysRemaining);
+		frmSelectActivity.getContentPane().add(lblDaysRemaining);
 		
 
 	}

@@ -11,7 +11,9 @@ public class MainScreenTest {
 
 	public static void main(String[] args) {
 		
-		System.out.println("Testing main screen");
+
+		
+		System.out.println("Testing main screen with an instance of a Farm-type class");
 		//sets up values for farmer and farm.
 		Farmer hank = new Farmer("Hank", 53);
 		
@@ -37,10 +39,10 @@ public class MainScreenTest {
 
 		//Trying out the mainScreen
 		MainScreen window = new MainScreen(farmTest);
-		window.mainFrame.setVisible(true);
+		window.frmSelectActivity.setVisible(true);
 	
 		//lost money
-		//farmTest.setMoney(10);
+		//farmTest.setMoney(10); */
 	}
 
 }
