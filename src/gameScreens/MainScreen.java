@@ -161,7 +161,6 @@ public class MainScreen {
 				btnConfirm.setVisible(true);
 				//shows items info in selection Details
 				dtrpnSelectiondetails.setText(subOption.getSelectedValue().toString() );
-				updateStatusBar();
 			}
 		});
 		
@@ -185,7 +184,6 @@ public class MainScreen {
 				chosenAction = PossibleAction.TEND_CROP;
 				//shows crops player owns into Jlist.				
 				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.CROP);
-				updateStatusBar();
 			}		
 		});	
 		btnTendCrop.setBounds(28, 119, 141, 21);
@@ -209,7 +207,6 @@ public class MainScreen {
 				chosenAction = PossibleAction.FEED_ANIMAL;
 				//show a list of animals player can feed
 				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.ANIMAL);
-				updateStatusBar();
 			}
 		});
 		btnFeedAnimal.setBounds(28, 169, 141, 21);
@@ -225,7 +222,6 @@ public class MainScreen {
 				
 				chosenAction = PossibleAction.PLAY_WITH_ANIMAL;
 				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.ANIMAL);
-				updateStatusBar();
 			}
 		});
 		btnPlayAnimal.setBounds(30, 304, 139, 25);
@@ -242,7 +238,6 @@ public class MainScreen {
 				chosenAction = PossibleAction.HARVEST_CROP;
 				//shows crops player owns.
 				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.CROP);
-				updateStatusBar();
 				
 			}
 		});
@@ -262,7 +257,6 @@ public class MainScreen {
 				//empties anything in selection details
 				dtrpnSelectiondetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
 				listModelSubOptions.removeAllElements();
-				updateStatusBar();
 			}
 		});
 		btnTendLand.setBounds(28, 211, 141, 21);
@@ -275,7 +269,6 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 				
 				m_game.displayGeneralStore();
-				updateStatusBar();
 			}
 		});
 		
