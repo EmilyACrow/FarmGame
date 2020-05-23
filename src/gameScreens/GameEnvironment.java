@@ -39,7 +39,19 @@ public class GameEnvironment {
 	public GameEnvironment(String farmName, FarmType farmType, Farmer farmer, int remainingDays)
 	{
 		askPlayer = new Scanner(System.in);
-		createNewGame(farmName, farmType, farmer, remainingDays);
+		Farm newFarm = new Farm(farmName, farmType, farmer, remainingDays);
+		createNewGame(newFarm);
+		
+	}
+	
+	/**
+	 * the constructor method activates the scanner that will be used to get player's input
+	 * It also asks the player to input information to create a farm.
+	 */
+	public GameEnvironment(Farm farm)
+	{
+		askPlayer = new Scanner(System.in);
+		createNewGame(farm);
 		
 	}
 	
@@ -102,9 +114,11 @@ public class GameEnvironment {
 		//create a Farmer instance
 		Farmer farmer = new Farmer(farmerName, farmerAge);
 		
+		Farm farm = new Farm(farmName, farmType, farmer, remainingDays);
+		
 		System.out.println("New game is loading");
 		//Creates a new game
-		createNewGame(farmName, farmType, farmer, remainingDays);
+		createNewGame(farm);
 		
 		
 
@@ -114,9 +128,9 @@ public class GameEnvironment {
 	/*
 	 * 
 	 */
-	private void createNewGame(String farmName, FarmType farmType, Farmer farmer, int remainingDays)
+	private void createNewGame(Farm farm)
 	{		
-		m_farm = new Farm(farmName, farmType, farmer, remainingDays);
+		m_farm = farm;
 		m_store = new GeneralStore();
 		m_store.setGameEnvironment(this);
 		m_store.createScreen();
@@ -1389,6 +1403,18 @@ public class GameEnvironment {
 
 	public MerchandiseWrapper getPlayerMerchandise() {
 		return m_farm.getMerch();
+	}
+
+	public Farm getFarm() {
+		return m_farm;
+	}
+
+	public int getRemainingActions() {
+		return m_farm.getRemainingActions();
+	}
+
+	public int getRemainingDays() {
+		return m_farm.getRemainingDays();
 	}
 	
 	

@@ -32,7 +32,7 @@ public class MainScreenTest {
 		
 		Farm farmTest = new Farm("Acres", FarmType.PRODUCE, hank, 5);
 		
-		
+		GameEnvironment game = new GameEnvironment(farmTest);
 		//GameEnvironment testEnviron = new GameEnvironment();
 		//testEnviron.
 		
@@ -69,8 +69,10 @@ public class MainScreenTest {
 		//System.out.println("Print " + farmTest.getCrops());
 
 		
+		
+		
 		//Trying out the mainScreen
-		MainScreen window = new MainScreen(farmTest);
+		MainScreen window = new MainScreen(farmTest, game);
 		window.frmSelectActivity.setVisible(true);
 		
 		

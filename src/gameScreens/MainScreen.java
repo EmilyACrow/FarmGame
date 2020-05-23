@@ -21,6 +21,7 @@ import gameLogic.Crop;
 import gameLogic.Farm;
 import gameLogic.Item;
 import gameLogic.Merchandise;
+import gameLogic.MerchandiseWrapper;
 import gameLogic.PossibleAction;
 
 import java.awt.event.MouseAdapter;
@@ -43,11 +44,13 @@ import javax.swing.ScrollPaneConstants;
 public class MainScreen {
 
 	public JFrame frmSelectActivity;
-	private Farm gameEnvironment;
+	//private Farm gameEnvironment;
 	private OptionalItemDialog askForItem;
 	private PossibleAction chosenAction;
 	private Item optionalItem;
 	private JPanel optionPanel;
+	private DefaultListModel<String> listModelSubOptions;
+	private GameEnvironment m_game;
 	
 	
 
@@ -77,13 +80,14 @@ public class MainScreen {
 	 * 
 	 * @param newGame the Farm class created by the player.
 	 */
-	public MainScreen(Farm newGame) {
+	public MainScreen(Farm newGame, GameEnvironment game) {
 		
 		//a default value for chosenAction
 		chosenAction = PossibleAction.FEED_ANIMAL;
 		optionalItem = null;
-		gameEnvironment = newGame;
-		askForItem = new OptionalItemDialog(gameEnvironment.getItems() ); 
+		m_game = game;
+		//gameEnvironment = newGame;
+		askForItem = new OptionalItemDialog(m_game.getPlayerItems()); 
 		//optionPanel = new OptionalItemPanel();
 		initialize();
 		frmSelectActivity.setVisible(true);
@@ -135,14 +139,14 @@ public class MainScreen {
 		
 		
 		// The list model that will be used by the subOption JList.
-		DefaultListModel<Merchandise> ownedMerchListModel = new DefaultListModel<>();
+		listModelSubOptions = new DefaultListModel<>();
 		
 		//ScrollPane for subOption
 		JScrollPane subOpionScrollPane = new JScrollPane();
 		subOpionScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		subOpionScrollPane.setBounds(198, 119, 118, 210);
 		frmSelectActivity.getContentPane().add(subOpionScrollPane);
-		JList<Merchandise> subOption = new JList<Merchandise>(ownedMerchListModel);
+		JList<String> subOption = new JList<String>(listModelSubOptions);
 		subOption.setBorder(null);
 		subOpionScrollPane.setViewportView(subOption);
 		subOption.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -178,12 +182,7 @@ public class MainScreen {
 				
 				chosenAction = PossibleAction.TEND_CROP;
 				//shows crops player owns into Jlist.				
-				ownedMerchListModel.removeAllElements();
-				for (Merchandise crop : gameEnvironment.getCrops() ) {
-					
-					ownedMerchListModel.addElement(crop);
-				}		
-				
+				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.CROP);
 			}		
 		});	
 		btnTendCrop.setBounds(28, 119, 141, 21);
@@ -200,14 +199,13 @@ public class MainScreen {
 		btnFeedAnimal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				//MainScreen.java
+				//m_game.feedAnimal
+				
+				
 				chosenAction = PossibleAction.FEED_ANIMAL;
 				//show a list of animals player can feed			
-				ownedMerchListModel.removeAllElements();
-				
-				for (Animal animal : gameEnvironment.getAnimals() ) {
-					
-					ownedMerchListModel.addElement(animal);
-				}
+				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.ANIMAL);
 			}
 		});
 		btnFeedAnimal.setBounds(28, 169, 141, 21);
@@ -222,11 +220,7 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 				
 				chosenAction = PossibleAction.PLAY_WITH_ANIMAL;
-				ownedMerchListModel.removeAllElements();
-				for (Animal animal : gameEnvironment.getAnimals() ) {
-					
-					ownedMerchListModel.addElement(animal);
-				}
+				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.ANIMAL);
 			}
 		});
 		btnPlayAnimal.setBounds(30, 304, 139, 25);
@@ -242,12 +236,7 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 				chosenAction = PossibleAction.HARVEST_CROP;
 				//shows crops player owns.
-				
-				ownedMerchListModel.removeAllElements();
-				for (Crop crop : gameEnvironment.getCrops() ) {
-					
-					ownedMerchListModel.addElement(crop);
-				}	
+				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.CROP);	
 				
 			}
 		});
@@ -266,7 +255,7 @@ public class MainScreen {
 				chosenAction = PossibleAction.TEND_LAND;
 				//empties anything in selection details
 				dtrpnSelectiondetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
-				ownedMerchListModel.removeAllElements();
+				listModelSubOptions.removeAllElements();
 				System.out.println("Tend land clicked");			
 			}
 		});
@@ -294,7 +283,7 @@ public class MainScreen {
 			//Player clicks button
 			public void actionPerformed(ActionEvent e) {
 				
-				dtrpnSelectiondetails.setText(gameEnvironment.toString());
+				dtrpnSelectiondetails.setText(m_game.getFarm().toString());
 				
 			}
 		});
@@ -309,33 +298,33 @@ public class MainScreen {
 		
 		
 		JLabel lblMoney = new JLabel();
-		lblMoney.setText(String.format("Money: $ %d", gameEnvironment.getMoney() ) );		
+		lblMoney.setText(String.format("Money: $ %d", m_game.getPlayerMoney()));		
 		lblMoney.setBounds(167, 6, 92, 25);
 		frmSelectActivity.getContentPane().add(lblMoney);
 		
 		
 		JLabel lblActionsRemaining = new JLabel();
-		lblActionsRemaining.setText(String.format("Actions remaining: %d", gameEnvironment.getRemainingActions() ) );
+		lblActionsRemaining.setText(String.format("Actions remaining: %d", m_game.getRemainingActions()));
 		lblActionsRemaining.setBounds(28, 84, 141, 25);
 		frmSelectActivity.getContentPane().add(lblActionsRemaining);
 		
 		
 		JLabel lblCrops = new JLabel();
-		lblCrops.setText(String.format("Crops: %d", gameEnvironment.getCrops().size() ));
+		lblCrops.setText(String.format("Crops: %d", m_game.getPlayerCrops().size()));
 		lblCrops.setBounds(289, 6, 80, 25);
 		frmSelectActivity.getContentPane().add(lblCrops);
 		
 		
 		
 		JLabel lblAnimals = new JLabel("Animals");
-		lblAnimals.setText(String.format("Animals: %d", gameEnvironment.getAnimals().size() ) );
+		lblAnimals.setText(String.format("Animals: %d", m_game.getPlayerAnimals().size()));
 		lblAnimals.setBounds(403, 6, 80, 25);
 		frmSelectActivity.getContentPane().add(lblAnimals);
 		
 		
 		
 		JLabel lblDaysRemaining = new JLabel();
-		lblDaysRemaining.setText(String.format("Days remaining %d", gameEnvironment.getRemainingDays()) );
+		lblDaysRemaining.setText(String.format("Days remaining %d", m_game.getRemainingDays()));
 		lblDaysRemaining.setHorizontalTextPosition(SwingConstants.LEFT);
 		lblDaysRemaining.setBounds(28, 6, 129, 25);		
 		frmSelectActivity.getContentPane().add(lblDaysRemaining);
@@ -392,7 +381,7 @@ public class MainScreen {
 				System.out.println(subOption.getSelectedValue());
 				
 				
-				ownedMerchListModel.removeAllElements();
+				listModelSubOptions.removeAllElements();
 				//turn invisible again
 				btnConfirm.setVisible(false);
 				
@@ -406,6 +395,48 @@ public class MainScreen {
 			}
 		});
 		
+	}
+	
+	/**
+	 * Populate a DefaultListModel<String> with names from a list of Merchandise.
+	 * Can display multiple class types by formatting filter string as [classStringA]|[classStringB].
+	 * @param merch list of merchandise to display by type
+	 * @param merchType MerchandiseWrapper constant, either .ANIMAL, .CROP, or .ITEM based on which class you want to display
+	 */
+	public void populateSubOptions(MerchandiseWrapper merch, String merchType)
+	{
+		//TODO: Move to GameEnvironment.java
+		ArrayList<Merchandise> compactedList = new ArrayList<Merchandise>();
+		//Quick little regex to filter out merch we want
+		String filterRegex = String.format("(%s)", merchType);
+		//Worst n^2 - I'm sorry, I was in a rush
+		for(int i = 0; i < merch.getMerchList().size(); i++)
+		{
+			//If the class name of merch @ index i doesn't match the filter, skip this iteration.
+			if(!(merch.getMerchList().get(i).getClass().getSimpleName().matches(filterRegex)))
+			{
+				continue;
+			}
+			boolean alreadyAdded = false;
+			Merchandise m = merch.getMerchList().get(i);
+			for(int j = compactedList.size(); j > 0; j++)
+			{
+				if(compactedList.get(j).getName() == m.getName())
+				{
+					alreadyAdded = true;
+					break;
+				}
+			}
+			if(!alreadyAdded)
+			{
+				compactedList.add(m);
+			}
+		}
+		listModelSubOptions.removeAllElements();
+		for(Merchandise m : compactedList)
+		{
+			listModelSubOptions.addElement(m.getName());
+		}
 	}
 	
 

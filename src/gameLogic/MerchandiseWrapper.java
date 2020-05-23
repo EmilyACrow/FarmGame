@@ -24,6 +24,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "merch")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MerchandiseWrapper {
+	//Constants representing the class names of each possible class in MerchandiseWrapper
+	public static final String ANIMAL = "Animal";
+	public static final String CROP = "Crop";
+	public static final String ITEM = "Item";
 	@XmlElements({
         @XmlElement(name="animal",type=Animal.class),
         @XmlElement(name="crop",type=Crop.class),

@@ -285,10 +285,10 @@ public class GeneralStoreScreen{
 	private void updateCartTotal()
 	{
 		Integer totalPrice = 0;
-		for(Merchandise m : m_cart)
-		{
-			totalPrice += m.getPurchasePrice();
-		}
+//		for(Merchandise m : m_cart)
+//		{
+//			totalPrice += m.getPurchasePrice();
+//		}
 		textFieldCartTotal.setText(totalPrice.toString());
 	}
 	
@@ -297,7 +297,7 @@ public class GeneralStoreScreen{
 	 */
 	private void updateCartSize()
 	{
-		textFieldAmtInCart.setText(Integer.toString(m_cart.size()));
+//		textFieldAmtInCart.setText(Integer.toString(m_cart.size()));
 	}
 	
 	/**
