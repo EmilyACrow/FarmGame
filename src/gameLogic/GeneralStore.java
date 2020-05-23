@@ -46,7 +46,7 @@ public class GeneralStore {
 	 * This constructor method reads in from an XML config file and populates the merchandise wrapper.
 	 * Also makes an instance of a MerchandiseWrapper class.
 	 */
-	public GeneralStore() {
+	public GeneralStore(GameEnvironment game) {
 		
 		m_shoppingCart = new MerchandiseWrapper();
 		
@@ -62,12 +62,14 @@ public class GeneralStore {
 			System.out.println(e);
 			throw new RuntimeException("Error configuring GeneralStore");
 		}		
+		
+		m_game = game;
+		m_storeFront = new GeneralStoreScreen(this);
 	
 	}
 	
 	/**
 	 * Setter for GameEnviornment reference
-	 * This needs to be called as soon as the GeneralStore is created! It can't be initialized in the constructor but needs to be initialized.
 	 * @param game
 	 */
 	public void setGameEnvironment(GameEnvironment game)
@@ -78,15 +80,6 @@ public class GeneralStore {
 	public GameEnvironment getGameEnvironment()
 	{
 		return m_game;
-	}
-	
-	/**
-	 * Attach a new instance of GeneralStoreScreen to this GeneralStore.
-	 * Destroys old GeneralStoreScreen attached to this instance of GeneralStore.
-	 */
-	public void createScreen()
-	{
-		m_storeFront = new GeneralStoreScreen(this);
 	}
 	
 	/**
@@ -320,6 +313,8 @@ public class GeneralStore {
 		clearCart();
 		m_storeFront.refreshCart();
 		m_storeFront.refreshDisplay();
+		
+		m_game.updateStatusBar();
 		
 		return cart.getMerchList();
 	}

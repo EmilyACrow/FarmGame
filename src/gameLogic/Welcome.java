@@ -25,7 +25,5 @@ public class Welcome {
 													, new Farmer(m_screen.getFarmerName(), m_screen.getFarmerAge())
 													, m_screen.getNumDays());
 		m_screen.setVisible(false);
-		//game.Run();
-		game.displayGeneralStore();
 	}
 }

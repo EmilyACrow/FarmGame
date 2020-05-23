@@ -45,11 +45,16 @@ import javax.swing.ScrollPaneConstants;
 public class MainScreen {
 
 	public JFrame frmSelectActivity;
-	//private Farm gameEnvironment;
+	private JPanel optionPanel;
+	private JLabel lblMoney;
+	private JLabel lblActionsRemaining;
+	private JLabel lblDaysRemaining;
+	private JLabel lblCrops;
+	private JLabel lblAnimals;
+
 	private OptionalItemDialog askForItem;
 	private PossibleAction chosenAction;
 	private Item optionalItem;
-	private JPanel optionPanel;
 	private DefaultListModel<String> listModelSubOptions;
 	private GameEnvironment m_game;
 	
@@ -81,15 +86,13 @@ public class MainScreen {
 	 * 
 	 * @param newGame the Farm class created by the player.
 	 */
-	public MainScreen(Farm newGame, GameEnvironment game) {
+	public MainScreen(GameEnvironment game) {
 		
 		//a default value for chosenAction
 		chosenAction = PossibleAction.FEED_ANIMAL;
 		optionalItem = null;
 		m_game = game;
-		//gameEnvironment = newGame;
-		askForItem = new OptionalItemDialog(m_game.getPlayerItems()); 
-		//optionPanel = new OptionalItemPanel();
+		askForItem = new OptionalItemDialog(m_game.getPlayerItems());
 		initialize();
 		frmSelectActivity.setVisible(true);
 		
@@ -106,10 +109,7 @@ public class MainScreen {
 		frmSelectActivity.setBounds(100, 100, 531, 428);
 		frmSelectActivity.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSelectActivity.getContentPane().setLayout(null);
-		
-		
-		
-		
+
 		/*
 		 * Components to aid in player selecting one crop or animal are below here.
 		 */
@@ -160,7 +160,8 @@ public class MainScreen {
 			public void mouseClicked(MouseEvent e) {				
 				btnConfirm.setVisible(true);
 				//shows items info in selection Details
-				dtrpnSelectiondetails.setText(subOption.getSelectedValue().toString() );				
+				dtrpnSelectiondetails.setText(subOption.getSelectedValue().toString() );
+				updateStatusBar();
 			}
 		});
 		
@@ -184,6 +185,7 @@ public class MainScreen {
 				chosenAction = PossibleAction.TEND_CROP;
 				//shows crops player owns into Jlist.				
 				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.CROP);
+				updateStatusBar();
 			}		
 		});	
 		btnTendCrop.setBounds(28, 119, 141, 21);
@@ -207,6 +209,7 @@ public class MainScreen {
 				chosenAction = PossibleAction.FEED_ANIMAL;
 				//show a list of animals player can feed
 				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.ANIMAL);
+				updateStatusBar();
 			}
 		});
 		btnFeedAnimal.setBounds(28, 169, 141, 21);
@@ -222,6 +225,7 @@ public class MainScreen {
 				
 				chosenAction = PossibleAction.PLAY_WITH_ANIMAL;
 				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.ANIMAL);
+				updateStatusBar();
 			}
 		});
 		btnPlayAnimal.setBounds(30, 304, 139, 25);
@@ -237,7 +241,8 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 				chosenAction = PossibleAction.HARVEST_CROP;
 				//shows crops player owns.
-				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.CROP);	
+				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.CROP);
+				updateStatusBar();
 				
 			}
 		});
@@ -257,6 +262,7 @@ public class MainScreen {
 				//empties anything in selection details
 				dtrpnSelectiondetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
 				listModelSubOptions.removeAllElements();
+				updateStatusBar();
 			}
 		});
 		btnTendLand.setBounds(28, 211, 141, 21);
@@ -268,7 +274,8 @@ public class MainScreen {
 		btnStore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				System.out.println("Do something to go to store");
+				m_game.displayGeneralStore();
+				updateStatusBar();
 			}
 		});
 		
@@ -284,6 +291,7 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 				
 				dtrpnSelectiondetails.setText(m_game.getFarm().toString());
+				updateStatusBar();
 				
 			}
 		});
@@ -297,33 +305,33 @@ public class MainScreen {
 		 * */
 		
 		
-		JLabel lblMoney = new JLabel();
+		lblMoney = new JLabel();
 		lblMoney.setText(String.format("Money: $ %d", m_game.getPlayerMoney()));		
 		lblMoney.setBounds(167, 6, 92, 25);
 		frmSelectActivity.getContentPane().add(lblMoney);
 		
 		
-		JLabel lblActionsRemaining = new JLabel();
+		lblActionsRemaining = new JLabel();
 		lblActionsRemaining.setText(String.format("Actions remaining: %d", m_game.getRemainingActions()));
 		lblActionsRemaining.setBounds(28, 84, 141, 25);
 		frmSelectActivity.getContentPane().add(lblActionsRemaining);
 		
 		
-		JLabel lblCrops = new JLabel();
+		lblCrops = new JLabel();
 		lblCrops.setText(String.format("Crops: %d", m_game.getPlayerCrops().size()));
 		lblCrops.setBounds(289, 6, 80, 25);
 		frmSelectActivity.getContentPane().add(lblCrops);
 		
 		
 		
-		JLabel lblAnimals = new JLabel("Animals");
+		lblAnimals = new JLabel("Animals");
 		lblAnimals.setText(String.format("Animals: %d", m_game.getPlayerAnimals().size()));
 		lblAnimals.setBounds(403, 6, 80, 25);
 		frmSelectActivity.getContentPane().add(lblAnimals);
 		
 		
 		
-		JLabel lblDaysRemaining = new JLabel();
+		lblDaysRemaining = new JLabel();
 		lblDaysRemaining.setText(String.format("Days remaining %d", m_game.getRemainingDays()));
 		lblDaysRemaining.setHorizontalTextPosition(SwingConstants.LEFT);
 		lblDaysRemaining.setBounds(28, 6, 129, 25);		
@@ -390,10 +398,12 @@ public class MainScreen {
 				
 				//lblActionsRemaining.setText(String.format("Actions remaining: %d", gameEnvironment.getRemainingActions() ) );
 				
-				
+				updateStatusBar();
 				
 			}
 		});
+		
+		updateStatusBar();
 		
 	}
 	
@@ -439,6 +449,14 @@ public class MainScreen {
 		{
 			listModelSubOptions.addElement(m.getName());
 		}
+	}
+	
+	public void updateStatusBar()
+	{
+		lblMoney.setText(String.format("Money: $%d", m_game.getPlayerMoney()));
+		lblDaysRemaining.setText(String.format("Days Remaining: %d", m_game.getRemainingDays()));
+		lblCrops.setText(String.format("Crops: %d", m_game.getPlayerCrops().size()));
+		lblAnimals.setText(String.format("Animals: %d", m_game.getPlayerAnimals().size()));
 	}
 	
 

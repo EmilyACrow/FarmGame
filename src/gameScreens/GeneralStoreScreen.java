@@ -1,56 +1,32 @@
 
 package gameScreens;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
-import gameLogic.Animal;
-import gameLogic.Crop;
-import gameLogic.Farm;
 import gameLogic.GeneralStore;
-import gameLogic.Item;
 import gameLogic.Merchandise;
 import gameLogic.MerchandiseWrapper;
-import javafx.scene.control.ComboBox;
-
 import java.awt.Insets;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.swing.JButton;
 import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.Box;
-import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
-import javax.swing.JPopupMenu;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class GeneralStoreScreen{
 
 	public JFrame frameGeneralStore;
 	private JTextField textFieldCartTotal;
 	private StoreDisplayPanel panelStoreDisplay;
-	private JComboBox comboBoxFilter;
+	private JComboBox<StoreFilter> comboBoxFilter;
 	private MerchandiseWrapper m_cart;
 	private JTextField textFieldAmtInCart;
 	private GeneralStore m_backend;
@@ -125,7 +101,7 @@ public class GeneralStoreScreen{
 		gbc_lblFilter.gridy = 1;
 		frameGeneralStore.getContentPane().add(lblFilter, gbc_lblFilter);
 		
-		comboBoxFilter = new JComboBox();
+		comboBoxFilter = new JComboBox<StoreFilter>();
 		//Refresh store display whenever the filter changes
 		comboBoxFilter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -133,7 +109,7 @@ public class GeneralStoreScreen{
 			}
 		});
 		
-		comboBoxFilter.setModel(new DefaultComboBoxModel(StoreFilter.values()));
+		comboBoxFilter.setModel(new DefaultComboBoxModel<StoreFilter>(StoreFilter.values()));
 		GridBagConstraints gbc_comboBoxFilter = new GridBagConstraints();
 		gbc_comboBoxFilter.insets = new Insets(0, 0, 5, 5);
 		gbc_comboBoxFilter.fill = GridBagConstraints.HORIZONTAL;
@@ -275,7 +251,7 @@ public class GeneralStoreScreen{
 	 */
 	private void updateCartSize()
 	{
-//		textFieldAmtInCart.setText(Integer.toString(m_cart.size()));
+		textFieldAmtInCart.setText(Integer.toString(m_cart.size()));
 	}
 
 	/**

@@ -3,6 +3,8 @@ import java.awt.LayoutManager;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import gameScreens.MainScreen;
 /**
  * Contains methods to run the farm game. Contains methods that allow the player's input to alter variables in the game. 
  * 
@@ -18,6 +20,7 @@ public class GameEnvironment {
 	private ArrayList<Merchandise> m_selectedMerchandise;
 	private Farm m_farm;
 	private GeneralStore m_store;
+	private MainScreen m_mainScreen;
 	
 	//scanner as an attribute
 	private Scanner askPlayer;
@@ -116,9 +119,8 @@ public class GameEnvironment {
 	private void createNewGame(Farm farm)
 	{		
 		m_farm = farm;
-		m_store = new GeneralStore();
-		m_store.setGameEnvironment(this);
-		m_store.createScreen();
+		m_store = new GeneralStore(this);
+		m_mainScreen = new MainScreen(this);
 	}
 	
 	
@@ -1406,6 +1408,12 @@ public class GameEnvironment {
 	public int getRemainingDays() {
 		return m_farm.getRemainingDays();
 	}
+
+	public void updateStatusBar() {
+		m_mainScreen.updateStatusBar();
+		
+	}
+
 	
 	
 }

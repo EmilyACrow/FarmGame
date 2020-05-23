@@ -23,7 +23,7 @@ public class MainScreenTest {
 		//sets up values for farmer and farm.
 		Farmer hank = new Farmer("Hank", 53);
 		
-		Farm farmTest = new Farm("Acres", FarmType.PRODUCE, hank, 5);
+		Farm farmTest = new Farm("Acres", FarmType.MIXED, hank, 5);
 		
 		GameEnvironment game = new GameEnvironment(farmTest);
 		//GameEnvironment testEnviron = new GameEnvironment();
@@ -38,28 +38,16 @@ public class MainScreenTest {
 		Crop corn = new Crop("corn", 6, 7, 2);
 		farmTest.addCrop(corn);
 		
-		Crop tomato = new Crop("tomato", 10, 18, 4);
-		//check if there is autoScroll.
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
+//		Crop tomato = new Crop("tomato", 10, 18, 4);
+//		//check if there is autoScroll.
+//		farmTest.addCrop(tomato);
+//		farmTest.addCrop(tomato);
 		
-		Animal rabbit = new Animal("rabbit", "fluff", 0, 10);
-		farmTest.addAnimal(rabbit);
+//		Animal rabbit = new Animal("rabbit", "fluff", 0, 10);
+//		farmTest.addAnimal(rabbit);
 		
 		Animal lorax = new Animal("Lorax", "Speaker for the Trees", 0, 0);
 		farmTest.addAnimal(lorax);
-		farmTest.addMerchandise(lorax.clone());
 		
 		Item wateringCan = new Item("watering can", 0, 1, false, true);
 		farmTest.addItem(wateringCan);
@@ -69,7 +57,7 @@ public class MainScreenTest {
 		
 		
 		//Trying out the mainScreen
-		MainScreen window = new MainScreen(farmTest, game);
+		MainScreen window = new MainScreen(game);
 		window.frmSelectActivity.setVisible(true);
 		
 		

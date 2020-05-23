@@ -54,23 +54,25 @@ public class Test {
 		welcome.run(welcome);
 	}
 	
-	public void testGeneralStore() throws Exception
-	{
-		GeneralStore store = new GeneralStore();
-
-		System.out.println(store.getAnimals().size());
-		for(Animal a : store.getAnimals())
-		{
-			System.out.println(a);
-		}
-		store.getMerchandise().remove((Merchandise)store.getAnimals().get(0));
-		System.out.println(store.getAnimals().size());
-		for(Animal a : store.getAnimals())
-		{
-			System.out.println(a);
-		}
-	}
-	
+//	public void testGeneralStore() throws Exception
+//	{
+//		Farm farm = new Farm();
+//		GameEnvironment game = new GameEnvironment(farm);
+//		GeneralStore store = new GeneralStore(game);
+//
+//		System.out.println(store.getAnimals().size());
+//		for(Animal a : store.getAnimals())
+//		{
+//			System.out.println(a);
+//		}
+//		store.getMerchandise().remove((Merchandise)store.getAnimals().get(0));
+//		System.out.println(store.getAnimals().size());
+//		for(Animal a : store.getAnimals())
+//		{
+//			System.out.println(a);
+//		}
+//	}
+//	
 //	public void testGeneralStoreScreen()  throws Exception
 //	{
 //		GameEnvironment game = new GameEnvironment();
