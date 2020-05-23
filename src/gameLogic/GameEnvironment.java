@@ -258,7 +258,7 @@ public class GameEnvironment {
 		
 	}
 	
-	public int takeAction(PossibleAction action, ArrayList<Merchandise> selection)
+	public int takeAction(PossibleAction action, String selection)
 	{
 		if(m_farm.getRemainingActions() == 0)
 		{

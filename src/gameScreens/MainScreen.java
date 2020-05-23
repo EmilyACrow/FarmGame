@@ -29,6 +29,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.JTextArea;
 
 /**
  * shows player the actions they can do in the game
@@ -120,9 +121,11 @@ public class MainScreen {
 		frmSelectActivity.getContentPane().add(DetailsScrollPane);
 		
 		//text panes
-		JEditorPane dtrpnSelectiondetails = new JEditorPane();
-		DetailsScrollPane.setViewportView(dtrpnSelectiondetails);
-		dtrpnSelectiondetails.setEditable(false);
+		JTextArea textAreaSelectionDetails = new JTextArea();
+		textAreaSelectionDetails.setWrapStyleWord(true);
+		textAreaSelectionDetails.setLineWrap(true);
+		DetailsScrollPane.setViewportView(textAreaSelectionDetails);
+		textAreaSelectionDetails.setEditable(false);
 		
 			
 		
@@ -160,7 +163,7 @@ public class MainScreen {
 			public void mouseClicked(MouseEvent e) {				
 				btnConfirm.setVisible(true);
 				//shows items info in selection Details
-				dtrpnSelectiondetails.setText(subOption.getSelectedValue().toString() );
+				textAreaSelectionDetails.setText(subOption.getSelectedValue().toString() );
 			}
 		});
 		
@@ -255,7 +258,7 @@ public class MainScreen {
 				
 				chosenAction = PossibleAction.TEND_LAND;
 				//empties anything in selection details
-				dtrpnSelectiondetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
+				textAreaSelectionDetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
 				listModelSubOptions.removeAllElements();
 			}
 		});
@@ -283,7 +286,7 @@ public class MainScreen {
 			//Player clicks button
 			public void actionPerformed(ActionEvent e) {
 				
-				dtrpnSelectiondetails.setText(m_game.getFarm().toString());
+				textAreaSelectionDetails.setText(m_game.getFarm().toString());
 				updateStatusBar();
 				
 			}
@@ -341,31 +344,9 @@ public class MainScreen {
 			 */
 			public void actionPerformed(ActionEvent e) {								
 				
-				if(chosenAction.equals(PossibleAction.TEND_CROP)) {
-				
-				/*
-				 * Attempted:
-
-				//askForItem.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);				
-				//askForItem.setVisible(true);
-				 * 
-				 * //try using a JOption pane instead. it makes the code in Mainscreen pause until window closed but components don't appear.
-				JOptionPane.showConfirmDialog(frmSelectActivity, optionPanel, "Use an item", JOptionPane.PLAIN_MESSAGE);
-				 * 
-				 * 
-				 * //try make OptionalItemPanel and then feed it into JOptionPane
-				
-				 * 
-				*/
-				
+				if(chosenAction.equals(PossibleAction.TEND_CROP)) {				
 				askForItem.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);				
 				askForItem.setVisible(true);
-				
-				
-				//attempt 2. Doesn't accept arrayList. Could turn into An array  
-				
-			
-				//but the code still runs rather than waiting for player to click button on Dialog
 				
 					
 				optionalItem = askForItem.getOptionalItem(); // because the code doesn't wait, it gets a null value here.
@@ -375,7 +356,7 @@ public class MainScreen {
 				System.out.println("Optional item is " + ( (Merchandise) optionalItem).getName() );
 											
 				//clears the selectionDetails text. 
-				dtrpnSelectiondetails.setText("");
+				textAreaSelectionDetails.setText("");
 				System.out.println("Button pressed! It isn't tend crop. Currently selected crop/animal is:");
 				
 				//Seeing the value subOption Jlist.
