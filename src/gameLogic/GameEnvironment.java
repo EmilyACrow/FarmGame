@@ -1,18 +1,9 @@
-package gameScreens;
+package gameLogic;
+
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import gameLogic.Animal;
-import gameLogic.Crop;
-import gameLogic.Farm;
-import gameLogic.FarmType;
-import gameLogic.Farmer;
-import gameLogic.GeneralStore;
-import gameLogic.Item;
-import gameLogic.Merchandise;
-import gameLogic.MerchandiseWrapper;
-import gameLogic.PossibleAction;
 /**
  * Contains methods to run the farm game. Contains methods that allow the player's input to alter variables in the game. 
  * 
@@ -39,7 +30,19 @@ public class GameEnvironment {
 	public GameEnvironment(String farmName, FarmType farmType, Farmer farmer, int remainingDays)
 	{
 		askPlayer = new Scanner(System.in);
-		createNewGame(farmName, farmType, farmer, remainingDays);
+		Farm newFarm = new Farm(farmName, farmType, farmer, remainingDays);
+		createNewGame(newFarm);
+		
+	}
+	
+	/**
+	 * the constructor method activates the scanner that will be used to get player's input
+	 * It also asks the player to input information to create a farm.
+	 */
+	public GameEnvironment(Farm farm)
+	{
+		askPlayer = new Scanner(System.in);
+		createNewGame(farm);
 		
 	}
 	
@@ -52,18 +55,13 @@ public class GameEnvironment {
 		//now call the showActivityScreen.
 		showActivityScreen();
 	}
-	
-	
-	
-	
+
 	
 	/*
 	 * Methods regarding visual screens begin here
 	 */
 	
-	
-	
-	
+
 	
 	/**
 	 * The mainmenu is where the player creates the farm. Using information given by the player, it creates an instance of the Farm class for the attribute 'm_farm'
@@ -102,9 +100,11 @@ public class GameEnvironment {
 		//create a Farmer instance
 		Farmer farmer = new Farmer(farmerName, farmerAge);
 		
+		Farm farm = new Farm(farmName, farmType, farmer, remainingDays);
+		
 		System.out.println("New game is loading");
 		//Creates a new game
-		createNewGame(farmName, farmType, farmer, remainingDays);
+		createNewGame(farm);
 		
 		
 
@@ -114,9 +114,9 @@ public class GameEnvironment {
 	/*
 	 * 
 	 */
-	private void createNewGame(String farmName, FarmType farmType, Farmer farmer, int remainingDays)
+	private void createNewGame(Farm farm)
 	{		
-		m_farm = new Farm(farmName, farmType, farmer, remainingDays);
+		m_farm = farm;
 		m_store = new GeneralStore();
 		m_store.setGameEnvironment(this);
 		m_store.createScreen();
@@ -1080,7 +1080,7 @@ public class GameEnvironment {
 		System.out.println("\n");
 		System.out.println("Your current balance is: $" + m_farm.getMoney());
 		System.out.println("\n");
-		System.out.println("Items in cart: " + m_store.getShoppingCart().getCart()); //need for loop here? for each item view item's name
+		//System.out.println("Items in cart: " + m_store.getShoppingCart().getMerchList()); //need for loop here? for each item view item's name
 		System.out.println("\n");
 		System.out.println("1. view animals");
 		System.out.println("2. view crops");
@@ -1386,9 +1386,26 @@ public class GameEnvironment {
 	{
 		m_farm.addItem(item);
 	}
+	
+	public void addPlayerMerchandise(Merchandise merch)
+	{
+		m_farm.addMerchandise(merch);
+	}
 
 	public MerchandiseWrapper getPlayerMerchandise() {
 		return m_farm.getMerch();
+	}
+
+	public Farm getFarm() {
+		return m_farm;
+	}
+
+	public int getRemainingActions() {
+		return m_farm.getRemainingActions();
+	}
+
+	public int getRemainingDays() {
+		return m_farm.getRemainingDays();
 	}
 	
 	
