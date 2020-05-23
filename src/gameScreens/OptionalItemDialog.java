@@ -17,8 +17,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
 
 
 /**
@@ -30,7 +28,6 @@ import java.awt.BorderLayout;
 public class OptionalItemDialog extends JDialog {
 	
 	private Item optionalItem;
-	private OptionalItemPanel optionItemPanel;
 	
 
 	/**
@@ -39,9 +36,7 @@ public class OptionalItemDialog extends JDialog {
 	public OptionalItemDialog(ArrayList<Item> itemList ) {
 		setTitle("Optional item");
 		setBounds(100, 100, 301, 329);
-		
-		JPanel OptionalItemPanel = new JPanel();
-		getContentPane().add(OptionalItemPanel);
+		getContentPane().setLayout(null);
 		
 		
 		//Only add items that can be used for crop. 
@@ -51,6 +46,68 @@ public class OptionalItemDialog extends JDialog {
 			
 		itemListModel.addElement(crop);
 		}
+		
+		
+		//ScrollPane for Jlist
+		JScrollPane optionalItemScroll = new JScrollPane();
+		optionalItemScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		optionalItemScroll.setBounds(25, 39, 220, 185);
+		getContentPane().add(optionalItemScroll);
+		
+		//creates Jlist
+		JList<Item> itemsForCropList = new JList<Item>(itemListModel);
+		optionalItemScroll.setViewportView(itemsForCropList);
+		
+		
+		
+		JLabel lblAskHeading = new JLabel("Do you want to use an item on the crop?");
+		lblAskHeading.setBounds(25, 10, 286, 19);
+		getContentPane().add(lblAskHeading);
+		
+		
+		//Buttons located on bottom frame are below this line.
+		
+		
+		JButton btnNotUse = new JButton("No");
+		btnNotUse.addActionListener(new ActionListener() {
+			
+			//delete this box when no is clicked
+			public void actionPerformed(ActionEvent e) {
+				optionalItem = null;
+				dispose();
+			}
+		});
+		btnNotUse.setBounds(25, 234, 85, 37);
+		getContentPane().add(btnNotUse);
+		
+		
+		
+		JButton btnUse = new JButton("Confirm");
+		//Uses the selected item object in the Jlist
+		btnUse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				optionalItem = itemsForCropList.getSelectedValue();
+				btnUse.setVisible(false);
+				m_game.tendCrops(typeToTend, item); 
+				
+				
+			}
+		});
+		btnUse.setBounds(158, 232, 85, 39);
+		getContentPane().add(btnUse);
+		btnUse.setVisible(false);
+		
+		
+		
+		//Jlist itemsForCropList, mouse Clicked. makes button appear.
+		itemsForCropList.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				btnUse.setVisible(true);
+				
+			}
+		});
 
 	}
 	
