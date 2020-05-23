@@ -19,6 +19,7 @@ import javax.swing.SwingConstants;
 import gameLogic.Animal;
 import gameLogic.Crop;
 import gameLogic.Farm;
+import gameLogic.GameEnvironment;
 import gameLogic.Item;
 import gameLogic.Merchandise;
 import gameLogic.MerchandiseWrapper;
@@ -204,7 +205,7 @@ public class MainScreen {
 				
 				
 				chosenAction = PossibleAction.FEED_ANIMAL;
-				//show a list of animals player can feed			
+				//show a list of animals player can feed
 				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.ANIMAL);
 			}
 		});
@@ -256,7 +257,6 @@ public class MainScreen {
 				//empties anything in selection details
 				dtrpnSelectiondetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
 				listModelSubOptions.removeAllElements();
-				System.out.println("Tend land clicked");			
 			}
 		});
 		btnTendLand.setBounds(28, 211, 141, 21);
@@ -412,6 +412,8 @@ public class MainScreen {
 		//Worst n^2 - I'm sorry, I was in a rush
 		for(int i = 0; i < merch.getMerchList().size(); i++)
 		{
+			
+			//System.out.println(String.format("className=%s, regex=%s, filteredOut=%d", merch.getMerchList().get(i).getClass().getSimpleName(), filterRegex,(merch.getMerchList().get(i).getClass().getSimpleName().matches(filterRegex))));
 			//If the class name of merch @ index i doesn't match the filter, skip this iteration.
 			if(!(merch.getMerchList().get(i).getClass().getSimpleName().matches(filterRegex)))
 			{
@@ -419,7 +421,7 @@ public class MainScreen {
 			}
 			boolean alreadyAdded = false;
 			Merchandise m = merch.getMerchList().get(i);
-			for(int j = compactedList.size(); j > 0; j++)
+			for(int j = compactedList.size() - 1; j >= 0; j--)
 			{
 				if(compactedList.get(j).getName() == m.getName())
 				{

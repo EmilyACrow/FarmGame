@@ -7,7 +7,7 @@ package gameLogic;
 * Structure of this class based on 
 * (https://howtodoinjava.com/jaxb/jaxb-exmaple-marshalling-and-unmarshalling-list-or-set-of-objects/)
 * 
-* Last modified: 13-5-20 by Dmitri Smith
+* Last modified: 22-5-20 by Dmitri Smith
 *
 * Created: 28-4-20
 * @author  Dmitri Smith

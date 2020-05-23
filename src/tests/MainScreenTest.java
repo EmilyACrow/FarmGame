@@ -1,13 +1,6 @@
 package tests;
 
-import gameLogic.Animal;
-import gameLogic.Crop;
-import gameLogic.Farm;
-import gameLogic.FarmType;
-import gameLogic.Farmer;
-import gameLogic.Item;
-import gameLogic.Merchandise;
-import gameScreens.GameEnvironment;
+import gameLogic.*;
 import gameScreens.MainScreen;
 
 public class MainScreenTest {
@@ -63,6 +56,10 @@ public class MainScreenTest {
 		
 		Animal rabbit = new Animal("rabbit", "fluff", 0, 10);
 		farmTest.addAnimal(rabbit);
+		
+		Animal lorax = new Animal("Lorax", "Speaker for the Trees", 0, 0);
+		farmTest.addAnimal(lorax);
+		farmTest.addMerchandise(lorax.clone());
 		
 		Item wateringCan = new Item("watering can", 0, 1, false, true);
 		farmTest.addItem(wateringCan);
