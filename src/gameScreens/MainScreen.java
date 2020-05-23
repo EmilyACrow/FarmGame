@@ -19,8 +19,10 @@ import javax.swing.SwingConstants;
 import gameLogic.Animal;
 import gameLogic.Crop;
 import gameLogic.Farm;
+import gameLogic.GameEnvironment;
 import gameLogic.Item;
 import gameLogic.Merchandise;
+import gameLogic.MerchandiseWrapper;
 import gameLogic.PossibleAction;
 
 import java.awt.event.MouseAdapter;
@@ -43,11 +45,18 @@ import javax.swing.ScrollPaneConstants;
 public class MainScreen {
 
 	public JFrame frmSelectActivity;
-	private Farm gameEnvironment;
+	private JPanel optionPanel;
+	private JLabel lblMoney;
+	private JLabel lblActionsRemaining;
+	private JLabel lblDaysRemaining;
+	private JLabel lblCrops;
+	private JLabel lblAnimals;
+
 	private OptionalItemDialog askForItem;
 	private PossibleAction chosenAction;
 	private Item optionalItem;
-	private JPanel optionPanel;
+	private DefaultListModel<String> listModelSubOptions;
+	private GameEnvironment m_game;
 	
 	
 
@@ -77,14 +86,13 @@ public class MainScreen {
 	 * 
 	 * @param newGame the Farm class created by the player.
 	 */
-	public MainScreen(Farm newGame) {
+	public MainScreen(GameEnvironment game) {
 		
 		//a default value for chosenAction
 		chosenAction = PossibleAction.FEED_ANIMAL;
 		optionalItem = null;
-		gameEnvironment = newGame;
-		askForItem = new OptionalItemDialog(gameEnvironment.getItems() ); 
-		//optionPanel = new OptionalItemPanel();
+		m_game = game;
+		askForItem = new OptionalItemDialog(m_game.getPlayerItems());
 		initialize();
 		frmSelectActivity.setVisible(true);
 		
@@ -101,10 +109,7 @@ public class MainScreen {
 		frmSelectActivity.setBounds(100, 100, 531, 428);
 		frmSelectActivity.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSelectActivity.getContentPane().setLayout(null);
-		
-		
-		
-		
+
 		/*
 		 * Components to aid in player selecting one crop or animal are below here.
 		 */
@@ -135,14 +140,14 @@ public class MainScreen {
 		
 		
 		// The list model that will be used by the subOption JList.
-		DefaultListModel<Merchandise> ownedMerchListModel = new DefaultListModel<>();
+		listModelSubOptions = new DefaultListModel<>();
 		
 		//ScrollPane for subOption
 		JScrollPane subOpionScrollPane = new JScrollPane();
 		subOpionScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		subOpionScrollPane.setBounds(198, 119, 118, 210);
 		frmSelectActivity.getContentPane().add(subOpionScrollPane);
-		JList<Merchandise> subOption = new JList<Merchandise>(ownedMerchListModel);
+		JList<String> subOption = new JList<String>(listModelSubOptions);
 		subOption.setBorder(null);
 		subOpionScrollPane.setViewportView(subOption);
 		subOption.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -155,7 +160,7 @@ public class MainScreen {
 			public void mouseClicked(MouseEvent e) {				
 				btnConfirm.setVisible(true);
 				//shows items info in selection Details
-				dtrpnSelectiondetails.setText(subOption.getSelectedValue().toString() );				
+				dtrpnSelectiondetails.setText(subOption.getSelectedValue().toString() );
 			}
 		});
 		
@@ -178,12 +183,7 @@ public class MainScreen {
 				
 				chosenAction = PossibleAction.TEND_CROP;
 				//shows crops player owns into Jlist.				
-				ownedMerchListModel.removeAllElements();
-				for (Merchandise crop : gameEnvironment.getCrops() ) {
-					
-					ownedMerchListModel.addElement(crop);
-				}		
-				
+				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.CROP);
 			}		
 		});	
 		btnTendCrop.setBounds(28, 119, 141, 21);
@@ -200,14 +200,13 @@ public class MainScreen {
 		btnFeedAnimal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				chosenAction = PossibleAction.FEED_ANIMAL;
-				//show a list of animals player can feed			
-				ownedMerchListModel.removeAllElements();
+				//MainScreen.java
+				//m_game.feedAnimal
 				
-				for (Animal animal : gameEnvironment.getAnimals() ) {
-					
-					ownedMerchListModel.addElement(animal);
-				}
+				
+				chosenAction = PossibleAction.FEED_ANIMAL;
+				//show a list of animals player can feed
+				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.ANIMAL);
 			}
 		});
 		btnFeedAnimal.setBounds(28, 169, 141, 21);
@@ -222,11 +221,7 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 				
 				chosenAction = PossibleAction.PLAY_WITH_ANIMAL;
-				ownedMerchListModel.removeAllElements();
-				for (Animal animal : gameEnvironment.getAnimals() ) {
-					
-					ownedMerchListModel.addElement(animal);
-				}
+				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.ANIMAL);
 			}
 		});
 		btnPlayAnimal.setBounds(30, 304, 139, 25);
@@ -242,12 +237,7 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 				chosenAction = PossibleAction.HARVEST_CROP;
 				//shows crops player owns.
-				
-				ownedMerchListModel.removeAllElements();
-				for (Crop crop : gameEnvironment.getCrops() ) {
-					
-					ownedMerchListModel.addElement(crop);
-				}	
+				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.CROP);
 				
 			}
 		});
@@ -266,8 +256,7 @@ public class MainScreen {
 				chosenAction = PossibleAction.TEND_LAND;
 				//empties anything in selection details
 				dtrpnSelectiondetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
-				ownedMerchListModel.removeAllElements();
-				System.out.println("Tend land clicked");			
+				listModelSubOptions.removeAllElements();
 			}
 		});
 		btnTendLand.setBounds(28, 211, 141, 21);
@@ -279,7 +268,7 @@ public class MainScreen {
 		btnStore.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				System.out.println("Do something to go to store");
+				m_game.displayGeneralStore();
 			}
 		});
 		
@@ -294,7 +283,8 @@ public class MainScreen {
 			//Player clicks button
 			public void actionPerformed(ActionEvent e) {
 				
-				dtrpnSelectiondetails.setText(gameEnvironment.toString());
+				dtrpnSelectiondetails.setText(m_game.getFarm().toString());
+				updateStatusBar();
 				
 			}
 		});
@@ -308,34 +298,34 @@ public class MainScreen {
 		 * */
 		
 		
-		JLabel lblMoney = new JLabel();
-		lblMoney.setText(String.format("Money: $ %d", gameEnvironment.getMoney() ) );		
+		lblMoney = new JLabel();
+		lblMoney.setText(String.format("Money: $ %d", m_game.getPlayerMoney()));		
 		lblMoney.setBounds(167, 6, 92, 25);
 		frmSelectActivity.getContentPane().add(lblMoney);
 		
 		
-		JLabel lblActionsRemaining = new JLabel();
-		lblActionsRemaining.setText(String.format("Actions remaining: %d", gameEnvironment.getRemainingActions() ) );
+		lblActionsRemaining = new JLabel();
+		lblActionsRemaining.setText(String.format("Actions remaining: %d", m_game.getRemainingActions()));
 		lblActionsRemaining.setBounds(28, 84, 141, 25);
 		frmSelectActivity.getContentPane().add(lblActionsRemaining);
 		
 		
-		JLabel lblCrops = new JLabel();
-		lblCrops.setText(String.format("Crops: %d", gameEnvironment.getCrops().size() ));
+		lblCrops = new JLabel();
+		lblCrops.setText(String.format("Crops: %d", m_game.getPlayerCrops().size()));
 		lblCrops.setBounds(289, 6, 80, 25);
 		frmSelectActivity.getContentPane().add(lblCrops);
 		
 		
 		
-		JLabel lblAnimals = new JLabel("Animals");
-		lblAnimals.setText(String.format("Animals: %d", gameEnvironment.getAnimals().size() ) );
+		lblAnimals = new JLabel("Animals");
+		lblAnimals.setText(String.format("Animals: %d", m_game.getPlayerAnimals().size()));
 		lblAnimals.setBounds(403, 6, 80, 25);
 		frmSelectActivity.getContentPane().add(lblAnimals);
 		
 		
 		
-		JLabel lblDaysRemaining = new JLabel();
-		lblDaysRemaining.setText(String.format("Days remaining %d", gameEnvironment.getRemainingDays()) );
+		lblDaysRemaining = new JLabel();
+		lblDaysRemaining.setText(String.format("Days remaining %d", m_game.getRemainingDays()));
 		lblDaysRemaining.setHorizontalTextPosition(SwingConstants.LEFT);
 		lblDaysRemaining.setBounds(28, 6, 129, 25);		
 		frmSelectActivity.getContentPane().add(lblDaysRemaining);
@@ -353,29 +343,19 @@ public class MainScreen {
 				
 				if(chosenAction.equals(PossibleAction.TEND_CROP)) {
 				
-				/*
-				 * Attempted:
+					try 
+					{
+						
+						//Action-Type, ArrayList<Merchandise> 
+						m_game.tendAction(chosenAction, selectedMerch);
+						
+						
+					}
+					catch (Exception c) {
+						System.out.println("Exception has happened ");
+					}
+				
 
-				//askForItem.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);				
-				//askForItem.setVisible(true);
-				 * 
-				 * //try using a JOption pane instead. it makes the code in Mainscreen pause until window closed but components don't appear.
-				JOptionPane.showConfirmDialog(frmSelectActivity, optionPanel, "Use an item", JOptionPane.PLAIN_MESSAGE);
-				 * 
-				 * 
-				 * //try make OptionalItemPanel and then feed it into JOptionPane
-				
-				 * 
-				*/
-				
-				askForItem.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);				
-				askForItem.setVisible(true);
-				
-				
-				//attempt 2. Doesn't accept arrayList. Could turn into An array  
-				
-			
-				//but the code still runs rather than waiting for player to click button on Dialog
 				
 					
 				optionalItem = askForItem.getOptionalItem(); // because the code doesn't wait, it gets a null value here.
@@ -392,7 +372,7 @@ public class MainScreen {
 				System.out.println(subOption.getSelectedValue());
 				
 				
-				ownedMerchListModel.removeAllElements();
+				listModelSubOptions.removeAllElements();
 				//turn invisible again
 				btnConfirm.setVisible(false);
 				
@@ -401,11 +381,65 @@ public class MainScreen {
 				
 				//lblActionsRemaining.setText(String.format("Actions remaining: %d", gameEnvironment.getRemainingActions() ) );
 				
-				
+				updateStatusBar();
 				
 			}
 		});
 		
+		updateStatusBar();
+		
+	}
+	
+	/**
+	 * Populate a DefaultListModel<String> with names from a list of Merchandise.
+	 * Can display multiple class types by formatting filter string as [classStringA]|[classStringB].
+	 * @param merch list of merchandise to display by type
+	 * @param merchType MerchandiseWrapper constant, either .ANIMAL, .CROP, or .ITEM based on which class you want to display
+	 */
+	public void populateSubOptions(MerchandiseWrapper merch, String merchType)
+	{
+		//TODO: Move to GameEnvironment.java
+		ArrayList<Merchandise> compactedList = new ArrayList<Merchandise>();
+		//Quick little regex to filter out merch we want
+		String filterRegex = String.format("(%s)", merchType);
+		//Worst n^2 - I'm sorry, I was in a rush
+		for(int i = 0; i < merch.getMerchList().size(); i++)
+		{
+			
+			//System.out.println(String.format("className=%s, regex=%s, filteredOut=%d", merch.getMerchList().get(i).getClass().getSimpleName(), filterRegex,(merch.getMerchList().get(i).getClass().getSimpleName().matches(filterRegex))));
+			//If the class name of merch @ index i doesn't match the filter, skip this iteration.
+			if(!(merch.getMerchList().get(i).getClass().getSimpleName().matches(filterRegex)))
+			{
+				continue;
+			}
+			boolean alreadyAdded = false;
+			Merchandise m = merch.getMerchList().get(i);
+			for(int j = compactedList.size() - 1; j >= 0; j--)
+			{
+				if(compactedList.get(j).getName() == m.getName())
+				{
+					alreadyAdded = true;
+					break;
+				}
+			}
+			if(!alreadyAdded)
+			{
+				compactedList.add(m);
+			}
+		}
+		listModelSubOptions.removeAllElements();
+		for(Merchandise m : compactedList)
+		{
+			listModelSubOptions.addElement(m.getName());
+		}
+	}
+	
+	public void updateStatusBar()
+	{
+		lblMoney.setText(String.format("Money: $%d", m_game.getPlayerMoney()));
+		lblDaysRemaining.setText(String.format("Days Remaining: %d", m_game.getRemainingDays()));
+		lblCrops.setText(String.format("Crops: %d", m_game.getPlayerCrops().size()));
+		lblAnimals.setText(String.format("Animals: %d", m_game.getPlayerAnimals().size()));
 	}
 	
 
