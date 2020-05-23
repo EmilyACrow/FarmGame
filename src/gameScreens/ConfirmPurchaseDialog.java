@@ -1,8 +1,6 @@
 package gameScreens;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 
@@ -14,18 +12,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
-
 import gameLogic.GeneralStore;
-import gameLogic.Merchandise;
 import gameLogic.MerchandiseWrapper;
-import gameLogic.ShoppingCart;
-
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import javax.swing.JTextPane;
 
 public class ConfirmPurchaseDialog extends JDialog {
@@ -54,6 +46,7 @@ public class ConfirmPurchaseDialog extends JDialog {
 	 * Create the dialog.
 	 */
 	public ConfirmPurchaseDialog(GeneralStore store, MerchandiseWrapper cart, int playerMoney, int finalPrice) {
+		setTitle("Checkout");
 		m_backend = store;
 		m_playerMoney = playerMoney;
 		m_cart = cart.clone();
@@ -159,7 +152,7 @@ public class ConfirmPurchaseDialog extends JDialog {
 				{
 					if(m_backend.canPurchaseCart(playerMoney, finalPrice, m_cart))
 					{
-						m_backend.purchaseCart(new ShoppingCart(cart.getMerchList()));
+						m_backend.purchaseCart(cart, finalPrice);
 						dispose();
 					}
 				}

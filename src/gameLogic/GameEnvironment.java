@@ -1,18 +1,8 @@
-package gameScreens;
+package gameLogic;
+import java.awt.LayoutManager;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
-import gameLogic.Animal;
-import gameLogic.Crop;
-import gameLogic.Farm;
-import gameLogic.FarmType;
-import gameLogic.Farmer;
-import gameLogic.GeneralStore;
-import gameLogic.Item;
-import gameLogic.Merchandise;
-import gameLogic.MerchandiseWrapper;
-import gameLogic.PossibleAction;
 /**
  * Contains methods to run the farm game. Contains methods that allow the player's input to alter variables in the game. 
  * 
@@ -64,18 +54,13 @@ public class GameEnvironment {
 		//now call the showActivityScreen.
 		showActivityScreen();
 	}
-	
-	
-	
-	
+
 	
 	/*
 	 * Methods regarding visual screens begin here
 	 */
 	
-	
-	
-	
+
 	
 	/**
 	 * The mainmenu is where the player creates the farm. Using information given by the player, it creates an instance of the Farm class for the attribute 'm_farm'
@@ -1094,7 +1079,7 @@ public class GameEnvironment {
 		System.out.println("\n");
 		System.out.println("Your current balance is: $" + m_farm.getMoney());
 		System.out.println("\n");
-		System.out.println("Items in cart: " + m_store.getShoppingCart().getCart()); //need for loop here? for each item view item's name
+		System.out.println("Items in cart: " + m_store.getShoppingCart().getMerchList()); //need for loop here? for each item view item's name
 		System.out.println("\n");
 		System.out.println("1. view animals");
 		System.out.println("2. view crops");
@@ -1399,6 +1384,11 @@ public class GameEnvironment {
 	public void addPlayerItem(Item item)
 	{
 		m_farm.addItem(item);
+	}
+	
+	public void addPlayerMerchandise(Merchandise merch)
+	{
+		m_farm.addMerchandise(merch);
 	}
 
 	public MerchandiseWrapper getPlayerMerchandise() {
