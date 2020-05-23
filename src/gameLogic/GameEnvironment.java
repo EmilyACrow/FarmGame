@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import gameScreens.MainScreen;
 import gameScreens.OptionalItemDialog;
 /**
@@ -321,7 +323,7 @@ public class GameEnvironment {
 		}
 		MerchandiseWrapper wrappedSelection = new MerchandiseWrapper(selectedMerch);
 		
-		boolean useItem = true;
+		
 		try
 		{
 			switch(action) 
@@ -391,7 +393,9 @@ public class GameEnvironment {
 					tendLand();
 					break;
 			}
+
 			m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
+			System.out.println(m_farm.getRemainingActions());
 			m_mainScreen.updateStatusBar();
 		}
 		catch(Exception e)
@@ -543,16 +547,18 @@ public class GameEnvironment {
 	
 	/**
 	 * End the game day.
-	 * If days remaining in game <= 0, end the game
+	 * If days remaining in game <= 0, it ends the game.
 	 */
 	public void endDay()
 	{
 		try
 		{
-			m_farm.endDay();
+			updateDetailText(m_farm.endDay());
+			m_farm.setRemainingActions(2);
+			updateStatusBar();
 		}
 		catch (IllegalStateException e)
-		{
+		{	
 			endGame();
 		}
 		
@@ -571,9 +577,8 @@ public class GameEnvironment {
 	 */
 	private void endGame()
 	{
-			
-		System.out.println("The game has ended. Your score is: ");
-		
+		String closingMessage = String.format("The game has ended. Your score is: $%d", m_farm.getMoney());
+		JOptionPane.showMessageDialog(null, closingMessage);
 	}
 	
 	

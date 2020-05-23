@@ -46,7 +46,7 @@ import javax.swing.JTextArea;
 public class MainScreen {
 
 	public JFrame frmSelectActivity;
-	private JPanel optionPanel;
+	private JPanel buttonPanel;
 	private JLabel lblMoney;
 	private JLabel lblActionsRemaining;
 	private JLabel lblDaysRemaining;
@@ -91,6 +91,7 @@ public class MainScreen {
 		frmSelectActivity.setBounds(100, 100, 531, 428);
 		frmSelectActivity.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSelectActivity.getContentPane().setLayout(null);
+		
 
 		/*
 		 * Components to aid in player selecting one crop or animal are below here.
@@ -240,6 +241,7 @@ public class MainScreen {
 				//empties anything in selection details
 				textAreaSelectionDetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
 				listModelSubOptions.removeAllElements();
+				btnConfirm.setVisible(true);
 			}
 		});
 		btnTendLand.setBounds(28, 211, 141, 21);
@@ -320,7 +322,8 @@ public class MainScreen {
 		btnNextDay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//have to move this to game environ	
-				m_game.updateDetailText(m_game.getFarm().endDay() );			
+				
+				m_game.endDay();			
 			}
 		});
 		btnNextDay.setBounds(356, 349, 127, 21);
@@ -336,13 +339,20 @@ public class MainScreen {
 			 * confirmation button will use the selected animal/crop as arguments to feed into takeAction() in GameEnvironment class
 			 * If tend crop is selected, OptionalItemDialog pops up to ask player if they want to use an item on the crop.
 			 */
-			public void actionPerformed(ActionEvent e) {				
-				m_game.takeAction(chosenAction, subOption.getSelectedValue());
+			public void actionPerformed(ActionEvent e) {
+				
+				if(chosenAction.equals(PossibleAction.TEND_LAND) ) {
+				System.out.println( subOption.getSelectedValue() );
+				//m_game.takeAction(chosenAction, subOption.getSelectedValue()
+				//m_game.tendLand();
+									
+				}
+				else {
+					m_game.takeAction(chosenAction, subOption.getSelectedValue() );
+				}
 				
 			}
 		});
-		
-		updateStatusBar();
 		
 	}
 	
@@ -399,14 +409,19 @@ public class MainScreen {
 		lblDaysRemaining.setText(String.format("Days Remaining: %d", m_game.getRemainingDays()));
 		lblCrops.setText(String.format("Crops: %d", m_game.getPlayerCrops().size()));
 		lblAnimals.setText(String.format("Animals: %d", m_game.getPlayerAnimals().size()));
+		lblActionsRemaining.setText(String.format("Actions remaining: %d", m_game.getRemainingActions()));
+		lblDaysRemaining.setText(String.format("Days remaining %d", m_game.getRemainingDays()));
+		
 	}
 	
 	/**
-	 * Sets the text in textAreaSelectionDetails
+	 * Sets the text in textAreaSelectionDetails. gameEnvironment uses it.
 	 * @param text
 	 */
 	public void setDetailText(String text)
 	{
 		textAreaSelectionDetails.setText(text);
 	}
+	
+
 }
