@@ -51,6 +51,7 @@ public class GeneralStoreScreen{
 		m_cart = m_backend.getShoppingCart();
 		
 		frameGeneralStore = new JFrame();
+		frameGeneralStore.setResizable(false);
 		frameGeneralStore.setTitle("General Store");
 		frameGeneralStore.setBounds(100, 100, 401, 570);
 		frameGeneralStore.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);

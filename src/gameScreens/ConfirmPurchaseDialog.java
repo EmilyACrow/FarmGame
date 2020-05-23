@@ -52,6 +52,7 @@ public class ConfirmPurchaseDialog extends JDialog {
 		m_cart = cart.clone();
 		
 		setBounds(100, 100, 450, 530);
+		setResizable(false);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{40, 125, 50, 108, 53, 0};
 		gridBagLayout.rowHeights = new int[]{56, 0, 0, 0, 60, 50, 0};
