@@ -825,6 +825,19 @@ public class Farm {
 	public void playWithAnimal(Animal animal) {
 		animal.setHappiness((int)(MAX_ANIMAL_HAPPINESS * m_animalHappinessMod));
 	}
+	
+	public ArrayList<Merchandise> getPlayerMerchFromString(String str)
+	{
+		ArrayList<Merchandise> matchingMerch = new ArrayList<Merchandise>();
+		for(Merchandise m : m_merch.getMerchList())
+		{
+			if(m.getName() == str)
+			{
+				matchingMerch.add(m);
+			}
+		}
+		return matchingMerch;
+	}
 
 	
 

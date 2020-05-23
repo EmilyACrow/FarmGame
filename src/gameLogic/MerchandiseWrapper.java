@@ -103,6 +103,16 @@ public class MerchandiseWrapper {
     }
     
     /**
+     * Returns a reference to a single Merchandise Object at position index
+     * @param index location in array
+     * @return Reference to object at index i
+     */
+    public Merchandise get(int index)
+    {
+    	return merchList.get(index);
+    }
+    
+    /**
      * Overload getAnimals to default to the local merchList
      * @return ArrayList<Animal> deep copy of all animals in the local merchlist
      */

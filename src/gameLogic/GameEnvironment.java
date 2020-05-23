@@ -183,32 +183,70 @@ public class GameEnvironment {
 		
 	}
 	
-	private void feedAnimal(Animal animal, Item item)
+	private void feedAnimals(MerchandiseWrapper wrappedSelection) 
 	{
-		try
-		{
-			animal.useItem(item);
-		}
-		catch(Exception e)
-		{
-			System.out.println(e);
-		}
+		//if(wrappedSelection.getAnimals().size())
+		//Create OptionalItemDialog window
+		
 	}
 	
-	private void playWithAnimal(Animal animal)
+	/**
+	 * Feed the animals once animals to feed and item to use are established
+	 * @param animals ArrayList<Animal> animals to feed
+	 * @param items ArrayList<Item> items to feed to animals
+	 */
+	private void feedAnimal(ArrayList<Animal> animals, ArrayList<Item> items)
 	{
-		m_farm.playWithAnimal(animal);
+		if(animals.size() > items.size())
+		{
+			throw new IllegalStateException(String.format("Not enough %s: %d needed but %d only in inventory.", items.get(0).getName(), animals.size(), items.size()));
+		}
+		else if (!items.get(0).getForAnimals())
+		{
+			throw new IllegalStateException(String.format("Item %s not compatible with animals.", items.get(0).getName()));
+		}
+
+		for(int i = animals.size() - 1; i >= 0; i--)
+		{
+			
+			try
+			{
+				animals.get(i).useItem(items.get(i));
+				items.remove(i);
+			}
+			catch(Exception e)
+			{
+				m_mainScreen.setDetailText(e.getMessage());
+			}
+		}
+		
 	}
 	
-	private void harvestCrop(Crop crop)
+	private void playWithAnimals(MerchandiseWrapper wrappedSelection)
 	{
-		try
+		//Need to access wrapper this way in order to act on reference to player object rather than 
+		for(int i = 0; i < wrappedSelection.size(); i++)
 		{
-			m_farm.addMoney(crop.harvest());
+			Animal a = (Animal)wrappedSelection.get(i);
+			m_farm.playWithAnimal(a);
 		}
-		catch(Exception e)
+		
+	}
+	
+	private void harvestCrop(MerchandiseWrapper wrappedSelection)
+	{
+		//Need to access wrapper this way in order to act on reference to player object rather than 
+		for(int i = 0; i < wrappedSelection.size(); i++)
 		{
-			System.out.println(e);
+			Crop c = (Crop)wrappedSelection.get(i);
+			try
+			{
+				m_farm.addMoney(c.harvest());
+			}
+			catch(Exception e)
+			{
+				m_mainScreen.setDetailText(e.getMessage());
+			}
 		}
 	}
 	
@@ -217,7 +255,6 @@ public class GameEnvironment {
 		
 		m_farm.setMaxAnimalAmount(m_farm.getMaxAnimalAmount() + 1);
 		m_farm.setMaxCropAmount(m_farm.getMaxCropAmount() + 1);
-		m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
 	}
 	
 	public int getCropStatus(Crop crop)
@@ -258,129 +295,99 @@ public class GameEnvironment {
 		
 	}
 	
-	public int takeAction(PossibleAction action, String selection)
+	/**
+	 * Makes an action based on the player's input
+	 * @param action PossibleAction action the player can
+	 * @param selection String name representing the .getName property of a Merchandise object
+	 */
+	public void takeAction(PossibleAction action, String selection)
 	{
 		if(m_farm.getRemainingActions() == 0)
 		{
-			System.out.println("No remaining actions!");
-			return 0;
+			m_mainScreen.setDetailText("No remaining actions!");
+			return;
 		}
+		
+		ArrayList<Merchandise> selectedMerch = m_farm.getPlayerMerchFromString(selection);
+		if(selectedMerch.size() == 0)
+		{
+			m_mainScreen.setDetailText(String.format("No merchandise matching %s found in inventory!", selection));
+			return;
+		}
+		MerchandiseWrapper wrappedSelection = new MerchandiseWrapper(selectedMerch);
+		
 		boolean useItem = true;
 		try
 		{
-			Item item;
-			Crop crop;
-			Animal animal;
 			switch(action) 
 			{
 				case TEND_CROP:
-					try
-					{
-						crop = selectCrop();
-					}
-					catch (IllegalStateException e)
-					{
-						System.out.println(e);
-						break;
-					}
-					catch(RuntimeException e)
-					{
-						System.out.println(e);
-						break;
-					}
-
-					//Have to initialize item to something here, otherwise compiler thinks there's an issue later
-					//even though that issue is handled'
-					item = new Item();
-					try
-					{
-						item = selectActionItem(false); 
-					}
-					catch(IllegalStateException e)
-					{
-						System.out.println(e);
-						break;
-					}
-					catch(NullPointerException e)
-					{
-						useItem = false;
-						System.out.println(e);
-					}
-					
-					if(useItem)
-					{
-						tendCrops(crop, item);
-					}
-					else
-					{
-						 tendCrops(crop);
-					}
+//					try
+//					{
+//						crop = selectCrop();
+//					}
+//					catch (IllegalStateException e)
+//					{
+//						m_mainScreen.setDetailText(e.getMessage());
+//						break;
+//					}
+//					catch(RuntimeException e)
+//					{
+//						m_mainScreen.setDetailText(e.getMessage());
+//						break;
+//					}
+//
+//					//Have to initialize item to something here, otherwise compiler thinks there's an issue later
+//					//even though that issue is handled'
+//					item = new Item();
+//					try
+//					{
+//						item = selectActionItem(false); 
+//					}
+//					catch(IllegalStateException e)
+//					{
+//						m_mainScreen.setDetailText(e.getMessage());
+//						break;
+//					}
+//					catch(NullPointerException e)
+//					{
+//						useItem = false;
+//						m_mainScreen.setDetailText(e.getMessage());
+//					}
+//					
+//					if(useItem)
+//					{
+//						tendCrops(crop, item);
+//					}
+//					else
+//					{
+//						 tendCrops(crop);
+//					}
 					break;
-				case FEED_ANIMAL: 
-					try
-					{
-						animal = selectAnimal();
-					}
-					catch(IllegalStateException e)
-					{
-						System.out.println(e);
-						break;
-					}
-					try
-					{
-						item = selectActionItem(true); 
-					}
-					catch(IllegalStateException e)
-					{
-						System.out.println(e);
-						break;
-					}
-					
-					feedAnimal(animal, item);
+				case FEED_ANIMAL: 					
+					feedAnimals(wrappedSelection);
 					break;
 					
 				case PLAY_WITH_ANIMAL: 
-					try
-					{
-						animal = selectAnimal();
-					}
-					catch(IllegalStateException e)
-					{
-						System.out.println(e);
-						break;
-					}
-					playWithAnimal(animal);
+					playWithAnimals(wrappedSelection);
 					break;
 				case HARVEST_CROP: 
-					try
-					{
-						crop = selectCrop();
-					}
-					catch (IllegalStateException e)
-					{
-						System.out.println(e);
-						break;
-					}
-					catch(RuntimeException e)
-					{
-						System.out.println(e);
-						break;
-					}
-					harvestCrop(crop);
+					harvestCrop(wrappedSelection);
+					break;
 				case TEND_LAND: 
 					tendLand();
 					break;
 			}
+			m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
+			m_mainScreen.updateStatusBar();
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
+			m_mainScreen.setDetailText(e.getMessage());
 		}
-		return m_farm.getRemainingActions();
+		
 	}
-	
-	
-	
+
 	/**
 	 * Method to select a crop from all crops in the farm
 	 * @return crop to use

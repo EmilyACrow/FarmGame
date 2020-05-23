@@ -52,6 +52,7 @@ public class MainScreen {
 	private JLabel lblDaysRemaining;
 	private JLabel lblCrops;
 	private JLabel lblAnimals;
+	JTextArea textAreaSelectionDetails;
 
 	private OptionalItemDialog askForItem;
 	private PossibleAction chosenAction;
@@ -121,7 +122,7 @@ public class MainScreen {
 		frmSelectActivity.getContentPane().add(DetailsScrollPane);
 		
 		//text panes
-		JTextArea textAreaSelectionDetails = new JTextArea();
+		textAreaSelectionDetails = new JTextArea();
 		textAreaSelectionDetails.setWrapStyleWord(true);
 		textAreaSelectionDetails.setLineWrap(true);
 		DetailsScrollPane.setViewportView(textAreaSelectionDetails);
@@ -342,37 +343,8 @@ public class MainScreen {
 			 * confirmation button will use the selected animal/crop as arguments to feed into takeAction() in GameEnvironment class
 			 * If tend crop is selected, OptionalItemDialog pops up to ask player if they want to use an item on the crop.
 			 */
-			public void actionPerformed(ActionEvent e) {								
-				
-				if(chosenAction.equals(PossibleAction.TEND_CROP)) {				
-				askForItem.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);				
-				askForItem.setVisible(true);
-				
-					
-				optionalItem = askForItem.getOptionalItem(); // because the code doesn't wait, it gets a null value here.
-			
-				}
-				System.out.println("Should be waiting for input");
-				System.out.println("Optional item is " + ( (Merchandise) optionalItem).getName() );
-											
-				//clears the selectionDetails text. 
-				textAreaSelectionDetails.setText("");
-				System.out.println("Button pressed! It isn't tend crop. Currently selected crop/animal is:");
-				
-				//Seeing the value subOption Jlist.
-				System.out.println(subOption.getSelectedValue());
-				
-				
-				listModelSubOptions.removeAllElements();
-				//turn invisible again
-				btnConfirm.setVisible(false);
-				
-				//calls the method of the button and uses the selected animal as the required argument
-				// ActionCount = gameEnvironment.takeAction(chosenAction, itemSelection));
-				
-				//lblActionsRemaining.setText(String.format("Actions remaining: %d", gameEnvironment.getRemainingActions() ) );
-				
-				updateStatusBar();
+			public void actionPerformed(ActionEvent e) {				
+				m_game.takeAction(chosenAction, subOption.getSelectedValue());
 				
 			}
 		});
@@ -425,12 +397,24 @@ public class MainScreen {
 		}
 	}
 	
+	/**
+	 * Updates the 4 farm status labels across the top of the main screen
+	 */
 	public void updateStatusBar()
 	{
 		lblMoney.setText(String.format("Money: $%d", m_game.getPlayerMoney()));
 		lblDaysRemaining.setText(String.format("Days Remaining: %d", m_game.getRemainingDays()));
 		lblCrops.setText(String.format("Crops: %d", m_game.getPlayerCrops().size()));
 		lblAnimals.setText(String.format("Animals: %d", m_game.getPlayerAnimals().size()));
+	}
+	
+	/**
+	 * Sets the text in textAreaSelectionDetails
+	 * @param text
+	 */
+	public void setDetailText(String text)
+	{
+		textAreaSelectionDetails.setText(text);
 	}
 	
 
