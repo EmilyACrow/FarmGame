@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
@@ -45,6 +46,8 @@ public class MainScreen {
 	private Farm gameEnvironment;
 	private OptionalItemDialog askForItem;
 	private PossibleAction chosenAction;
+	private Item optionalItem;
+	private JPanel optionPanel;
 	
 	
 
@@ -78,7 +81,10 @@ public class MainScreen {
 		
 		//a default value for chosenAction
 		chosenAction = PossibleAction.FEED_ANIMAL;
+		optionalItem = null;
 		gameEnvironment = newGame;
+		askForItem = new OptionalItemDialog(gameEnvironment.getItems() ); 
+		//optionPanel = new OptionalItemPanel();
 		initialize();
 		frmSelectActivity.setVisible(true);
 		
@@ -346,36 +352,61 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {								
 				
 				if(chosenAction.equals(PossibleAction.TEND_CROP)) {
-					
-				askForItem = new OptionalItemDialog(gameEnvironment.getItems() ); 
+				
+				/*
+				 * Attempted:
+
+				//askForItem.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);				
+				//askForItem.setVisible(true);
+				 * 
+				 * //try using a JOption pane instead. it makes the code in Mainscreen pause until window closed but components don't appear.
+				JOptionPane.showConfirmDialog(frmSelectActivity, optionPanel, "Use an item", JOptionPane.PLAIN_MESSAGE);
+				 * 
+				 * 
+				 * //try make OptionalItemPanel and then feed it into JOptionPane
+				
+				 * 
+				*/
 				
 				askForItem.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);				
 				askForItem.setVisible(true);
 				
+				
+				//attempt 2. Doesn't accept arrayList. Could turn into An array  
+				
+			
+				//but the code still runs rather than waiting for player to click button on Dialog
+				
+					
+				optionalItem = askForItem.getOptionalItem(); // because the code doesn't wait, it gets a null value here.
+			
 				}
-								
+				System.out.println("Should be waiting for input");
+				System.out.println("Optional item is " + ( (Merchandise) optionalItem).getName() );
+											
 				//clears the selectionDetails text. 
 				dtrpnSelectiondetails.setText("");
-				System.out.println("Button pressed! Currently selected crop/animal is:");
+				System.out.println("Button pressed! It isn't tend crop. Currently selected crop/animal is:");
 				
-				//this gets value from subOption Jlist.
+				//Seeing the value subOption Jlist.
 				System.out.println(subOption.getSelectedValue());
 				
+				
+				ownedMerchListModel.removeAllElements();
+				//turn invisible again
+				btnConfirm.setVisible(false);
 				
 				//calls the method of the button and uses the selected animal as the required argument
 				// ActionCount = gameEnvironment.takeAction(chosenAction, itemSelection));
 				
 				//lblActionsRemaining.setText(String.format("Actions remaining: %d", gameEnvironment.getRemainingActions() ) );
 				
-				System.out.println("Chosen action is " + chosenAction);
 				
-				ownedMerchListModel.removeAllElements();
-				//turn invisible again
-				btnConfirm.setVisible(false);
 				
 			}
 		});
 		
-
 	}
+	
+
 }
