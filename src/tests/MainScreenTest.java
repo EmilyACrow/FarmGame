@@ -7,7 +7,7 @@ import gameLogic.FarmType;
 import gameLogic.Farmer;
 import gameLogic.Item;
 import gameLogic.Merchandise;
-import gameScreens.GameEnvironment;
+import gameLogic.GameEnvironment;
 import gameScreens.MainScreen;
 
 public class MainScreenTest {
@@ -31,10 +31,7 @@ public class MainScreenTest {
 		Farmer hank = new Farmer("Hank", 53);
 		
 		Farm farmTest = new Farm("Acres", FarmType.PRODUCE, hank, 5);
-		
-		
-		//GameEnvironment testEnviron = new GameEnvironment();
-		//testEnviron.
+
 		
 		// GameEnvironment(String farmName, FarmType farmType, Farmer farmer, int remainingDays)
 		// fill in farmer's inventory
@@ -46,15 +43,7 @@ public class MainScreenTest {
 		farmTest.addCrop(corn);
 		
 		Crop tomato = new Crop("tomato", 10, 18, 4);
-		//check if there is autoScroll.
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
-		farmTest.addCrop(tomato);
+		//check if there is a scroll
 		farmTest.addCrop(tomato);
 		farmTest.addCrop(tomato);
 		farmTest.addCrop(tomato);
@@ -66,13 +55,10 @@ public class MainScreenTest {
 		
 		Item wateringCan = new Item("watering can", 0, 1, false, true);
 		farmTest.addItem(wateringCan);
-		//System.out.println("Print " + farmTest.getCrops());
+		
+		GameEnvironment trialRun = new GameEnvironment(farmTest);
 
-		
-		//Trying out the mainScreen
-		MainScreen window = new MainScreen(farmTest);
-		window.frmSelectActivity.setVisible(true);
-		
+
 		
 		
 		

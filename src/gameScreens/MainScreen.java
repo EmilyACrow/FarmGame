@@ -29,6 +29,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.JTextArea;
 
 /**
  * shows player the actions they can do in the game
@@ -51,32 +52,13 @@ public class MainScreen {
 	private JLabel lblDaysRemaining;
 	private JLabel lblCrops;
 	private JLabel lblAnimals;
+	JTextArea textAreaSelectionDetails;
 
 	private OptionalItemDialog askForItem;
 	private PossibleAction chosenAction;
-	private Item optionalItem;
+	//private Item optionalItem;
 	private DefaultListModel<String> listModelSubOptions;
 	private GameEnvironment m_game;
-	
-	
-
-	/*
-	 * Launch the application.
-	 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainScreen window = new MainScreen();
-					window.frmSelectActivity.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	 */
 	
 
 	/**
@@ -90,9 +72,9 @@ public class MainScreen {
 		
 		//a default value for chosenAction
 		chosenAction = PossibleAction.FEED_ANIMAL;
-		optionalItem = null;
+		//optionalItem = null;
 		m_game = game;
-		askForItem = new OptionalItemDialog(m_game.getPlayerItems());
+		//askForItem = new OptionalItemDialog(m_game.getPlayerItems());
 		initialize();
 		frmSelectActivity.setVisible(true);
 		
@@ -120,12 +102,13 @@ public class MainScreen {
 		frmSelectActivity.getContentPane().add(DetailsScrollPane);
 		
 		//text panes
-		JEditorPane dtrpnSelectiondetails = new JEditorPane();
-		DetailsScrollPane.setViewportView(dtrpnSelectiondetails);
-		dtrpnSelectiondetails.setEditable(false);
+		textAreaSelectionDetails = new JTextArea();
+		textAreaSelectionDetails.setWrapStyleWord(true);
+		textAreaSelectionDetails.setLineWrap(true);
+		DetailsScrollPane.setViewportView(textAreaSelectionDetails);
+		textAreaSelectionDetails.setEditable(false);
 		
 			
-		
 		/* The confirm button appears when an animal or crop from subOption is selected
 		 * It will become invisible again when it has been clicked. 
 		*/
@@ -160,7 +143,7 @@ public class MainScreen {
 			public void mouseClicked(MouseEvent e) {				
 				btnConfirm.setVisible(true);
 				//shows items info in selection Details
-				dtrpnSelectiondetails.setText(subOption.getSelectedValue().toString() );
+				textAreaSelectionDetails.setText(subOption.getSelectedValue().toString() );
 			}
 		});
 		
@@ -255,7 +238,7 @@ public class MainScreen {
 				
 				chosenAction = PossibleAction.TEND_LAND;
 				//empties anything in selection details
-				dtrpnSelectiondetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
+				textAreaSelectionDetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
 				listModelSubOptions.removeAllElements();
 			}
 		});
@@ -283,7 +266,7 @@ public class MainScreen {
 			//Player clicks button
 			public void actionPerformed(ActionEvent e) {
 				
-				dtrpnSelectiondetails.setText(m_game.getFarm().toString());
+				textAreaSelectionDetails.setText(m_game.getFarm().toString());
 				updateStatusBar();
 				
 			}
@@ -332,6 +315,20 @@ public class MainScreen {
 		
 		
 		
+		//move to next day button 
+		JButton btnNextDay = new JButton("next day");
+		btnNextDay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//have to move this to game environ	
+				m_game.updateDetailText(m_game.getFarm().endDay() );			
+			}
+		});
+		btnNextDay.setBounds(356, 349, 127, 21);
+		frmSelectActivity.getContentPane().add(btnNextDay);
+		
+		
+		
+		
 		// confirm button actionListener here. btnConfirm actionListener must be below subOption and lblActionsRemaining, otherwise it'll read the as uncreated.
 		btnConfirm.addActionListener(new ActionListener() {
 			
@@ -339,49 +336,8 @@ public class MainScreen {
 			 * confirmation button will use the selected animal/crop as arguments to feed into takeAction() in GameEnvironment class
 			 * If tend crop is selected, OptionalItemDialog pops up to ask player if they want to use an item on the crop.
 			 */
-			public void actionPerformed(ActionEvent e) {								
-				
-				if(chosenAction.equals(PossibleAction.TEND_CROP)) {
-				
-					try 
-					{
-						
-						//Action-Type, ArrayList<Merchandise> 
-						m_game.tendAction(chosenAction, selectedMerch);
-						
-						
-					}
-					catch (Exception c) {
-						System.out.println("Exception has happened ");
-					}
-				
-
-				
-					
-				optionalItem = askForItem.getOptionalItem(); // because the code doesn't wait, it gets a null value here.
-			
-				}
-				System.out.println("Should be waiting for input");
-				System.out.println("Optional item is " + ( (Merchandise) optionalItem).getName() );
-											
-				//clears the selectionDetails text. 
-				dtrpnSelectiondetails.setText("");
-				System.out.println("Button pressed! It isn't tend crop. Currently selected crop/animal is:");
-				
-				//Seeing the value subOption Jlist.
-				System.out.println(subOption.getSelectedValue());
-				
-				
-				listModelSubOptions.removeAllElements();
-				//turn invisible again
-				btnConfirm.setVisible(false);
-				
-				//calls the method of the button and uses the selected animal as the required argument
-				// ActionCount = gameEnvironment.takeAction(chosenAction, itemSelection));
-				
-				//lblActionsRemaining.setText(String.format("Actions remaining: %d", gameEnvironment.getRemainingActions() ) );
-				
-				updateStatusBar();
+			public void actionPerformed(ActionEvent e) {				
+				m_game.takeAction(chosenAction, subOption.getSelectedValue());
 				
 			}
 		});
@@ -434,6 +390,9 @@ public class MainScreen {
 		}
 	}
 	
+	/**
+	 * Updates the 4 farm status labels across the top of the main screen
+	 */
 	public void updateStatusBar()
 	{
 		lblMoney.setText(String.format("Money: $%d", m_game.getPlayerMoney()));
@@ -442,5 +401,12 @@ public class MainScreen {
 		lblAnimals.setText(String.format("Animals: %d", m_game.getPlayerAnimals().size()));
 	}
 	
-
+	/**
+	 * Sets the text in textAreaSelectionDetails
+	 * @param text
+	 */
+	public void setDetailText(String text)
+	{
+		textAreaSelectionDetails.setText(text);
+	}
 }

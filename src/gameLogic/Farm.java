@@ -703,7 +703,7 @@ public class Farm {
 			throw new IllegalStateException("No more days remaining.");
 		}
 		m_remainingDays -= 1;
-		message.concat(String.format("%d days remaining in the game\n", m_remainingDays));
+		message = message.concat(String.format("%d days remaining in the game\n", m_remainingDays));
 		
 		ArrayList<Animal> animals = m_merch.getAnimals();
 		
@@ -732,7 +732,7 @@ public class Farm {
 		{
 			if(animals.get(i).getHealth() <= 0)
 			{
-				message.concat(String.format("Animal %s died.\n", animals.get(i).getName()));
+				message = message.concat(String.format("Animal %s died.\n", animals.get(i).getName()));
 				animals.remove(i);
 			}
 			
@@ -748,11 +748,11 @@ public class Farm {
 			else if(c.getDaysUntilHarvest() == 1)
 			{
 				c.setDaysUntilHarvest(c.getDaysUntilHarvest() - 1);
-				message.concat(String.format("%s is ready to harvest", c.getName()));
+				message = message.concat(String.format("%s is ready to harvest", c.getName()));
 			}
 			else
 			{
-				message.concat(String.format("%s is ready to harvest", c.getName()));
+				message = message.concat(String.format("%s is ready to harvest", c.getName()));
 			}
 		}
 		
@@ -762,7 +762,8 @@ public class Farm {
 		
 	}
 	
-	public String tendCrops(Crop crop)
+	
+	public String tendCrops(Merchandise crop)
 	{
 		/* Crops can be tended without having an item, by only boosting by one day.
 		 * Rather than copying code, a new item is temporarily created with 
@@ -778,7 +779,7 @@ public class Farm {
 	}
 	
 	
-	public String tendCrops(Crop crop, Item item)
+	public String tendCrops(Merchandise crop, Item item)
 	{
 		//Returns a message with carriage returns that informs the players the harvest results
 		String message = "";
@@ -815,8 +816,8 @@ public class Farm {
 		m_merch.getItems().remove(item);
 		
 		//Update status message to inform user of results
-		message.concat(String.format("%d crops tended to.\n", counter));
-		message.concat(String.format("%d crops ready to harvest.\n", readyToHarvestCounter));
+		message = message.concat(String.format("%d crops tended to.\n", counter));
+		message = message.concat(String.format("%d crops ready to harvest.\n", readyToHarvestCounter));
 		
 		return message;
 	}
@@ -824,6 +825,19 @@ public class Farm {
 
 	public void playWithAnimal(Animal animal) {
 		animal.setHappiness((int)(MAX_ANIMAL_HAPPINESS * m_animalHappinessMod));
+	}
+	
+	public ArrayList<Merchandise> getPlayerMerchFromString(String str)
+	{
+		ArrayList<Merchandise> matchingMerch = new ArrayList<Merchandise>();
+		for(Merchandise m : m_merch.getMerchList())
+		{
+			if(m.getName() == str)
+			{
+				matchingMerch.add(m);
+			}
+		}
+		return matchingMerch;
 	}
 
 	

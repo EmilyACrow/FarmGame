@@ -25,17 +25,18 @@ public class StoreDisplayPanel extends JPanel {
 	private int numMerchInPanel = 0;
 	private ArrayList<Merchandise> merchDisplayed;
 	private JTextField amtSelectedTextField;
+	private double m_discount;
 	//Textfield from containing panel - can attach listener to use as flag for when to update outer values
-	private JTextField m_outputField;
 
 	
 	/**
 	 * Create the panel.
 	 */
-	public StoreDisplayPanel(JTextField output) {
+	public StoreDisplayPanel(double discountMod) {
 		
 		amountTextFields = new ArrayList<JTextField>();
 		merchDisplayed = new ArrayList<Merchandise>();
+		m_discount = discountMod;
 		
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -45,8 +46,6 @@ public class StoreDisplayPanel extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
-		m_outputField = output;
-		
 	}
 	
 	/**
@@ -55,22 +54,46 @@ public class StoreDisplayPanel extends JPanel {
 	 * @param name Name of the product to be put in
 	 * @param amtInInventory Amount of the product in the player's inventory
 	 */
-	public void refreshDisplay(ArrayList<Merchandise> storeMerch, ArrayList<Merchandise> playerMerch)
+	public void refreshDisplay(StoreFilter filter, ArrayList<Merchandise> storeMerch, ArrayList<Merchandise> playerMerch)
 	{
 		//Clear current display
 		merchDisplayed.clear();
 		amountTextFields.clear();
+		removeAll();
 		numMerchInPanel = 0;
 		
 		addHeader();
 		
-		for(Merchandise display : storeMerch)
+		//Use some regex to figure out what gets displayed
+		String allowedMerchRegex = "";
+		switch(filter)
 		{
+		case ALL:
+			allowedMerchRegex = "(Animal|Crop|Item)";
+			break;
+		case ANIMALS:
+			allowedMerchRegex = "(Animal)";
+			break;
+		case CROPS:
+			allowedMerchRegex = "(Crop)";
+			break;
+		case ITEMS:
+			allowedMerchRegex = "(Item)";
+			break;	
+		}
+
+		for(Merchandise m : storeMerch)
+		{
+			//Filter out undesired Merchandise objects
+			if(!(m.getClass().getSimpleName().matches(allowedMerchRegex)))
+			{
+				continue;
+			}
 			int invAmount = 0;
 			//Count how many of the particular merch exists in the player inventory
 			for(Merchandise inv : playerMerch)
 			{
-				if (display.getName() == inv.getName())
+				if (m.getName() == inv.getName())
 				{
 					invAmount++;
 				}
@@ -83,7 +106,7 @@ public class StoreDisplayPanel extends JPanel {
 			gbc_lblProductIndex.gridy = numMerchInPanel + 1;
 			add(lblProductIndex, gbc_lblProductIndex);
 			
-			JLabel lblProductName = new JLabel(display.getName());
+			JLabel lblProductName = new JLabel(m.getName());
 			GridBagConstraints gbc_lblProductName = new GridBagConstraints();
 			gbc_lblProductName.insets = new Insets(0, 0, 0, 5);
 			gbc_lblProductName.gridx = 1;
@@ -144,6 +167,16 @@ public class StoreDisplayPanel extends JPanel {
 			add(newField, gbc_AmountTextField);
 			newField.setColumns(4);
 			
+			//calculation for any discounts.
+			double amountRemoved = m.getPurchasePrice() * m_discount;
+			int finalCost = (int) (m.getPurchasePrice() - amountRemoved); 
+			JLabel lblUnitLabel = new JLabel(String.format("($%d)", finalCost));
+			GridBagConstraints gbc_lblUnitLabel = new GridBagConstraints();
+			gbc_lblUnitLabel.insets = new Insets(0, 0, 0, 5);
+			gbc_lblUnitLabel.gridx = 5;
+			gbc_lblUnitLabel.gridy = numMerchInPanel + 1;
+			add(lblUnitLabel, gbc_lblUnitLabel);
+			
 			Component amtInvHGlue = Box.createHorizontalGlue();
 			GridBagConstraints gbc_amtInvHGlue = new GridBagConstraints();
 			gbc_amtInvHGlue.insets = new Insets(0, 0, 0, 5);
@@ -167,7 +200,7 @@ public class StoreDisplayPanel extends JPanel {
 			gbc_rightHGlue.gridy = numMerchInPanel + 1;
 			add(rightHGlue, gbc_rightHGlue);
 			
-			merchDisplayed.add(display);
+			merchDisplayed.add(m);
 			numMerchInPanel++;
 			refreshSelectedCount();
 		}
@@ -204,6 +237,25 @@ public class StoreDisplayPanel extends JPanel {
 		gbc_amtSelectedTextField.gridwidth = 3;
 		add(amtSelectedTextField, gbc_amtSelectedTextField);
 		amtSelectedTextField.setColumns(6);
+		
+		JLabel lblUnitPrice = new JLabel("(Unit Price)");
+		GridBagConstraints gbc_lblUnitPrice = new GridBagConstraints();
+		gbc_lblUnitPrice.insets = new Insets(0, 0, 5, 5);
+		gbc_lblUnitPrice.gridx = 5;
+		gbc_lblUnitPrice.gridy = 0;
+		gbc_lblUnitPrice.anchor = GridBagConstraints.WEST;
+		add(lblUnitPrice, gbc_lblUnitPrice);
+		
+		JLabel lblInventoryAmt = new JLabel("Your Inventory");
+		GridBagConstraints gbc_lblInventoryAmt = new GridBagConstraints();
+		gbc_lblInventoryAmt.gridwidth = 3;
+		gbc_lblInventoryAmt.insets = new Insets(0, 0, 5, 5);
+		gbc_lblInventoryAmt.gridx = 6;
+		gbc_lblInventoryAmt.gridy = 0;
+		add(lblInventoryAmt, gbc_lblInventoryAmt);
+		
+		
+		
 	}
 	
 	public ArrayList<Merchandise> addToCart()
