@@ -332,7 +332,7 @@ public class WelcomeScreen {
 	
 	private boolean verifyName(JTextField str)
 	{
-		String validNameRegex = "[a-zA-Z][a-zA-Z\\d\\s]+";
+		String validNameRegex = "[a-zA-Z][a-zA-Z\\d\\s.]+";
 		if(!str.getText().matches(validNameRegex))
 		{
 			str.setText("");

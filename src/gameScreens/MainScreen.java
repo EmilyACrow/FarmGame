@@ -46,6 +46,8 @@ import javax.swing.JTextArea;
 public class MainScreen {
 
 	public JFrame frmSelectActivity;
+	private JButton btnConfirm;
+	private JList<String> subOption;
 	private JPanel buttonPanel;
 	private JLabel lblMoney;
 	private JLabel lblActionsRemaining;
@@ -86,9 +88,9 @@ public class MainScreen {
 	 */
 	private void initialize() {
 		frmSelectActivity = new JFrame();
-		frmSelectActivity.setTitle("main");
+		frmSelectActivity.setTitle(String.format("%s's %s", m_game.getFarm().getFarmer().getName(), m_game.getFarm().getFarmName()));
 		//frame.setBounds(100, 100, 530, 570);
-		frmSelectActivity.setBounds(100, 100, 531, 428);
+		frmSelectActivity.setBounds(100, 100, 720, 480);
 		frmSelectActivity.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSelectActivity.getContentPane().setLayout(null);
 		
@@ -99,7 +101,7 @@ public class MainScreen {
 		
 		JScrollPane DetailsScrollPane = new JScrollPane();
 		DetailsScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		DetailsScrollPane.setBounds(342, 74, 141, 255);
+		DetailsScrollPane.setBounds(342, 119, 330, 297);
 		frmSelectActivity.getContentPane().add(DetailsScrollPane);
 		
 		//text panes
@@ -113,11 +115,11 @@ public class MainScreen {
 		/* The confirm button appears when an animal or crop from subOption is selected
 		 * It will become invisible again when it has been clicked. 
 		*/
-		JButton btnConfirm = new JButton("Confirm");
+		btnConfirm = new JButton("Confirm");
 		
 		btnConfirm.addMouseListener(new MouseAdapter() {
 		});
-		btnConfirm.setBounds(113, 349, 127, 21);
+		btnConfirm.setBounds(116, 377, 127, 39);
 		btnConfirm.setVisible(false);
 		frmSelectActivity.getContentPane().add(btnConfirm);
 		
@@ -129,9 +131,9 @@ public class MainScreen {
 		//ScrollPane for subOption
 		JScrollPane subOpionScrollPane = new JScrollPane();
 		subOpionScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		subOpionScrollPane.setBounds(198, 119, 118, 210);
+		subOpionScrollPane.setBounds(198, 119, 118, 239);
 		frmSelectActivity.getContentPane().add(subOpionScrollPane);
-		JList<String> subOption = new JList<String>(listModelSubOptions);
+		subOption = new JList<String>(listModelSubOptions);
 		subOption.setBorder(null);
 		subOpionScrollPane.setViewportView(subOption);
 		subOption.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -142,9 +144,16 @@ public class MainScreen {
 			 */
 			@Override
 			public void mouseClicked(MouseEvent e) {				
-				btnConfirm.setVisible(true);
 				//shows items info in selection Details
-				textAreaSelectionDetails.setText(subOption.getSelectedValue().toString() );
+				try
+				{
+					textAreaSelectionDetails.setText(subOption.getSelectedValue().toString());
+				}
+				catch(NullPointerException error)
+				{
+					//Do nothing
+				}
+				refreshConfirmButton();
 			}
 		});
 		
@@ -165,12 +174,17 @@ public class MainScreen {
 			 */
 			public void actionPerformed(ActionEvent e) {				
 				
-				chosenAction = PossibleAction.TEND_CROP;
+				chosenAction = PossibleAction.TEND_CROP;textAreaSelectionDetails.setText("Tend all crops of a selected type.\n"
+						+ "Tending to crops decreases the amount of days it takes them to harvest by an amount determined by a selected item.\n"
+						+ "Or you can use no item and decrease the amount of days by 1.\n"
+						+ "Selecting confirm will take you to a screen to choose an item.\n"
+						+ "You must have enough of that item to tend all of your crops of the selected type to perform this action.");
 				//shows crops player owns into Jlist.				
 				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.CROP);
+				refreshConfirmButton();
 			}		
 		});	
-		btnTendCrop.setBounds(28, 119, 141, 21);
+		btnTendCrop.setBounds(28, 119, 141, 39);
 		//btnTendCrop.
 		frmSelectActivity.getContentPane().add(btnTendCrop);
 		
@@ -183,17 +197,18 @@ public class MainScreen {
 		
 		btnFeedAnimal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//MainScreen.java
-				//m_game.feedAnimal
-				
-				
+
 				chosenAction = PossibleAction.FEED_ANIMAL;
+				textAreaSelectionDetails.setText("Feed all animals of a selected type an item.\n"
+						+ "Feeding the animals returns them to full health.\n"
+						+ "Selecting confirm will take you to a screen to choose a food item.\n"
+						+ "You must have enough of that food item to feed all of your animals of the selected type to perform this action.");
 				//show a list of animals player can feed
 				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.ANIMAL);
+				refreshConfirmButton();
 			}
 		});
-		btnFeedAnimal.setBounds(28, 169, 141, 21);
+		btnFeedAnimal.setBounds(28, 169, 141, 39);
 		frmSelectActivity.getContentPane().add(btnFeedAnimal);
 		
 		
@@ -205,10 +220,13 @@ public class MainScreen {
 			public void actionPerformed(ActionEvent e) {
 				
 				chosenAction = PossibleAction.PLAY_WITH_ANIMAL;
+				textAreaSelectionDetails.setText("Play with animals is selected. This will restore the hapiness of all animals of the selected species."
+						+ "You'll have to imagine to yourself how much fun everyone is having, but I bet it's a lot.");
 				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.ANIMAL);
+				refreshConfirmButton();
 			}
 		});
-		btnPlayAnimal.setBounds(30, 304, 139, 25);
+		btnPlayAnimal.setBounds(28, 319, 139, 39);
 		frmSelectActivity.getContentPane().add(btnPlayAnimal);
 		
 		
@@ -220,12 +238,14 @@ public class MainScreen {
 		btnHarvestCrop.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chosenAction = PossibleAction.HARVEST_CROP;
+				textAreaSelectionDetails.setText("Harvset crops is selected. This will harvest all crops of the selected type that are ready to be harvested.");
 				//shows crops player owns.
 				populateSubOptions(m_game.getPlayerMerchandise(), MerchandiseWrapper.CROP);
+				refreshConfirmButton();
 				
 			}
 		});
-		btnHarvestCrop.setBounds(28, 256, 141, 21);
+		btnHarvestCrop.setBounds(28, 269, 141, 39);
 		frmSelectActivity.getContentPane().add(btnHarvestCrop);
 		
 		
@@ -241,11 +261,10 @@ public class MainScreen {
 				//empties anything in selection details
 				textAreaSelectionDetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
 				listModelSubOptions.removeAllElements();
-				chosenAction = PossibleAction.TEND_LAND;
-				m_game.takeAction(chosenAction, null);
+				refreshConfirmButton();
 			}
 		});
-		btnTendLand.setBounds(28, 211, 141, 21);
+		btnTendLand.setBounds(28, 219, 141, 39);
 		frmSelectActivity.getContentPane().add(btnTendLand);
 		
 		
@@ -258,7 +277,7 @@ public class MainScreen {
 			}
 		});
 		
-		btnStore.setBounds(31, 41, 92, 39);
+		btnStore.setBounds(31, 41, 118, 39);
 		frmSelectActivity.getContentPane().add(btnStore);
 		
 		
@@ -274,7 +293,7 @@ public class MainScreen {
 				
 			}
 		});
-		btnFarmStatus.setBounds(199, 41, 103, 39);
+		btnFarmStatus.setBounds(198, 41, 118, 39);
 		frmSelectActivity.getContentPane().add(btnFarmStatus);
 		
 		
@@ -311,7 +330,7 @@ public class MainScreen {
 		
 		
 		lblDaysRemaining = new JLabel();
-		lblDaysRemaining.setText(String.format("Days remaining %d", m_game.getRemainingDays()));
+		lblDaysRemaining.setText(String.format("Days remaining: %d", m_game.getRemainingDays()));
 		lblDaysRemaining.setHorizontalTextPosition(SwingConstants.LEFT);
 		lblDaysRemaining.setBounds(28, 6, 129, 25);		
 		frmSelectActivity.getContentPane().add(lblDaysRemaining);
@@ -319,15 +338,14 @@ public class MainScreen {
 		
 		
 		//move to next day button 
-		JButton btnNextDay = new JButton("end day");
+		JButton btnNextDay = new JButton("End day");
 		btnNextDay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//have to move this to game environ	
-				
+				listModelSubOptions.clear();
 				m_game.endDay();			
 			}
 		});
-		btnNextDay.setBounds(356, 349, 127, 21);
+		btnNextDay.setBounds(365, 41, 118, 38);
 		frmSelectActivity.getContentPane().add(btnNextDay);
 		
 		
@@ -342,7 +360,7 @@ public class MainScreen {
 			 */
 			public void actionPerformed(ActionEvent e) {
 				
-				m_game.takeAction(chosenAction, subOption.getSelectedValue() );
+				m_game.takeAction(chosenAction, subOption.getSelectedValue());
 				
 				
 			}
@@ -404,65 +422,7 @@ public class MainScreen {
 		lblCrops.setText(String.format("Crops: %d", m_game.getPlayerCrops().size()));
 		lblAnimals.setText(String.format("Animals: %d", m_game.getPlayerAnimals().size()));
 		lblActionsRemaining.setText(String.format("Actions remaining: %d", m_game.getRemainingActions()));
-		lblDaysRemaining.setText(String.format("Days remaining %d", m_game.getRemainingDays()));
-		
-		updateStatusBar();
-		
-	}
-	
-	/**
-	 * Populate a DefaultListModel<String> with names from a list of Merchandise.
-	 * Can display multiple class types by formatting filter string as [classStringA]|[classStringB].
-	 * @param merch list of merchandise to display by type
-	 * @param merchType MerchandiseWrapper constant, either .ANIMAL, .CROP, or .ITEM based on which class you want to display
-	 */
-	public void populateSubOptions(MerchandiseWrapper merch, String merchType)
-	{
-		//TODO: Move to GameEnvironment.java
-		ArrayList<Merchandise> compactedList = new ArrayList<Merchandise>();
-		//Quick little regex to filter out merch we want
-		String filterRegex = String.format("(%s)", merchType);
-		//Worst n^2 - I'm sorry, I was in a rush
-		for(int i = 0; i < merch.getMerchList().size(); i++)
-		{
-			
-			//System.out.println(String.format("className=%s, regex=%s, filteredOut=%d", merch.getMerchList().get(i).getClass().getSimpleName(), filterRegex,(merch.getMerchList().get(i).getClass().getSimpleName().matches(filterRegex))));
-			//If the class name of merch @ index i doesn't match the filter, skip this iteration.
-			if(!(merch.getMerchList().get(i).getClass().getSimpleName().matches(filterRegex)))
-			{
-				continue;
-			}
-			boolean alreadyAdded = false;
-			Merchandise m = merch.getMerchList().get(i);
-			for(int j = compactedList.size() - 1; j >= 0; j--)
-			{
-				if(compactedList.get(j).getName() == m.getName())
-				{
-					alreadyAdded = true;
-					break;
-				}
-			}
-			if(!alreadyAdded)
-			{
-				compactedList.add(m);
-			}
-		}
-		listModelSubOptions.removeAllElements();
-		for(Merchandise m : compactedList)
-		{
-			listModelSubOptions.addElement(m.getName());
-		}
-	}
-	
-	/**
-	 * Updates the 4 farm status labels across the top of the main screen
-	 */
-	public void updateStatusBar()
-	{
-		lblMoney.setText(String.format("Money: $%d", m_game.getPlayerMoney()));
-		lblDaysRemaining.setText(String.format("Days Remaining: %d", m_game.getRemainingDays()));
-		lblCrops.setText(String.format("Crops: %d", m_game.getPlayerCrops().size()));
-		lblAnimals.setText(String.format("Animals: %d", m_game.getPlayerAnimals().size()));
+		lblDaysRemaining.setText(String.format("Days remaining %d", m_game.getRemainingDays()));		
 	}
 	
 	/**
@@ -475,12 +435,27 @@ public class MainScreen {
 	}
 	
 	/**
-	 * Sets the text in textAreaSelectionDetails. gameEnvironment uses it.
-	 * @param text
+	 * Update the screen to disable or enable the confirm button based on the action picked.
 	 */
-	public void setDetailText(String text)
+	public void refreshConfirmButton()
 	{
-		textAreaSelectionDetails.setText(text);
+		if(chosenAction == PossibleAction.TEND_LAND)
+		{
+			btnConfirm.setVisible(true);
+		}
+		else
+		{
+			try
+			{
+				//This will throw NullPointerException if nothing is selected
+				subOption.getSelectedValue().toString();
+				btnConfirm.setVisible(true);
+			}
+			catch(NullPointerException e)
+			{
+				btnConfirm.setVisible(false);
+			}
+		}
 	}
 	
 

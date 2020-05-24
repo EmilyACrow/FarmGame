@@ -549,8 +549,8 @@ public class GameEnvironment {
 		
 		
 		{
-			String name = animals.get(i - 1).getName();
-			System.out.println(String.format("%d: %s\n", i, name));
+			//String name = animals.get(i - 1).getName();
+			//System.out.println(String.format("%d: %s\n", i, name));
 			
 		}
 		//Give user option to cancel
@@ -582,6 +582,7 @@ public class GameEnvironment {
 			updateDetailText(m_farm.endDay());
 			m_farm.setRemainingActions(2);
 			updateStatusBar();
+			m_mainScreen.refreshConfirmButton();
 		}
 		catch (IllegalStateException e)
 		{	

@@ -737,7 +737,7 @@ public class Farm {
 			{
 				if(animals.get(i).getHealth() <= 0)
 				{
-					message = message.concat(String.format("Animal %s died.\n", animals.get(i).getName()));
+					message = message.concat(String.format("Animal %s died of sickness.\n", animals.get(i).getName()));
 					animals.remove(i);
 				}
 				
@@ -753,11 +753,11 @@ public class Farm {
 				else if(c.getDaysUntilHarvest() == 1)
 				{
 					c.setDaysUntilHarvest(c.getDaysUntilHarvest() - 1);
-					message = message.concat(String.format("%s is ready to harvest", c.getName()));
+					message = message.concat(String.format("%s is ready to harvest.\n", c.getName()));
 				}
 				else
 				{
-					message = message.concat(String.format("%s is ready to harvest", c.getName()));
+					message = message.concat(String.format("%s is ready to harvest\n", c.getName()));
 				}
 			}
 			

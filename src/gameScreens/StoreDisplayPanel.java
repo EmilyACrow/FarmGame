@@ -120,37 +120,31 @@ public class StoreDisplayPanel extends JPanel {
 			gbc_productAmountHGlue.gridy = numMerchInPanel + 1;
 			add(productAmountHGlue, gbc_productAmountHGlue);
 			
-			JTextField newField = new JTextField("0");
-			amountTextFields.add(newField);
-			newField.setEditable(true);
+			JTextField fieldSelectionBox = new JTextField("0");
+			amountTextFields.add(fieldSelectionBox);
+			fieldSelectionBox.setEditable(true);
 			GridBagConstraints gbc_AmountTextField = new GridBagConstraints();
 			gbc_AmountTextField.fill = GridBagConstraints.HORIZONTAL;
 			gbc_AmountTextField.insets = new Insets(0, 0, 0, 5);
 			gbc_AmountTextField.gridx = 4;
 			gbc_AmountTextField.gridy = numMerchInPanel + 1;
-			newField.addFocusListener(new FocusAdapter() {
+			fieldSelectionBox.addFocusListener(new FocusAdapter() {
 				@Override
 				public void focusLost(FocusEvent arg0) {
-					boolean valid = true;
-					for(char c : newField.getText().toCharArray())
+					//More regex!
+					String validInput = "[0-9]+";
+					if(!fieldSelectionBox.getText().matches(validInput))
 					{
-						if(!Character.isDigit(c))
-						{
-							valid = false;
-						}
-					}
-					if(!valid)
-					{
-						newField.setText("0");
+						fieldSelectionBox.setText("0");
 					}
 					refreshSelectedCount();
 				}
 			});
-			newField.addActionListener(new ActionListener() {
+			fieldSelectionBox.addActionListener(new ActionListener() {
 				//Make sure that the number input is actually a number
 				public void actionPerformed(ActionEvent arg0) {
 					boolean valid = true;
-					for(char c : newField.getText().toCharArray())
+					for(char c : fieldSelectionBox.getText().toCharArray())
 					{
 						if(!Character.isDigit(c))
 						{
@@ -159,13 +153,13 @@ public class StoreDisplayPanel extends JPanel {
 					}
 					if(!valid)
 					{
-						newField.setText("0");
+						fieldSelectionBox.setText("0");
 					}
 					refreshSelectedCount();
 				}
 			});
-			add(newField, gbc_AmountTextField);
-			newField.setColumns(4);
+			add(fieldSelectionBox, gbc_AmountTextField);
+			fieldSelectionBox.setColumns(4);
 			
 			//calculation for any discounts.
 			double amountRemoved = m.getPurchasePrice() * m_discount;
@@ -212,6 +206,10 @@ public class StoreDisplayPanel extends JPanel {
 		Integer amt = 0;
 		for(JTextField field : amountTextFields)
 		{
+			if(field.getText() == "")
+			{
+				field.setText("0");
+			}
 			amt += Integer.parseInt(field.getText());
 		}
 		amtSelectedTextField.setText(amt.toString());

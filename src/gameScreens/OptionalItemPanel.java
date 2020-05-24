@@ -43,7 +43,7 @@ public class OptionalItemPanel extends JPanel {
 	
 	public void changeList() {
 		
-		li
+//		li
 		
 	}
 }

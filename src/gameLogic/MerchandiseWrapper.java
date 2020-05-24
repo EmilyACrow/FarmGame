@@ -43,26 +43,25 @@ public class MerchandiseWrapper {
 		
 	}
 	
+	/**
+	 * Create new MerchandiseWrapper around target ArrayList<Merchandise>
+	 * @param source ArrayList<Merchandise> to wrap
+	 */
 	public MerchandiseWrapper(ArrayList<Merchandise> source)
 	{
 		for(Merchandise item : source)
     	{
-    		merchList.add(item.clone());
+    		merchList.add(item);
     	}
 	}
 	
 	/**
-	 * Returns deep copy of the ArrayList contained in the wrapper
+	 * Returns reference to the ArrayList contained in the wrapper
 	 * @return ArrayList<Merchandise> Deep copy of contained ArrayList
 	 */
     public ArrayList<Merchandise> getMerchList() 
     {
-    	ArrayList<Merchandise> newList = new ArrayList<Merchandise>();
-    	for(Merchandise m : merchList)
-    	{
-    		newList.add(m.clone());
-    	}
-        return newList;
+        return merchList;
     }
     
     /**
@@ -94,12 +93,16 @@ public class MerchandiseWrapper {
     
     /**
      * Makes a deep copy of the MerchandiseWrapper
-     * @return
+     * @return MerchandiseWrapper clone of the current MerchandiseWrapper
      */
     public MerchandiseWrapper clone()
     {
-    	
-    	return new MerchandiseWrapper(merchList);
+    	ArrayList<Merchandise> newList = new ArrayList<Merchandise>();
+    	for(Merchandise m : merchList)
+    	{
+    		newList.add(m.clone());
+    	}
+    	return new MerchandiseWrapper(newList);
     }
     
     /**
@@ -114,7 +117,7 @@ public class MerchandiseWrapper {
     
     /**
      * Overload getAnimals to default to the local merchList
-     * @return ArrayList<Animal> deep copy of all animals in the local merchlist
+     * @return ArrayList<Animal> Reference to all animals in the local merchlist
      */
     public ArrayList<Animal> getAnimals()
     {
@@ -124,7 +127,7 @@ public class MerchandiseWrapper {
     /**
      * Get all animals out of a Merchandise arraylist
      * @param merchList Merchandise arraylist
-     * @return Arraylist<Animal> deep copy of all animals in the param merchlist
+     * @return Arraylist<Animal> Reference to all animals in the param merchlist
      */
     public ArrayList<Animal> getAnimals(ArrayList<Merchandise> merchList)
     {
@@ -133,7 +136,7 @@ public class MerchandiseWrapper {
     	{
     		if(item.getClass().getSimpleName().contentEquals("Animal"))
     		{
-    			animals.add((Animal)item.clone());
+    			animals.add((Animal)item);
     		}
     	}
     	return animals;
@@ -142,7 +145,7 @@ public class MerchandiseWrapper {
     
     /**
      * Overload getCropss to default to the local merchList
-     * @return ArrayList<Crop> deep copy of all crops in the local merchlist
+     * @return ArrayList<Crop> Reference to all crops in the local merchlist
      */
     public ArrayList<Crop> getCrops()
     {
@@ -152,7 +155,7 @@ public class MerchandiseWrapper {
     /**
      * Get all crops out of a Merchandise arraylist
      * @param merchList Merchandise arraylist
-     * @return ArrayList<Crop> deep copy of all crops in the param merchlist
+     * @return ArrayList<Crop> Reference to all crops in the param merchlist
      */
     public ArrayList<Crop> getCrops(ArrayList<Merchandise> merchList)
     {
@@ -161,7 +164,7 @@ public class MerchandiseWrapper {
     	{
     		if(crop.getClass().getSimpleName().contentEquals("Crop"))
     		{
-    			crops.add((Crop)crop.clone());
+    			crops.add((Crop)crop);
     		}
     	}
     	return crops;
@@ -169,7 +172,7 @@ public class MerchandiseWrapper {
     
     /**
      * Get all items out of a Merchandise arraylist
-     * @return ArrayList<Item> deep copy of all items in the local merchlist
+     * @return ArrayList<Item> Reference to all items in the local merchlist
      */
     public ArrayList<Item> getItems()
     {
@@ -179,7 +182,7 @@ public class MerchandiseWrapper {
     /**
      * Get all items out of a Merchandise arraylist
      * @param merchList Merchandise arraylist
-     * @return ArrayList<Item> deep copy of all items in the param merchlist
+     * @return ArrayList<Item> Reference to all items in the param merchlist
      */
     public ArrayList<Item> getItems(ArrayList<Merchandise> merchList)
     {
@@ -189,7 +192,7 @@ public class MerchandiseWrapper {
     		//Use .contenEquals instead of == because for some reason == isn't working here
     		if(item.getClass().getSimpleName().contentEquals("Item"))
     		{
-    			items.add((Item)item.clone());
+    			items.add((Item)item);
     		}
     	}
     	return items;
