@@ -208,15 +208,8 @@ public class GameEnvironment {
 			{
 				
 				//Create OptionalItemDialog window. send the items the player owns
-				OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this,wrappedSelection.getAnimals(), "animal");
+				OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, wrappedSelection.getAnimals().get(0), "animal");
 				optionalItemDialog.setVisible(true);
-				
-				/*
-				System.out.println(wrappedSelection);
-				System.out.println(wrappedSelection.getAnimals());
-				System.out.println( ( (Merchandise)wrappedSelection.getAnimals() ).getName() ) ;
-				//how to get inventory from farm?
-				System.out.println(m_farm.getAnimals()); */	
 
 			//get selected items into an ArrayList<Item>
 			}
@@ -1478,12 +1471,23 @@ public class GameEnvironment {
 	
 	/**
 	 * Called by OptionalItemDialog, sends a list of chosen items and animals of the selected species.
-	 * @param animalSpecies the animal type the player has selected to feed.
+	 * @param typeToTend the animal type the player has selected to feed.
 	 * @param itemUsed the item type the player has chosen to feed to the animal.
 	 */
-	public void accessFeedAnimal(ArrayList<Animal> animalSpecies, ArrayList<Item> possibleItem) {
+	public void accessFeedAnimal(Merchandise typeToTend, Item item) 
+	{
+		ArrayList<Animal> animals = new ArrayList<Animal>();
+		ArrayList<Item> items = new ArrayList<Item>();
+		for(Animal a : m_farm.getAnimals())
+		{
+			animals.add(a);
+		}
+		for(Item i : m_farm.getItems())
+		{
+			items.add(i);
+		}
 		
-		feedAnimal(animalSpecies, possibleItem);
+		feedAnimal(animals, items);
 		
 
 		
