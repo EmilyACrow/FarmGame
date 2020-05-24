@@ -87,13 +87,13 @@ public class Farm {
 	 * Max possible animal happiness
 	 * TODO: Replace hardcoded value with xml config file
 	 */
-	private static final int MAX_ANIMAL_HAPPINESS = 100;
+	private static final int MAX_ANIMAL_HAPPINESS = 50;
 	
 	/**
 	 * Max possible animal health
 	 * TODO: Replace hardcoded value with xml config file
 	 */
-	private static final int MAX_ANIMAL_HEALTH = 100;
+	private static final int MAX_ANIMAL_HEALTH = 50;
 	
 	
 	
