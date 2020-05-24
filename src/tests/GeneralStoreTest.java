@@ -32,11 +32,9 @@ class GeneralStoreTest {
 		Animal chicken = new Animal("Bonnie", "Chicken", 3, 4);
 		Crop pea = new Crop("pea", 10, 20, 3);
 		Farmer jane = new Farmer("jane", 44);
-		GeneralStore testStore = new GeneralStore();
-		GameEnvironment gameTest = new GameEnvironment("chimes", FarmType.COMMERCIAL, jane, 5 );	
+		GameEnvironment gameTest = new GameEnvironment("chimes", FarmType.COMMERCIAL, jane, 5 );
+		GeneralStore testStore = new GeneralStore(gameTest);
 		
-		//(String farmName, FarmType farmType, Farmer farmer, int remainingDays)
-		testStore.setGameEnvironment(gameTest);
 		
 		testStore.addToCart(pea);
 		testStore.addToCart(chicken);
@@ -64,8 +62,9 @@ class GeneralStoreTest {
 		Animal chicken = new Animal("Bonnie", "Chicken", 3, 4);
 		//name, purchaseprice, sellprice, days to grow
 		Crop pea = new Crop("pea", 10, 20, 3);
-		
-		GeneralStore testStore = new GeneralStore();
+		Farmer jane = new Farmer("jane", 44);
+		GameEnvironment gameTest = new GameEnvironment("chimes", FarmType.COMMERCIAL, jane, 5 );
+		GeneralStore testStore = new GeneralStore(gameTest);
 		//Add to the cart.
 		testStore.addToCart(chicken);
 		testStore.addToCart(pea); 

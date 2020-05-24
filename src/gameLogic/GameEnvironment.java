@@ -238,6 +238,7 @@ public class GameEnvironment {
 			}
 		}
 		m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
+		updateStatusBar();
 
 	}
 	
@@ -578,23 +579,6 @@ public class GameEnvironment {
 		m_mainScreen.closeGame();
 		System.exit(0);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	 * Methods for prompting the player with the Scanner begin below.
-	 * 
-	 */
-	
-	
-	
-	
 	
 	/**
 	 * This method asks the player to input a name.
@@ -1005,13 +989,6 @@ public class GameEnvironment {
 		output += String.format("Farm money: %d\n", getPlayerMoney());
 		output += String.format("Max number of animals: %d\n", getMaxAnimalAmount());
 		output += String.format("Max number of crops: %d\n", getMaxCropAmount());
-		output += String.format("Items(%d):\n", items.size());
-		for(int i = 0; i < items.size(); i++)
-		{
-			output += String.format("(%d) %s\n", (i + 1), items.get(i).getName());
-			output += "   Compatable with " + ((items.get(i).getForAnimals()) ? "animals\n" : "crops\n");
-			output += String.format("   Boost amount: %d\n", items.get(i).getBoostAmount());
-		}
 		output += String.format("Crops(%d):\n", crops.size());
 		for(int i = 0; i < crops.size(); i++)
 		{
@@ -1026,6 +1003,13 @@ public class GameEnvironment {
 			output += String.format("   End-of-day cash bonus: $%d\n", animals.get(i).getDailyBonus());
 			output += String.format("   Health: %s\n", animals.get(i).getHealth());
 			output += String.format("   Happiness: %s\n", animals.get(i).getHappiness());
+		}
+		output += String.format("Items(%d):\n", items.size());
+		for(int i = 0; i < items.size(); i++)
+		{
+			output += String.format("(%d) %s\n", (i + 1), items.get(i).getName());
+			output += "   Compatable with " + ((items.get(i).getForAnimals()) ? "animals\n" : "crops\n");
+			output += String.format("   Boost amount: %d\n", items.get(i).getBoostAmount());
 		}
 		
 		return output;

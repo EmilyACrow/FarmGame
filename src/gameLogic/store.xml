@@ -54,13 +54,13 @@
 		<daysToGrow>2</daysToGrow>
 	</crop>
 	<crop>
-		<name>Carrots</name>
+		<name>Carrot</name>
 		<purchasePrice>3</purchasePrice>
 		<sellPrice>8</sellPrice>
 		<daysToGrow>2</daysToGrow>
 	</crop>
 	<crop>
-		<name>Apples</name>
+		<name>Apple</name>
 		<purchasePrice>2</purchasePrice>
 		<sellPrice>4</sellPrice>
 		<daysToGrow>1</daysToGrow>
@@ -90,42 +90,42 @@
 		<daysToGrow>1</daysToGrow>
 	</crop>
 	<item>
-		<name>bar</name>
+		<name>Fancy Feast</name>
 		<purchasePrice>1</purchasePrice>
 		<boostAmount>2</boostAmount>
 		<forAnimals>1</forAnimals>
 		<forCrops>0</forCrops>
 	</item>
 	<item>
-		<name>hay</name>
+		<name>Hay</name>
 		<purchasePrice>4</purchasePrice>
 		<boostAmount>3</boostAmount>
 		<forAnimals>1</forAnimals>
 		<forCrops>0</forCrops>
 	</item>
 	<item>
-		<name>treats</name>
+		<name>Treats</name>
 		<purchasePrice>3</purchasePrice>
 		<boostAmount>5</boostAmount>
 		<forAnimals>1</forAnimals>
 		<forCrops>0</forCrops>
 	</item>
 	<item>
-		<name>fizzbuzz</name>
+		<name>Manure</name>
 		<purchasePrice>3</purchasePrice>
 		<boostAmount>5</boostAmount>
 		<forAnimals>0</forAnimals>
 		<forCrops>1</forCrops>
 	</item>
 	<item>
-		<name>fertilizer</name>
+		<name>Fertilizer</name>
 		<purchasePrice>10</purchasePrice>
 		<boostAmount>5</boostAmount>
 		<forAnimals>0</forAnimals>
 		<forCrops>1</forCrops>
 	</item>
 	<item>
-		<name>sprinkler</name>
+		<name>Sprinkler</name>
 		<purchasePrice>9</purchasePrice>
 		<boostAmount>3</boostAmount>
 		<forAnimals>0</forAnimals>
