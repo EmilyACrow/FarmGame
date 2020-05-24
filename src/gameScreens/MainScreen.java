@@ -237,11 +237,9 @@ public class MainScreen {
 		btnTendLand.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				chosenAction = PossibleAction.TEND_LAND;
-				//empties anything in selection details
-				textAreaSelectionDetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
+				chosenAction = PossibleAction.TEND_LAND;	
 				listModelSubOptions.removeAllElements();
-				btnConfirm.setVisible(true);
+				m_game.takeAction(chosenAction, null);
 			}
 		});
 		btnTendLand.setBounds(28, 211, 141, 21);
@@ -341,15 +339,8 @@ public class MainScreen {
 			 */
 			public void actionPerformed(ActionEvent e) {
 				
-				if(chosenAction.equals(PossibleAction.TEND_LAND) ) {
-				System.out.println( subOption.getSelectedValue() );
-				//m_game.takeAction(chosenAction, subOption.getSelectedValue()
-				//m_game.tendLand();
-									
-				}
-				else {
-					m_game.takeAction(chosenAction, subOption.getSelectedValue() );
-				}
+				m_game.takeAction(chosenAction, subOption.getSelectedValue() );
+				
 				
 			}
 		});

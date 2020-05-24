@@ -259,9 +259,13 @@ public class GameEnvironment {
 	
 	private void tendLand()
 	{
-		
-		m_farm.setMaxAnimalAmount(m_farm.getMaxAnimalAmount() + 1);
+		String message = "";
+		m_farm.setMaxAnimalAmount(getMaxAnimalAmount() + 1);
 		m_farm.setMaxCropAmount(m_farm.getMaxCropAmount() + 1);
+		message = message.concat(String.format("Animal capacity increased to %d\n", getMaxAnimalAmount()));
+		message = message.concat(String.format("Crop capacity increased to %d", getMaxCropAmount() ));
+		
+		updateDetailText(message);
 	}
 	
 	public int getCropStatus(Crop crop)
@@ -316,8 +320,8 @@ public class GameEnvironment {
 		}
 		
 		ArrayList<Merchandise> selectedMerch = m_farm.getPlayerMerchFromString(selection);
-		if(selectedMerch.size() == 0)
-		{
+		if(selectedMerch.size() == 0 && !(action.equals(PossibleAction.TEND_LAND)) )
+		{	
 			m_mainScreen.setDetailText(String.format("No merchandise matching %s found in inventory!", selection));
 			return;
 		}
@@ -395,7 +399,6 @@ public class GameEnvironment {
 			}
 
 			m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
-			System.out.println(m_farm.getRemainingActions());
 			m_mainScreen.updateStatusBar();
 		}
 		catch(Exception e)
@@ -1438,6 +1441,10 @@ public class GameEnvironment {
 		
 	}
 	
+	/**
+	 * Tells player additional information or results of an action.
+	 * @param text message that will appear on the detail's box
+	 */
 	public void updateDetailText(String text) {
 		m_mainScreen.setDetailText(text);
 	}
