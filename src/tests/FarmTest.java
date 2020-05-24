@@ -71,21 +71,8 @@ class FarmTest {
 		farmTest.addAnimal(cat);
 		
 		//check there are now two elements in the list. 
-		System.out.println(farmTest.getAnimals().size());
 		assertEquals(2, farmTest.getAnimals().size()  );
 		
-		
-		
-		farmTest.setRemainingDays(3);
-		
-		message = farmTest.endDay();
-		assertEquals(1095,farmTest.getMoney());
-		
-		//check animals' happiness can't go below 0.
-		cat.setHappiness(0);
-		
-		message = farmTest.endDay();
-		assertEquals(0, cat.getHappiness());
 	}
 
 }
