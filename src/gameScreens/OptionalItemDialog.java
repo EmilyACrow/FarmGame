@@ -38,42 +38,28 @@ public class OptionalItemDialog extends JDialog {
 		//Sets string to match the class name of the first item in the MerchandiseWrapper
 		//Do this because we already know that the MerchandiseWrapper only has one type of Merchandise in it
 		String selectionType = selection.getMerchList().get(0).getClass().getSimpleName();
-		boolean isAnimal = selectionType == MerchandiseWrapper.ANIMAL;
+		boolean isAnimal = selectionType.contentEquals(MerchandiseWrapper.ANIMAL);
 		setTitle("Select optional item");
 		setBounds(100, 100, 340, 340);
 		getContentPane().setLayout(null);
 		
 		
 		//Only add items that can be used for crop. 
-		DefaultListModel<Item> itemListModel = new DefaultListModel<Item>();
+		DefaultListModel<String> itemListModel = new DefaultListModel<String>();
 		
 		//using for-loop in game environment
 		//Need to get the items for crops or animals depending on the merch. 
 		//Here I try to separate them by doing this. 
-		if(isAnimal) 
-		{
-			
-			for(Item item : game.getFarm().getItems())
-			{
-				if(item.getForAnimals())
-				{
-					itemListModel.addElement(item);
-				}			
-			}	
-		}
-		//must then be an item.
-		else 
-		{
-			for(Item item : game.getFarm().getItems())
-			{
-				if(item.getForCrops())
-				{
-					itemListModel.addElement(item);
-				}
-			}
-		}
 
-		
+		for(Item item : game.getFarm().getItems())
+		{
+			if((item.getForAnimals() && isAnimal) || (!item.getForAnimals() && !isAnimal))
+			{
+				String itemDetails = String.format("%s(Boost amount: %d)", item.getName(), item.getBoostAmount());
+				itemListModel.addElement(itemDetails);
+			}
+		}	
+
 		//ScrollPane for Jlist
 		JScrollPane optionalItemScroll = new JScrollPane();
 		optionalItemScroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -81,7 +67,7 @@ public class OptionalItemDialog extends JDialog {
 		getContentPane().add(optionalItemScroll);
 		
 		//creates Jlist
-		JList<Item> itemsOwnedList = new JList<Item>(itemListModel);
+		JList<String> itemsOwnedList = new JList<String>(itemListModel);
 		optionalItemScroll.setViewportView(itemsOwnedList);
 	
 		String verb = (selectionType == MerchandiseWrapper.ANIMAL) ? "feed" : "give";
@@ -104,7 +90,10 @@ public class OptionalItemDialog extends JDialog {
 			}
 		});
 		btnNotUse.setBounds(134, 236, 85, 37);
-		getContentPane().add(btnNotUse);
+		if(!isAnimal)
+		{
+			getContentPane().add(btnNotUse);
+		}
 		
 		
 		
@@ -128,18 +117,23 @@ public class OptionalItemDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) 
 			{
 				
+				//Rough, last minute solution
+				String formattedSelection = itemsOwnedList.getSelectedValue().substring(0,itemsOwnedList.getSelectedValue().indexOf('('));
+				System.out.println(formattedSelection);
 				
+				Item itemToUse = (Item) game.getFarm().getPlayerMerchFromString(formattedSelection).get(0);
 				//Uses game to call the right method depending on the type of life.
 				if(isAnimal) 
 				{	
-					game.feedAnimals(selection, itemsOwnedList.getSelectedValue());
+					
+					game.feedAnimals(selection, itemToUse);
 					//itemListModel.clear();		
 					dispose();	
 				}
 				
 				else 
 				{
-					game.tendCrops(selection, itemsOwnedList.getSelectedValue());
+					game.tendCrops(selection, itemToUse);
 					//itemListModel.clear();		
 					dispose();	
 				}

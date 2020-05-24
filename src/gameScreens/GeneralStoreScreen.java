@@ -19,6 +19,8 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class GeneralStoreScreen{
 
@@ -50,6 +52,11 @@ public class GeneralStoreScreen{
 		m_cart = m_backend.getShoppingCart();
 		
 		frameGeneralStore = new JFrame();
+		frameGeneralStore.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+			}
+		});
 		frameGeneralStore.setResizable(false);
 		frameGeneralStore.setTitle("General Store");
 		frameGeneralStore.setBounds(100, 100, 401, 570);

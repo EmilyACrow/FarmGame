@@ -194,8 +194,14 @@ public class GameEnvironment {
 				}
 			}
 		}
-		
-		tendCrops(crops, items);
+		try
+		{
+			tendCrops(crops, items);
+		}
+		catch(Exception e)
+		{
+			updateDetailText(e.getMessage());
+		}
 		
 		ArrayList<Item> playerItems = m_farm.getItems();
 		
@@ -235,7 +241,14 @@ public class GameEnvironment {
 			}
 		}
 		
-		feedAnimals(animals, items);
+		try
+		{
+			feedAnimals(animals, items);
+		}
+		catch(Exception e)
+		{
+			updateDetailText(e.getMessage());
+		}
 		
 	}
 		
@@ -500,7 +513,7 @@ public class GameEnvironment {
 		{
 			m_mainScreen.setDetailText(e.getMessage());
 		}
-		
+		updateStatusBar();
 	}
 
 	/**
@@ -1542,6 +1555,49 @@ public class GameEnvironment {
 	 */
 	public void updateDetailText(String text) {
 		m_mainScreen.setDetailText(text);
+	}
+
+	/**
+	 * Get farm status
+	 * @return Formatted string representing farm status
+	 */
+	public String getFarmStatus() {
+		ArrayList<Animal> animals = m_farm.getAnimals();
+		ArrayList<Crop> crops = m_farm.getCrops();
+		ArrayList<Item> items = m_farm.getItems();
+		
+		String output = "";
+		output += String.format("Your name: %d\n", m_farm.getFarmer().getName());
+		output += String.format("Your age: %d\n", m_farm.getFarmer().getAge());
+		output += String.format("Farm name: %d\n", m_farm.getFarmName());
+		output += String.format("Farm type: %d\n", m_farm.getfarmType());
+		output += String.format("Farm money: %d\n", getPlayerMoney());
+		output += String.format("Max number of animals: %d\n", getMaxAnimalAmount());
+		output += String.format("Max number of crops: %d\n", getMaxCropAmount());
+		output += String.format("Items(%d):\n", items.size());
+		for(int i = 0; i < items.size(); i++)
+		{
+			output += String.format("(%d) %s\n", (i + 1), items.get(i).getName());
+			output += "   Compatable with " + ((items.get(i).getForAnimals()) ? "animals\n" : "crops\n");
+			output += String.format("   Boost amount: %d", items.get(i).getBoostAmount());
+		}
+		output += String.format("Crops(%d):\n", crops.size());
+		for(int i = 0; i < crops.size(); i++)
+		{
+			output += String.format("(%d) %s\n", (i + 1), crops.get(i).getName());
+			output += String.format("   Days to grow: %d\n", crops.get(i).getDaysToGrow());
+			output += String.format("   Days until ready to harvest: %d\n", crops.get(i).getDaysUntilHarvest());
+		}
+		output += String.format("Animals(%d):\n", animals.size());
+		for(int i = 0; i < animals.size(); i++)
+		{
+			output += String.format("(%d) %s\n", (i + 1), animals.get(i).getName());
+			output += String.format("   End-of-day cash bonus: $%d\n", animals.get(i).getDailyBonus());
+			output += String.format("   Health: %s\n", animals.get(i).getHealth());
+			output += String.format("   Happiness: %s\n", animals.get(i).getHappiness());
+		}
+		
+		return output;
 	}
 	
 

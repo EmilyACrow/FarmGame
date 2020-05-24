@@ -838,7 +838,8 @@ public class Farm {
 		ArrayList<Merchandise> matchingMerch = new ArrayList<Merchandise>();
 		for(Merchandise m : m_merch.getMerchList())
 		{
-			if(m.getName() == str)
+			System.out.println(m.getName() + ", " + str + ", " + (m.getName().equals(str)));
+			if(m.getName().equals(str))
 			{
 				matchingMerch.add(m);
 			}

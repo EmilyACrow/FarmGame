@@ -287,8 +287,7 @@ public class MainScreen {
 		btnFarmStatus.addActionListener(new ActionListener() {
 			//Player clicks button
 			public void actionPerformed(ActionEvent e) {
-				
-				textAreaSelectionDetails.setText(m_game.getFarm().toString());
+				textAreaSelectionDetails.setText(m_game.getFarmStatus());
 				updateStatusBar();
 				
 			}
@@ -422,7 +421,7 @@ public class MainScreen {
 		lblCrops.setText(String.format("Crops: %d", m_game.getPlayerCrops().size()));
 		lblAnimals.setText(String.format("Animals: %d", m_game.getPlayerAnimals().size()));
 		lblActionsRemaining.setText(String.format("Actions remaining: %d", m_game.getRemainingActions()));
-		lblDaysRemaining.setText(String.format("Days remaining %d", m_game.getRemainingDays()));		
+		lblDaysRemaining.setText(String.format("Days remaining %d", m_game.getRemainingDays()));	
 	}
 	
 	/**
