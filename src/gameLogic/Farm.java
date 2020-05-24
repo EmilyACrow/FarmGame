@@ -145,7 +145,7 @@ public class Farm {
 			
 		case PRODUCE:
 			
-			m_money = 500;
+			m_money = 200;
 			
 			m_maxCropAmount = 6;
 			m_maxAnimalAmount = 2;
@@ -160,7 +160,7 @@ public class Farm {
 			
 		case RANCH:
 						
-			m_money = 500;
+			m_money = 200;
 			
 			m_maxCropAmount = 2;
 			m_maxAnimalAmount = 6;
@@ -175,7 +175,7 @@ public class Farm {
 			
 		case MIXED:
 					
-			m_money = 1000;
+			m_money = 300;
 			
 			m_maxCropAmount = 3;
 			m_maxAnimalAmount = 3;

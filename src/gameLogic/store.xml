@@ -51,30 +51,30 @@
 		<name>Wheat</name>
 		<purchasePrice>5</purchasePrice>
 		<sellPrice>10</sellPrice>
-		<daysToGrow>2</daysToGrow>
+		<daysToGrow>3</daysToGrow>
 	</crop>
 	<crop>
 		<name>Carrot</name>
-		<purchasePrice>3</purchasePrice>
+		<purchasePrice>4</purchasePrice>
 		<sellPrice>8</sellPrice>
 		<daysToGrow>2</daysToGrow>
 	</crop>
 	<crop>
 		<name>Apple</name>
-		<purchasePrice>2</purchasePrice>
-		<sellPrice>4</sellPrice>
+		<purchasePrice>4</purchasePrice>
+		<sellPrice>8</sellPrice>
 		<daysToGrow>1</daysToGrow>
 	</crop>	
 	<crop>
 		<name>Corn</name>
 		<purchasePrice>10</purchasePrice>
-		<sellPrice>20</sellPrice>
-		<daysToGrow>2</daysToGrow>
+		<sellPrice>24</sellPrice>
+		<daysToGrow>3</daysToGrow>
 	</crop>
 	<crop>
 		<name>Cotton</name>
 		<purchasePrice>8</purchasePrice>
-		<sellPrice>10</sellPrice>
+		<sellPrice>30</sellPrice>
 		<daysToGrow>5</daysToGrow>
 	</crop>
 	<crop>
@@ -91,43 +91,43 @@
 	</crop>
 	<item>
 		<name>Fancy Feast</name>
+		<purchasePrice>3</purchasePrice>
+		<boostAmount>5</boostAmount>
+		<forAnimals>1</forAnimals>
+		<forCrops>0</forCrops>
+	</item>
+	<item>
+		<name>Hay</name>
 		<purchasePrice>1</purchasePrice>
 		<boostAmount>2</boostAmount>
 		<forAnimals>1</forAnimals>
 		<forCrops>0</forCrops>
 	</item>
 	<item>
-		<name>Hay</name>
-		<purchasePrice>4</purchasePrice>
-		<boostAmount>3</boostAmount>
-		<forAnimals>1</forAnimals>
-		<forCrops>0</forCrops>
-	</item>
-	<item>
 		<name>Treats</name>
-		<purchasePrice>3</purchasePrice>
-		<boostAmount>5</boostAmount>
+		<purchasePrice>2</purchasePrice>
+		<boostAmount>3</boostAmount>
 		<forAnimals>1</forAnimals>
 		<forCrops>0</forCrops>
 	</item>
 	<item>
 		<name>Manure</name>
 		<purchasePrice>3</purchasePrice>
-		<boostAmount>5</boostAmount>
+		<boostAmount>2</boostAmount>
 		<forAnimals>0</forAnimals>
 		<forCrops>1</forCrops>
 	</item>
 	<item>
 		<name>Fertilizer</name>
-		<purchasePrice>10</purchasePrice>
-		<boostAmount>5</boostAmount>
+		<purchasePrice>12</purchasePrice>
+		<boostAmount>3</boostAmount>
 		<forAnimals>0</forAnimals>
 		<forCrops>1</forCrops>
 	</item>
 	<item>
 		<name>Sprinkler</name>
 		<purchasePrice>9</purchasePrice>
-		<boostAmount>3</boostAmount>
+		<boostAmount>2</boostAmount>
 		<forAnimals>0</forAnimals>
 		<forCrops>1</forCrops>
 	</item>
