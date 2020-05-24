@@ -177,8 +177,21 @@ public class Item implements Merchandise{
         return output;
 	}
 
+	/**
+	 * Create deep copy of this Item
+	 * @return new deep copy of this item
+	 */
 	public Merchandise clone()
 	{
 		return new Item(m_name, m_purchasePrice, m_boostAmount, m_forAnimals, m_forCrops);
+	}
+	
+	/**
+	 * Gets a default item if the user chooses not to use an item on their crops.
+	 * @return
+	 */
+	public static Item getBlankCropItem()
+	{
+		return new Item("water", 0, 1, false, true);
 	}
 }

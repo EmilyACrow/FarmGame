@@ -155,40 +155,100 @@ public class GameEnvironment {
 			System.out.println(e);
 		}
 	}
-		
-	private void tendCrops(MerchandiseWrapper wrappedSelection)
-	{
-		String output;
-		try
-		{
-			
-			OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, wrappedSelection.getMerchList().get(0),"plant");
-			optionalItemDialog.setVisible(true);
-			
-			//output = m_farm.tendCrops(crop);
-			//System.out.println(output);
-		}
-		catch(IllegalStateException e)
-		{
-			System.out.println(e);
-		}
+	
+	/**
+	 * Tends to the crops then updates the detail box to tell the player about their crops. It then deletes the item used.
+	 * 
+	 * @param selection the crop that has been chosen 
+	 * @param itemUsed the item that has been chosen
+	 */
+	public void tendCropMessage(String message) {
+		updateDetailText(message);
 		
 	}
 	
-	private void tendCrops(Crop crop, Item item)
-	{
-		String output;
-		try
+	public void tendCrops(MerchandiseWrapper selection, Item item) {
+		ArrayList<Crop> crops = new ArrayList<Crop>();
+		ArrayList<Item> items = new ArrayList<Item>();
+		for(Crop c : selection.getCrops())
 		{
-			output = m_farm.tendCrops(crop, item);
-			System.out.println(output);
-			m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
+			crops.add(c);
 		}
-		catch(IllegalStateException e)
+		//If the user chose not to use an item
+		if(item == null)
 		{
-			System.out.println(e);
+			for(int i = 0; i < crops.size(); i++)
+			{
+				items.add(Item.getBlankCropItem());
+			}
+		}
+		else 
+		{
+			for(Item i : m_farm.getItems())
+			{
+			
+				if(i.getName() == item.getName())
+				{
+					items.add(i);
+				}
+			}
 		}
 		
+		tendCrops(crops, items);
+		
+		String message = "";
+		for(int i = 0; i < crops.size(); i++)
+		{
+			if(crops.get(i).getDaysUntilHarvest() != 0)
+			{
+				message += String.format("%s(%d): %d days until ready to harvest.\n", crops.get(i).getName(),i,crops.get(i).getDaysUntilHarvest());
+			}
+			else
+			{
+				message += String.format("%s(%d): Ready to harvest.\n", crops.get(i).getName(),i,crops.get(i).getDaysUntilHarvest());
+			}
+		}
+		tendCropMessage(message);
+	}
+	
+	/**
+	 * Called by OptionalItemDialog, sends a list of chosen items and animals of the selected species.
+	 * @param selection the animals the player has selected to feed.
+	 * @param itemUsed the item type the player has chosen to feed to the animal.
+	 */
+	public void feedAnimals(MerchandiseWrapper selection, Item item) 
+	{
+		ArrayList<Animal> animals = new ArrayList<Animal>();
+		ArrayList<Item> items = new ArrayList<Item>();
+		for(Animal a : selection.getAnimals())
+		{
+			animals.add(a);
+		}
+		for(Item i : m_farm.getItems())
+		{
+			if(i.getName() == item.getName())
+			{
+				items.add(i);
+			}
+		}
+		
+		feedAnimals(animals, items);
+		
+	}
+		
+	private void tendCrops(MerchandiseWrapper wrappedSelection)
+	{
+		try
+		{
+			
+			OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, wrappedSelection);
+			optionalItemDialog.setVisible(true);
+
+		}
+		catch(Exception e)
+		{
+			updateDetailText(e.getMessage());
+		}
 		
 	}
 	
@@ -208,7 +268,7 @@ public class GameEnvironment {
 			{
 				
 				//Create OptionalItemDialog window. send the items the player owns
-				OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, wrappedSelection.getAnimals().get(0), "animal");
+				OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, wrappedSelection);
 				optionalItemDialog.setVisible(true);
 
 			//get selected items into an ArrayList<Item>
@@ -230,7 +290,7 @@ public class GameEnvironment {
 	 * @param animals ArrayList<Animal> animals to feed
 	 * @param items ArrayList<Item> items to feed to animals
 	 */
-	private void feedAnimal(ArrayList<Animal> animals, ArrayList<Item> items)
+	private void feedAnimals(ArrayList<Animal> animals, ArrayList<Item> items)
 	{
 		if(animals.size() > items.size())
 		{
@@ -256,7 +316,39 @@ public class GameEnvironment {
 		}
 		m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
 
-		
+	}
+	
+	/**
+	 * Tend the crops once crops to tend and item to use are established
+	 * @param cropss ArrayList<Crop> crops to tend
+	 * @param items ArrayList<Item> items to use
+	 */
+	private void tendCrops(ArrayList<Crop> crops, ArrayList<Item> items)
+	{
+		if(crops.size() > items.size())
+		{
+			throw new IllegalStateException(String.format("Not enough %s: %d needed but %d only in inventory.", items.get(0).getName(), crops.size(), items.size()));
+		}
+		else if (!items.get(0).getForCrops())
+		{
+			throw new IllegalStateException(String.format("Item %s not compatible with crops.", items.get(0).getName()));
+		}
+
+		for(int i = crops.size() - 1; i >= 0; i--)
+		{
+			
+			try
+			{
+				crops.get(i).useItem(items.get(i));
+				items.remove(i);
+			}
+			catch(Exception e)
+			{
+				m_mainScreen.setDetailText(e.getMessage());
+			}
+		}
+		m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
+
 	}
 	
 	private void playWithAnimals(MerchandiseWrapper wrappedSelection)
@@ -1449,48 +1541,6 @@ public class GameEnvironment {
 		m_mainScreen.setDetailText(text);
 	}
 	
-	/**
-	 * Tends to the crops then updates the detail box to tell the player about their crops. It then deletes the item used.
-	 * 
-	 * @param typeToTend the crop that has been chosen 
-	 * @param itemUsed the item that has been chosen
-	 */
-	public void tendCropMessage(Merchandise typeToTend, Item itemUsed) {
-		updateDetailText(getFarm().tendCrops(typeToTend));
-		m_farm.removeItem(itemUsed);
-		
-	}
-	
-	/**
-	 * Tends to crop without using anything. it updates the detail box on the mainscreen to tell the player about their crops.
-	 * @param typeToTend the crop player wants to tend to.
-	 */
-	public void tendCropMessage(Merchandise typeToTend) {
-		updateDetailText(getFarm().tendCrops(typeToTend));	
-	}
-	
-	/**
-	 * Called by OptionalItemDialog, sends a list of chosen items and animals of the selected species.
-	 * @param typeToTend the animal type the player has selected to feed.
-	 * @param itemUsed the item type the player has chosen to feed to the animal.
-	 */
-	public void accessFeedAnimal(Merchandise typeToTend, Item item) 
-	{
-		ArrayList<Animal> animals = new ArrayList<Animal>();
-		ArrayList<Item> items = new ArrayList<Item>();
-		for(Animal a : m_farm.getAnimals())
-		{
-			animals.add(a);
-		}
-		for(Item i : m_farm.getItems())
-		{
-			items.add(i);
-		}
-		
-		feedAnimal(animals, items);
-		
 
-		
-	}
 	
 }

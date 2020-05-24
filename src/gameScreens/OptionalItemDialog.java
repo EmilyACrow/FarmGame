@@ -34,8 +34,12 @@ public class OptionalItemDialog extends JDialog {
 	
 	//private Item optionalItem;
 
-	public OptionalItemDialog(GameEnvironment game, Merchandise typeToTend, String typeOfLife) {
-		setTitle("Optional item");
+	public OptionalItemDialog(GameEnvironment game, MerchandiseWrapper selection) {
+		//Sets string to match the class name of the first item in the MerchandiseWrapper
+		//Do this because we already know that the MerchandiseWrapper only has one type of Merchandise in it
+		String selectionType = selection.getMerchList().get(0).getClass().getSimpleName();
+		boolean isAnimal = selectionType == MerchandiseWrapper.ANIMAL;
+		setTitle("Select optional item");
 		setBounds(100, 100, 340, 340);
 		getContentPane().setLayout(null);
 		
@@ -45,8 +49,8 @@ public class OptionalItemDialog extends JDialog {
 		
 		//using for-loop in game environment
 		//Need to get the items for crops or animals depending on the merch. 
-		//Here I try to seperate them by doing this. 
-		if(typeOfLife.equals("animal")) 
+		//Here I try to separate them by doing this. 
+		if(isAnimal) 
 		{
 			
 			for(Item item : game.getFarm().getItems())
@@ -80,9 +84,9 @@ public class OptionalItemDialog extends JDialog {
 		JList<Item> itemsOwnedList = new JList<Item>(itemListModel);
 		optionalItemScroll.setViewportView(itemsOwnedList);
 	
-		String verb = (typeOfLife == "animal") ? "feed" : "give";
-		JLabel lblAskHeading = new JLabel(String.format("What item do you want to %s to your %s?", verb, typeOfLife));
-		lblAskHeading.setBounds(10, 9, 233, 19);
+		String verb = (selectionType == MerchandiseWrapper.ANIMAL) ? "feed" : "give";
+		JLabel lblAskHeading = new JLabel(String.format("What item do you want to %s to your %s?", verb, selectionType.toLowerCase()));
+		lblAskHeading.setBounds(10, 9, 304, 19);
 		getContentPane().add(lblAskHeading);
 		
 		
@@ -94,7 +98,7 @@ public class OptionalItemDialog extends JDialog {
 			
 			//delete this dialog when no is clicked
 			public void actionPerformed(ActionEvent e) {
-				game.tendCropMessage(typeToTend);
+				game.tendCrops(selection, null);
 				//itemListModel.clear();		
 				dispose();
 			}
@@ -126,16 +130,16 @@ public class OptionalItemDialog extends JDialog {
 				
 				
 				//Uses game to call the right method depending on the type of life.
-				if(typeOfLife.equals("animal")) 
+				if(isAnimal) 
 				{	
-					game.accessFeedAnimal(typeToTend, itemsOwnedList.getSelectedValue());
+					game.feedAnimals(selection, itemsOwnedList.getSelectedValue());
 					//itemListModel.clear();		
 					dispose();	
 				}
 				
 				else 
 				{
-					game.tendCropMessage(typeToTend, itemsOwnedList.getSelectedValue() );
+					game.tendCrops(selection, itemsOwnedList.getSelectedValue());
 					//itemListModel.clear();		
 					dispose();	
 				}
