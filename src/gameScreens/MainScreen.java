@@ -46,7 +46,7 @@ import javax.swing.JTextArea;
 public class MainScreen {
 
 	public JFrame frmSelectActivity;
-	private JPanel optionPanel;
+	private JPanel buttonPanel;
 	private JLabel lblMoney;
 	private JLabel lblActionsRemaining;
 	private JLabel lblDaysRemaining;
@@ -56,29 +56,9 @@ public class MainScreen {
 
 	private OptionalItemDialog askForItem;
 	private PossibleAction chosenAction;
-	private Item optionalItem;
+	//private Item optionalItem;
 	private DefaultListModel<String> listModelSubOptions;
 	private GameEnvironment m_game;
-	
-	
-
-	/*
-	 * Launch the application.
-	 
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainScreen window = new MainScreen();
-					window.frmSelectActivity.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	 */
 	
 
 	/**
@@ -92,9 +72,9 @@ public class MainScreen {
 		
 		//a default value for chosenAction
 		chosenAction = PossibleAction.FEED_ANIMAL;
-		optionalItem = null;
+		//optionalItem = null;
 		m_game = game;
-		askForItem = new OptionalItemDialog(m_game.getPlayerItems());
+		//askForItem = new OptionalItemDialog(m_game.getPlayerItems());
 		initialize();
 		frmSelectActivity.setVisible(true);
 		
@@ -111,6 +91,7 @@ public class MainScreen {
 		frmSelectActivity.setBounds(100, 100, 531, 428);
 		frmSelectActivity.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmSelectActivity.getContentPane().setLayout(null);
+		
 
 		/*
 		 * Components to aid in player selecting one crop or animal are below here.
@@ -129,7 +110,6 @@ public class MainScreen {
 		textAreaSelectionDetails.setEditable(false);
 		
 			
-		
 		/* The confirm button appears when an animal or crop from subOption is selected
 		 * It will become invisible again when it has been clicked. 
 		*/
@@ -261,6 +241,8 @@ public class MainScreen {
 				//empties anything in selection details
 				textAreaSelectionDetails.setText("Tend land is selected. This will increase crop and animal capacity on farm.");
 				listModelSubOptions.removeAllElements();
+				chosenAction = PossibleAction.TEND_LAND;
+				m_game.takeAction(chosenAction, null);
 			}
 		});
 		btnTendLand.setBounds(28, 211, 141, 21);
@@ -336,6 +318,21 @@ public class MainScreen {
 		
 		
 		
+		//move to next day button 
+		JButton btnNextDay = new JButton("end day");
+		btnNextDay.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//have to move this to game environ	
+				
+				m_game.endDay();			
+			}
+		});
+		btnNextDay.setBounds(356, 349, 127, 21);
+		frmSelectActivity.getContentPane().add(btnNextDay);
+		
+		
+		
+		
 		// confirm button actionListener here. btnConfirm actionListener must be below subOption and lblActionsRemaining, otherwise it'll read the as uncreated.
 		btnConfirm.addActionListener(new ActionListener() {
 			
@@ -343,11 +340,71 @@ public class MainScreen {
 			 * confirmation button will use the selected animal/crop as arguments to feed into takeAction() in GameEnvironment class
 			 * If tend crop is selected, OptionalItemDialog pops up to ask player if they want to use an item on the crop.
 			 */
-			public void actionPerformed(ActionEvent e) {				
-				m_game.takeAction(chosenAction, subOption.getSelectedValue());
+			public void actionPerformed(ActionEvent e) {
+				
+				m_game.takeAction(chosenAction, subOption.getSelectedValue() );
+				
 				
 			}
 		});
+		
+	}
+	
+	/**
+	 * Populate a DefaultListModel<String> with names from a list of Merchandise.
+	 * Can display multiple class types by formatting filter string as [classStringA]|[classStringB].
+	 * @param merch list of merchandise to display by type
+	 * @param merchType MerchandiseWrapper constant, either .ANIMAL, .CROP, or .ITEM based on which class you want to display
+	 */
+	public void populateSubOptions(MerchandiseWrapper merch, String merchType)
+	{
+		//TODO: Move to GameEnvironment.java
+		ArrayList<Merchandise> compactedList = new ArrayList<Merchandise>();
+		//Quick little regex to filter out merch we want
+		String filterRegex = String.format("(%s)", merchType);
+		//Worst n^2 - I'm sorry, I was in a rush
+		for(int i = 0; i < merch.getMerchList().size(); i++)
+		{
+			
+			//System.out.println(String.format("className=%s, regex=%s, filteredOut=%d", merch.getMerchList().get(i).getClass().getSimpleName(), filterRegex,(merch.getMerchList().get(i).getClass().getSimpleName().matches(filterRegex))));
+			//If the class name of merch @ index i doesn't match the filter, skip this iteration.
+			if(!(merch.getMerchList().get(i).getClass().getSimpleName().matches(filterRegex)))
+			{
+				continue;
+			}
+			boolean alreadyAdded = false;
+			Merchandise m = merch.getMerchList().get(i);
+			for(int j = compactedList.size() - 1; j >= 0; j--)
+			{
+				if(compactedList.get(j).getName() == m.getName())
+				{
+					alreadyAdded = true;
+					break;
+				}
+			}
+			if(!alreadyAdded)
+			{
+				compactedList.add(m);
+			}
+		}
+		listModelSubOptions.removeAllElements();
+		for(Merchandise m : compactedList)
+		{
+			listModelSubOptions.addElement(m.getName());
+		}
+	}
+	
+	/**
+	 * Updates the 4 farm status labels across the top of the main screen
+	 */
+	public void updateStatusBar()
+	{
+		lblMoney.setText(String.format("Money: $%d", m_game.getPlayerMoney()));
+		lblDaysRemaining.setText(String.format("Days Remaining: %d", m_game.getRemainingDays()));
+		lblCrops.setText(String.format("Crops: %d", m_game.getPlayerCrops().size()));
+		lblAnimals.setText(String.format("Animals: %d", m_game.getPlayerAnimals().size()));
+		lblActionsRemaining.setText(String.format("Actions remaining: %d", m_game.getRemainingActions()));
+		lblDaysRemaining.setText(String.format("Days remaining %d", m_game.getRemainingDays()));
 		
 		updateStatusBar();
 		
@@ -410,6 +467,15 @@ public class MainScreen {
 	
 	/**
 	 * Sets the text in textAreaSelectionDetails
+	 * @param text
+	 */
+	public void setDetailText(String text)
+	{
+		textAreaSelectionDetails.setText(text);
+	}
+	
+	/**
+	 * Sets the text in textAreaSelectionDetails. gameEnvironment uses it.
 	 * @param text
 	 */
 	public void setDetailText(String text)

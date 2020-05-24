@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
+
 import gameScreens.MainScreen;
+import gameScreens.OptionalItemDialog;
 /**
  * Contains methods to run the farm game. Contains methods that allow the player's input to alter variables in the game. 
  * 
  * last modified: 20-05-2020
  * 
- * created:
+ * created: 
  * @author Dmitri Smith 
  * @author Kenn Leen Duenas Fulgencio
  *
@@ -153,13 +156,17 @@ public class GameEnvironment {
 		}
 	}
 		
-	private void tendCrops(Crop crop)
+	private void tendCrops(Merchandise typeToTend)
 	{
 		String output;
 		try
 		{
-			output = m_farm.tendCrops(crop);
-			System.out.println(output);
+			
+			OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, typeToTend,"plant");
+			optionalItemDialog.setVisible(true);
+			
+			//output = m_farm.tendCrops(crop);
+			//System.out.println(output);
 		}
 		catch(IllegalStateException e)
 		{
@@ -183,10 +190,33 @@ public class GameEnvironment {
 		
 	}
 	
+	/**
+	 * Feed animals 
+	 * @param wrappedSelection animals of the chosen species of animal.
+	 */
 	private void feedAnimals(MerchandiseWrapper wrappedSelection) 
 	{
-		//if(wrappedSelection.getAnimals().size())
+		//there exists animals that need feeding. 
 		//Create OptionalItemDialog window
+		
+		if(wrappedSelection.getAnimals().size()>=1) 
+		{  /*
+			
+			try 
+			{
+			//Create OptionalItemDialog window
+			OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, wrappedSelection, "animal");
+			optionalItemDialog.setVisible(true);
+			}
+			catch(Exception e)
+			{
+				updateDetailText(String.format("Unable to feed %s", wrappedSelection));
+			} 
+			
+			*/
+			
+		}
+		
 		
 	}
 	
@@ -224,6 +254,7 @@ public class GameEnvironment {
 	
 	private void playWithAnimals(MerchandiseWrapper wrappedSelection)
 	{
+		
 		//Need to access wrapper this way in order to act on reference to player object rather than 
 		for(int i = 0; i < wrappedSelection.size(); i++)
 		{
@@ -231,6 +262,7 @@ public class GameEnvironment {
 			m_farm.playWithAnimal(a);
 		}
 		
+		updateDetailText(String.format("All animals of this species have their happiness increased by %s", m_farm.getAnimalHappinessMod() ));		
 	}
 	
 	private void harvestCrop(MerchandiseWrapper wrappedSelection)
@@ -252,9 +284,13 @@ public class GameEnvironment {
 	
 	private void tendLand()
 	{
-		
-		m_farm.setMaxAnimalAmount(m_farm.getMaxAnimalAmount() + 1);
+		String message = "";
+		m_farm.setMaxAnimalAmount(getMaxAnimalAmount() + 1);
 		m_farm.setMaxCropAmount(m_farm.getMaxCropAmount() + 1);
+		message = message.concat(String.format("Animal capacity increased to %d\n", getMaxAnimalAmount()));
+		message = message.concat(String.format("Crop capacity increased to %d", getMaxCropAmount() ));
+		
+		updateDetailText(message);
 	}
 	
 	public int getCropStatus(Crop crop)
@@ -309,28 +345,36 @@ public class GameEnvironment {
 		}
 		
 		ArrayList<Merchandise> selectedMerch = m_farm.getPlayerMerchFromString(selection);
-		if(selectedMerch.size() == 0)
-		{
+		if(selectedMerch.size() == 0 && !(action.equals(PossibleAction.TEND_LAND)) )
+		{	
 			m_mainScreen.setDetailText(String.format("No merchandise matching %s found in inventory!", selection));
 			return;
 		}
 		MerchandiseWrapper wrappedSelection = new MerchandiseWrapper(selectedMerch);
 		
-		boolean useItem = true;
+		
 		try
 		{
 			switch(action) 
 			{
 				case TEND_CROP:
-//					try
-//					{
-//						crop = selectCrop();
-//					}
-//					catch (IllegalStateException e)
-//					{
-//						m_mainScreen.setDetailText(e.getMessage());
-//						break;
-//					}
+					
+					//gets items only for animals. 
+					try
+					{							 
+						//get the merchandise equivalent.
+						for(Merchandise owned : m_farm.getCrops() ) {
+							if(owned.getName().equals(selection)) {
+								tendCrops(owned);		
+								break; // exits for loop.
+							}
+						}
+					}
+					catch (IllegalStateException e)
+					{
+						m_mainScreen.setDetailText(e.getMessage());
+						break;
+					}
 //					catch(RuntimeException e)
 //					{
 //						m_mainScreen.setDetailText(e.getMessage());
@@ -491,7 +535,6 @@ public class GameEnvironment {
 	}
 	
 	/**
-	 * 
 	 * @return Animal chosen by user
 	 * @throws IllegalStateException if the user chose no animal, or if the user cancelled out of the selection
 	 */
@@ -505,7 +548,6 @@ public class GameEnvironment {
 		}
 		
 		
-		for(int i = 1; i <= animals.size(); i++)
 		{
 			String name = animals.get(i - 1).getName();
 			System.out.println(String.format("%d: %s\n", i, name));
@@ -531,16 +573,18 @@ public class GameEnvironment {
 	
 	/**
 	 * End the game day.
-	 * If days remaining in game <= 0, end the game
+	 * If days remaining in game <= 0, it ends the game.
 	 */
 	public void endDay()
 	{
 		try
 		{
-			m_farm.endDay();
+			updateDetailText(m_farm.endDay());
+			m_farm.setRemainingActions(2);
+			updateStatusBar();
 		}
 		catch (IllegalStateException e)
-		{
+		{	
 			endGame();
 		}
 		
@@ -559,9 +603,8 @@ public class GameEnvironment {
 	 */
 	private void endGame()
 	{
-			
-		System.out.println("The game has ended. Your score is: ");
-		
+		String closingMessage = String.format("The game has ended. Your score is: $%d", m_farm.getMoney());
+		JOptionPane.showMessageDialog(null, closingMessage);
 	}
 	
 	
@@ -1420,7 +1463,47 @@ public class GameEnvironment {
 		m_mainScreen.updateStatusBar();
 		
 	}
-
 	
+	/**
+	 * Tells player additional information or results of an action.
+	 * @param text message that will appear on the detail's box
+	 */
+	public void updateDetailText(String text) {
+		m_mainScreen.setDetailText(text);
+	}
+	
+	/**
+	 * Tends to the crops then updates the detail box to tell the player about their crops. It then deletes the item used.
+	 * 
+	 * @param typeToTend the crop that has been chosen 
+	 * @param itemUsed the item that has been chosen
+	 */
+	public void tendCropMessage(Merchandise typeToTend, Item itemUsed) {
+		updateDetailText(getFarm().tendCrops(typeToTend));
+		m_farm.removeItem(itemUsed);
+		
+	}
+	
+	/**
+	 * Tends to crop without using anything. it updates the detail box on the mainscreen to tell the player about their crops.
+	 * @param typeToTend the crop player wants to tend to.
+	 */
+	public void tendCropMessage(Merchandise typeToTend) {
+		updateDetailText(getFarm().tendCrops(typeToTend));	
+	}
+	
+	/**
+	 * Called by OptionalItemDialog, sends the chosen Item and the animal species.
+	 * @param animalSpecies the animal type the player has selected to feed.
+	 * @param itemUsed the item type the player has chosen to feed to the animal.
+	 */
+	public void accessFeedAnimal(Merchandise animalSpecies, Item itemUsed) {
+		
+		//Needs a for loop to find occurrences of these items in player's inventory?
+		
+		//needs arraylist type of animal and item
+		//feedAnimal(animalSpecies, itemUsed);
+		
+	}
 	
 }

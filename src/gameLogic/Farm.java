@@ -698,71 +698,78 @@ public class Farm {
 	{
 		//Returns a message with carriage returns that informs the players of the results of the day.
 		String message = "";
+		
 		if(m_remainingDays <= 0)
 		{
+			
 			throw new IllegalStateException("No more days remaining.");
+			
 		}
-		m_remainingDays -= 1;
-		message.concat(String.format("%d days remaining in the game\n", m_remainingDays));
 		
-		ArrayList<Animal> animals = m_merch.getAnimals();
-		
-		//For each animal, give the player a cash bonus, then decrement their health and happiness
-		for (Animal animal : animals)
-		{
-			//Only get cash bonus from animal if happiness is above 0
-			if(animal.getHappiness() > 0)
+		else {
+			m_remainingDays -= 1;
+			message = message.concat(String.format("%d days remaining in the game\n", m_remainingDays));
+			
+			ArrayList<Animal> animals = m_merch.getAnimals();
+			
+			//For each animal, give the player a cash bonus, then decrement their health and happiness
+			for (Animal animal : animals)
 			{
-				addMoney(animal.getDailyBonus());
-				//Decrement animal happiness by set amount. If happiness goes below 0, force it back to 0.
-				animal.setHappiness(animal.getHappiness() - animal.getDailyHappinessLoss());
-				if (animal.getHappiness() < 0)
+				//Only get cash bonus from animal if happiness is above 0
+				if(animal.getHappiness() > 0)
 				{
-					animal.setHappiness(0);
+					addMoney(animal.getDailyBonus());
+					//Decrement animal happiness by set amount. If happiness goes below 0, force it back to 0.
+					animal.setHappiness(animal.getHappiness() - animal.getDailyHappinessLoss());
+					if (animal.getHappiness() < 0)
+					{
+						animal.setHappiness(0);
+					}
+				}
+	
+				//Do the same for animal health. 
+				//If the animal's health hits zero, it is removed after all animals have been handled
+				animal.setHealth(animal.getHealth() - animal.getDailyHealthLoss());
+			}
+			//For loop to start from the back of the list of animals and remove any whose health is at zero
+			//Starts at the end so that removing one animal doesn't cause an overflow by the end of the loop
+			for(int i = animals.size()-1; i >= 0; --i)
+			{
+				if(animals.get(i).getHealth() <= 0)
+				{
+					message = message.concat(String.format("Animal %s died.\n", animals.get(i).getName()));
+					animals.remove(i);
+				}
+				
+			}
+			
+			//Decrement the number of days until harvest for each crop
+			for(Crop c : m_merch.getCrops())
+			{
+				if(c.getDaysUntilHarvest() > 1)
+				{
+					c.setDaysUntilHarvest(c.getDaysUntilHarvest() - 1);
+				}
+				else if(c.getDaysUntilHarvest() == 1)
+				{
+					c.setDaysUntilHarvest(c.getDaysUntilHarvest() - 1);
+					message = message.concat(String.format("%s is ready to harvest", c.getName()));
+				}
+				else
+				{
+					message = message.concat(String.format("%s is ready to harvest", c.getName()));
 				}
 			}
-
-			//Do the same for animal health. 
-			//If the animal's health hits zero, it is removed after all animals have been handled
-			animal.setHealth(animal.getHealth() - animal.getDailyHealthLoss());
-		}
-		//For loop to start from the back of the list of animals and remove any whose health is at zero
-		//Starts at the end so that removing one animal doesn't cause an overflow by the end of the loop
-		for(int i = animals.size(); i > 0; --i)
-		{
-			if(animals.get(i).getHealth() <= 0)
-			{
-				message.concat(String.format("Animal %s died.\n", animals.get(i).getName()));
-				animals.remove(i);
-			}
 			
-		}
-		
-		//Decrement the number of days until harvest for each crop
-		for(Crop c : m_merch.getCrops())
-		{
-			if(c.getDaysUntilHarvest() > 1)
-			{
-				c.setDaysUntilHarvest(c.getDaysUntilHarvest() - 1);
-			}
-			else if(c.getDaysUntilHarvest() == 1)
-			{
-				c.setDaysUntilHarvest(c.getDaysUntilHarvest() - 1);
-				message.concat(String.format("%s is ready to harvest", c.getName()));
-			}
-			else
-			{
-				message.concat(String.format("%s is ready to harvest", c.getName()));
-			}
-		}
-		
 			
-		return message;
+			return message;
+		}
 		
 		
 	}
 	
-	public String tendCrops(Crop crop)
+	
+	public String tendCrops(Merchandise crop)
 	{
 		/* Crops can be tended without having an item, by only boosting by one day.
 		 * Rather than copying code, a new item is temporarily created with 
@@ -778,7 +785,7 @@ public class Farm {
 	}
 	
 	
-	public String tendCrops(Crop crop, Item item)
+	public String tendCrops(Merchandise crop, Item item)
 	{
 		//Returns a message with carriage returns that informs the players the harvest results
 		String message = "";
@@ -815,8 +822,8 @@ public class Farm {
 		m_merch.getItems().remove(item);
 		
 		//Update status message to inform user of results
-		message.concat(String.format("%d crops tended to.\n", counter));
-		message.concat(String.format("%d crops ready to harvest.\n", readyToHarvestCounter));
+		message = message.concat(String.format("%d crops tended to.\n", counter));
+		message = message.concat(String.format("%d crops ready to harvest.\n", readyToHarvestCounter));
 		
 		return message;
 	}

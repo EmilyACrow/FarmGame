@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
+import gameLogic.Animal;
+import gameLogic.GameEnvironment;
 import gameLogic.Item;
+import gameLogic.Merchandise;
+import gameLogic.MerchandiseWrapper;
 
 import javax.swing.JList;
 import javax.swing.JLabel;
@@ -14,6 +18,7 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -27,13 +32,13 @@ import java.awt.event.MouseEvent;
  */
 public class OptionalItemDialog extends JDialog {
 	
-	private Item optionalItem;
+	//private Item optionalItem;
 	
 
 	/**
 	 * Sets up the components inside the AskItemDialog
 	 */
-	public OptionalItemDialog(ArrayList<Item> itemList ) {
+	public OptionalItemDialog(GameEnvironment game, Merchandise typeToTend, String typeOfLife) {
 		setTitle("Optional item");
 		setBounds(100, 100, 301, 329);
 		getContentPane().setLayout(null);
@@ -42,11 +47,32 @@ public class OptionalItemDialog extends JDialog {
 		//Only add items that can be used for crop. 
 		DefaultListModel<Item> itemListModel = new DefaultListModel<>();
 		
-		for(Item crop: itemList) {
+		//using for-loop in game environment
+		//Need to get the items for crops or animals depending on the merch. 
+		//Here I try to seperate them by doing this. 
+		if(typeOfLife.equals("animal")) 
+		{
 			
-		itemListModel.addElement(crop);
+			for(Item item : game.getFarm().getItems())
+			{
+				if(item.getForAnimals())
+				{
+					itemListModel.addElement(item);
+				}			
+			}	
 		}
-		
+		//must then be an item.
+		else 
+		{
+			for(Item item : game.getFarm().getItems())
+			{
+				if(item.getForCrops())
+				{
+					itemListModel.addElement(item);
+				}
+			}
+		}
+
 		
 		//ScrollPane for Jlist
 		JScrollPane optionalItemScroll = new JScrollPane();
@@ -55,13 +81,12 @@ public class OptionalItemDialog extends JDialog {
 		getContentPane().add(optionalItemScroll);
 		
 		//creates Jlist
-		JList<Item> itemsForCropList = new JList<Item>(itemListModel);
-		optionalItemScroll.setViewportView(itemsForCropList);
-		
-		
+		JList<Item> itemsOwnedList = new JList<Item>(itemListModel);
+		optionalItemScroll.setViewportView(itemsOwnedList);
+	
 		
 		JLabel lblAskHeading = new JLabel("Do you want to use an item on the crop?");
-		lblAskHeading.setBounds(25, 10, 286, 19);
+		lblAskHeading.setBounds(25, 10, 233, 19);
 		getContentPane().add(lblAskHeading);
 		
 		
@@ -71,9 +96,10 @@ public class OptionalItemDialog extends JDialog {
 		JButton btnNotUse = new JButton("No");
 		btnNotUse.addActionListener(new ActionListener() {
 			
-			//delete this box when no is clicked
+			//delete this dialog when no is clicked
 			public void actionPerformed(ActionEvent e) {
-				optionalItem = null;
+				game.tendCropMessage(typeToTend);
+				itemListModel.clear();		
 				dispose();
 			}
 		});
@@ -82,24 +108,40 @@ public class OptionalItemDialog extends JDialog {
 		
 		
 		
-		JButton btnUse = new JButton("Use ");
-		//Uses the selected item object in the Jlist
-		btnUse.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				optionalItem = itemsForCropList.getSelectedValue();
-				btnUse.setVisible(false);
-				dispose();
-			}
-		});
+		JButton btnUse = new JButton("Confirm");
 		btnUse.setBounds(158, 232, 85, 39);
 		getContentPane().add(btnUse);
 		btnUse.setVisible(false);
+		//Uses the selected item object in the Jlist
+		btnUse.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				
+				
+				//Uses game to call the right method depending on the type of life.
+				if(typeOfLife.equals("animal")) 
+				{	
+					
+					game.accessFeedAnimal(typeToTend, itemsOwnedList.getSelectedValue());
+					itemListModel.clear();		
+					dispose();	
+				}
+				
+				else 
+				{
+					game.tendCropMessage(typeToTend, itemsOwnedList.getSelectedValue() );
+					itemListModel.clear();		
+					dispose();	
+				}
+			}
+		});
+
 		
 		
 		
-		//Jlist itemsForCropList, mouse Clicked. makes button appear.
-		itemsForCropList.addMouseListener(new MouseAdapter() {
+		//Jlist itemsOwnedList, mouse Clicked. makes button appear.
+		itemsOwnedList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				btnUse.setVisible(true);
@@ -107,24 +149,6 @@ public class OptionalItemDialog extends JDialog {
 			}
 		});
 
-	}
-	
-	/**
-	 * OptionalItemDialog will set Optional item if player has chosen to use one
-	 * otherwise sets to null
-	 * @param selectedItem item chosen to use on crop
-	 */
-	public void setOptionalItem(Item item) {
-		optionalItem = item;
-	}
-	
-	
-	/**
-	 * Mainscreen calls getOptionalItem to get optionalItem value.
-	 * @return item player has selected. null if no item selected.
-	 */
-	public Item getOptionalItem() {
-		return optionalItem;
 	}
 
 }

@@ -1,4 +1,3 @@
-
 package gameScreens;
 
 import javax.swing.JFrame;
@@ -294,4 +293,3 @@ public class GeneralStoreScreen{
 		updateCartTotal();
 	}
 }
-
