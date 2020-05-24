@@ -5,6 +5,7 @@ import gameScreens.StoreFilter;
 
 import java.awt.LayoutManager;
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.xml.bind.JAXBContext;
@@ -53,14 +54,13 @@ public class GeneralStore {
 		
 		try
 		{
-			File file = new File("config/store.xml");
+			InputStream inStream = GeneralStore.class.getResourceAsStream("store.xml");
 	        JAXBContext jaxbContext = JAXBContext.newInstance(MerchandiseWrapper.class);
 	        Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-	        m_storeInventory = (MerchandiseWrapper) unmarshaller.unmarshal(file);
+	        m_storeInventory = (MerchandiseWrapper) unmarshaller.unmarshal(inStream);
 		}
 		catch(Exception e)
 		{
-			System.out.println(e);
 			throw new RuntimeException("Error configuring GeneralStore");
 		}		
 		
