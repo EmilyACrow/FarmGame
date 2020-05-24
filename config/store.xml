@@ -97,9 +97,37 @@
 		<forCrops>0</forCrops>
 	</item>
 	<item>
+		<name>hay</name>
+		<purchasePrice>4</purchasePrice>
+		<boostAmount>3</boostAmount>
+		<forAnimals>1</forAnimals>
+		<forCrops>0</forCrops>
+	</item>
+	<item>
+		<name>treats</name>
+		<purchasePrice>3</purchasePrice>
+		<boostAmount>5</boostAmount>
+		<forAnimals>1</forAnimals>
+		<forCrops>0</forCrops>
+	</item>
+	<item>
 		<name>fizzbuzz</name>
 		<purchasePrice>3</purchasePrice>
 		<boostAmount>5</boostAmount>
+		<forAnimals>0</forAnimals>
+		<forCrops>1</forCrops>
+	</item>
+	<item>
+		<name>fertilizer</name>
+		<purchasePrice>10</purchasePrice>
+		<boostAmount>5</boostAmount>
+		<forAnimals>0</forAnimals>
+		<forCrops>1</forCrops>
+	</item>
+	<item>
+		<name>sprinkler</name>
+		<purchasePrice>9</purchasePrice>
+		<boostAmount>3</boostAmount>
 		<forAnimals>0</forAnimals>
 		<forCrops>1</forCrops>
 	</item>
