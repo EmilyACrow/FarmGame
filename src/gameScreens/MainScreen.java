@@ -457,5 +457,13 @@ public class MainScreen {
 		}
 	}
 	
+	/**
+	 * Exit the game
+	 */
+	public void closeGame()
+	{
+		frmSelectActivity.dispose();
+	}
+	
 
 }

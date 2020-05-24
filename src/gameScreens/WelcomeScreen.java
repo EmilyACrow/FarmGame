@@ -10,10 +10,8 @@ import gameLogic.Farm;
 import gameLogic.FarmType;
 import gameLogic.Welcome;
 
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.Box;
 import java.awt.GridBagLayout;
@@ -27,7 +25,6 @@ import javax.swing.JButton;
 import javax.swing.DefaultComboBoxModel;
 import gameLogic.FarmType;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JTextPane;
@@ -40,7 +37,8 @@ public class WelcomeScreen {
 	private JTextField textFieldFarmerName;
 	private JTextField textFieldFarmerAge;
 	private JTextField textFieldFarmName;
-	private JComboBox comboBoxFarmType;
+	private JComboBox<FarmType> comboBoxFarmType;
+	private JTextPane textPaneModifiers;
 	private JSlider sliderNumDays;
 	private JButton btnStartGame;
 	private Welcome m_backend;
@@ -59,9 +57,6 @@ public class WelcomeScreen {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		
-		
-		String validAgeRegex = "\\d{2}";
 		
 		frmCreateAFarm = new JFrame();
 		frmCreateAFarm.setTitle("Begin Game");
@@ -147,7 +142,7 @@ public class WelcomeScreen {
 		frmCreateAFarm.getContentPane().add(textFieldFarmerName, gbc_textFieldFarmerName);
 		textFieldFarmerName.setColumns(10);
 		
-		JTextPane textPaneModifiers = new JTextPane();
+		textPaneModifiers = new JTextPane();
 		textPaneModifiers.setEditable(false);
 		GridBagConstraints gbc_textPaneModifiers = new GridBagConstraints();
 		gbc_textPaneModifiers.gridheight = 5;
@@ -200,7 +195,7 @@ public class WelcomeScreen {
 		gbc_lblSelectFarmType.gridy = 6;
 		frmCreateAFarm.getContentPane().add(lblSelectFarmType, gbc_lblSelectFarmType);
 		
-		comboBoxFarmType = new JComboBox();
+		comboBoxFarmType = new JComboBox<FarmType>();
 		comboBoxFarmType.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String output = "";
@@ -220,7 +215,7 @@ public class WelcomeScreen {
 				textPaneModifiers.setText(output);
 			}
 		});
-		comboBoxFarmType.setModel(new DefaultComboBoxModel(FarmType.values()));
+		comboBoxFarmType.setModel(new DefaultComboBoxModel<FarmType>(FarmType.values()));
 		GridBagConstraints gbc_comboBoxFarmType = new GridBagConstraints();
 		gbc_comboBoxFarmType.fill = GridBagConstraints.HORIZONTAL;
 		gbc_comboBoxFarmType.insets = new Insets(0, 0, 5, 5);
@@ -401,6 +396,15 @@ public class WelcomeScreen {
 	private void startGame()
 	{
 		m_backend.startGame();
+	}
+	
+	/**
+	 * Sets the text of the display box
+	 * @param str Text to display
+	 */
+	public void setText(String str)
+	{
+		textPaneModifiers.setText(str);
 	}
 
 }

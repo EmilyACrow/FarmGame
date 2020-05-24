@@ -694,7 +694,10 @@ public class GameEnvironment {
 	private void endGame()
 	{
 		String closingMessage = String.format("The game has ended. Your score is: $%d", m_farm.getMoney());
-		JOptionPane.showMessageDialog(null, closingMessage);
+		int input = JOptionPane.showConfirmDialog(null, closingMessage, "Game over", JOptionPane.DEFAULT_OPTION);
+		m_mainScreen.setDetailText(Integer.toString(input));
+		m_mainScreen.closeGame();
+		System.exit(0);
 	}
 	
 	

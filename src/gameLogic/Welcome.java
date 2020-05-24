@@ -1,7 +1,5 @@
 package gameLogic;
 
-import java.awt.EventQueue;
-
 import gameScreens.WelcomeScreen;
 
 public class Welcome {
@@ -20,10 +18,17 @@ public class Welcome {
 	
 	public void startGame()
 	{
-		GameEnvironment game = new GameEnvironment(m_screen.getFarmName()
-													, m_screen.getFarmType()
-													, new Farmer(m_screen.getFarmerName(), m_screen.getFarmerAge())
-													, m_screen.getNumDays());
-		m_screen.setVisible(false);
+		try
+		{
+			new GameEnvironment(m_screen.getFarmName()
+								, m_screen.getFarmType()
+								, new Farmer(m_screen.getFarmerName(), m_screen.getFarmerAge())
+								, m_screen.getNumDays());
+			m_screen.setVisible(false);
+		}
+		catch(Exception e)
+		{
+			m_screen.setText(e.getMessage());
+		}
 	}
 }
