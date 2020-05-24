@@ -156,13 +156,13 @@ public class GameEnvironment {
 		}
 	}
 		
-	private void tendCrops(Merchandise typeToTend)
+	private void tendCrops(MerchandiseWrapper wrappedSelection)
 	{
 		String output;
 		try
 		{
 			
-			OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, typeToTend,"plant");
+			OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, wrappedSelection.getMerchList().get(0),"plant");
 			optionalItemDialog.setVisible(true);
 			
 			//output = m_farm.tendCrops(crop);
@@ -182,11 +182,13 @@ public class GameEnvironment {
 		{
 			output = m_farm.tendCrops(crop, item);
 			System.out.println(output);
+			m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
 		}
 		catch(IllegalStateException e)
 		{
 			System.out.println(e);
 		}
+		
 		
 	}
 	
@@ -249,6 +251,8 @@ public class GameEnvironment {
 				m_mainScreen.setDetailText(e.getMessage());
 			}
 		}
+		m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
+
 		
 	}
 	
@@ -262,7 +266,8 @@ public class GameEnvironment {
 			m_farm.playWithAnimal(a);
 		}
 		
-		updateDetailText(String.format("All animals of this species have their happiness increased by %s", m_farm.getAnimalHappinessMod() ));		
+		updateDetailText(String.format("All animals of this species have their happiness increased by %s", m_farm.getAnimalHappinessMod() ));	
+		m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
 	}
 	
 	private void harvestCrop(MerchandiseWrapper wrappedSelection)
@@ -280,6 +285,8 @@ public class GameEnvironment {
 				m_mainScreen.setDetailText(e.getMessage());
 			}
 		}
+		m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
+
 	}
 	
 	private void tendLand()
@@ -291,6 +298,7 @@ public class GameEnvironment {
 		message = message.concat(String.format("Crop capacity increased to %d", getMaxCropAmount() ));
 		
 		updateDetailText(message);
+		m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
 	}
 	
 	public int getCropStatus(Crop crop)
@@ -363,50 +371,13 @@ public class GameEnvironment {
 					try
 					{							 
 						//get the merchandise equivalent.
-						for(Merchandise owned : m_farm.getCrops() ) {
-							if(owned.getName().equals(selection)) {
-								tendCrops(owned);		
-								break; // exits for loop.
-							}
-						}
+						tendCrops(wrappedSelection);
 					}
 					catch (IllegalStateException e)
 					{
 						m_mainScreen.setDetailText(e.getMessage());
 						break;
 					}
-//					catch(RuntimeException e)
-//					{
-//						m_mainScreen.setDetailText(e.getMessage());
-//						break;
-//					}
-//
-//					//Have to initialize item to something here, otherwise compiler thinks there's an issue later
-//					//even though that issue is handled'
-//					item = new Item();
-//					try
-//					{
-//						item = selectActionItem(false); 
-//					}
-//					catch(IllegalStateException e)
-//					{
-//						m_mainScreen.setDetailText(e.getMessage());
-//						break;
-//					}
-//					catch(NullPointerException e)
-//					{
-//						useItem = false;
-//						m_mainScreen.setDetailText(e.getMessage());
-//					}
-//					
-//					if(useItem)
-//					{
-//						tendCrops(crop, item);
-//					}
-//					else
-//					{
-//						 tendCrops(crop);
-//					}
 					break;
 				case FEED_ANIMAL: 					
 					feedAnimals(wrappedSelection);
@@ -422,7 +393,7 @@ public class GameEnvironment {
 					tendLand();
 					break;
 			}
-			m_farm.setRemainingActions(m_farm.getRemainingActions() - 1);
+			
 			m_mainScreen.updateStatusBar();
 		}
 		catch(Exception e)
