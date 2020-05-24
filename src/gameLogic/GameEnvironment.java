@@ -184,7 +184,8 @@ public class GameEnvironment {
 		}
 		else 
 		{
-			for(Item i : m_farm.getItems())
+			ArrayList<Item> playerItems = m_farm.getItems();
+			for(Item i : playerItems)
 			{
 			
 				if(i.getName() == item.getName())
@@ -195,6 +196,8 @@ public class GameEnvironment {
 		}
 		
 		tendCrops(crops, items);
+		
+		ArrayList<Item> playerItems = m_farm.getItems();
 		
 		String message = "";
 		for(int i = 0; i < crops.size(); i++)
@@ -307,7 +310,7 @@ public class GameEnvironment {
 			try
 			{
 				animals.get(i).useItem(items.get(i));
-				items.remove(i);
+				m_farm.removeItem(items.get(i));
 			}
 			catch(Exception e)
 			{
@@ -340,7 +343,7 @@ public class GameEnvironment {
 			try
 			{
 				crops.get(i).useItem(items.get(i));
-				items.remove(i);
+				m_farm.removeItem(items.get(i));
 			}
 			catch(Exception e)
 			{
