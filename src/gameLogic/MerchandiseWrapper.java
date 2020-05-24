@@ -241,8 +241,27 @@ public class MerchandiseWrapper {
      */
     public int getCartPrice()
     {
+    	//The cart price might have been changed if some of the merchandise was passed out by reference
+    	//So, update the cart price before returning it
+    	updateCartPrice();
+    	
     	return cartPrice;
     }
+    
+    /**
+     * Update the cartPrice
+     * Necessary because the MerchandiseWrapper allows the merchandise inside to be accessed by reference, so their cost values could be changed
+     */
+    private void updateCartPrice()
+    {
+    	int price = 0;
+    	for(Merchandise m : merchList)
+    	{
+    		price += m.getPurchasePrice();
+    	}
+    	cartPrice = price;
+    }
+    
     /**
      * Get number of Merchandise Objects of cart
      * @return int number of Merchandise Obj
