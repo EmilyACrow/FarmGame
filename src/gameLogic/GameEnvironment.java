@@ -1579,7 +1579,7 @@ public class GameEnvironment {
 		{
 			output += String.format("(%d) %s\n", (i + 1), items.get(i).getName());
 			output += "   Compatable with " + ((items.get(i).getForAnimals()) ? "animals\n" : "crops\n");
-			output += String.format("   Boost amount: %d", items.get(i).getBoostAmount());
+			output += String.format("   Boost amount: %d\n", items.get(i).getBoostAmount());
 		}
 		output += String.format("Crops(%d):\n", crops.size());
 		for(int i = 0; i < crops.size(); i++)

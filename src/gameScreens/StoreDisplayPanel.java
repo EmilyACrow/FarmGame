@@ -164,6 +164,10 @@ public class StoreDisplayPanel extends JPanel {
 			//calculation for any discounts.
 			double amountRemoved = m.getPurchasePrice() * m_discount;
 			int finalCost = (int) (m.getPurchasePrice() - amountRemoved); 
+			if(finalCost == 0)
+			{
+				finalCost = 1;
+			}
 			JLabel lblUnitLabel = new JLabel(String.format("($%d)", finalCost));
 			GridBagConstraints gbc_lblUnitLabel = new GridBagConstraints();
 			gbc_lblUnitLabel.insets = new Insets(0, 0, 0, 5);

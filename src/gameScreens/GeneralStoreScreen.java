@@ -3,6 +3,8 @@ package gameScreens;
 import javax.swing.JFrame;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+
 import java.awt.GridBagConstraints;
 import javax.swing.JTextField;
 import gameLogic.GeneralStore;
@@ -59,7 +61,7 @@ public class GeneralStoreScreen{
 		});
 		frameGeneralStore.setResizable(false);
 		frameGeneralStore.setTitle("General Store");
-		frameGeneralStore.setBounds(100, 100, 401, 570);
+		frameGeneralStore.setBounds(100, 100, 500, 570);
 		frameGeneralStore.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 63, 81, 35, 74, 0, 0, 0};
@@ -201,17 +203,31 @@ public class GeneralStoreScreen{
 		gbc_btnBuy.gridy = 2;
 		frameGeneralStore.getContentPane().add(btnBuy, gbc_btnBuy);
 		
+		
+		
 		panelStoreDisplay = new StoreDisplayPanel(m_backend.getPurchaseDiscountMod());
-		panelStoreDisplay.setPreferredSize(new Dimension(400, 300));
+		//panelStoreDisplay.setPreferredSize(new Dimension(400, 300));
 		GridBagConstraints gbc_panelStoreDisplay = new GridBagConstraints();
 		gbc_panelStoreDisplay.anchor = GridBagConstraints.NORTH;
-		gbc_panelStoreDisplay.gridwidth = 5;
-		gbc_panelStoreDisplay.insets = new Insets(0, 0, 5, 5);
-		gbc_panelStoreDisplay.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panelStoreDisplay.gridx = 1;
-		gbc_panelStoreDisplay.gridy = 3;
+		//gbc_panelStoreDisplay.gridwidth = 5;
+		//gbc_panelStoreDisplay.insets = new Insets(0, 0, 5, 5);
+		//gbc_panelStoreDisplay.fill = GridBagConstraints.HORIZONTAL;
+		//gbc_panelStoreDisplay.gridx = 1;
+		//gbc_panelStoreDisplay.gridy = 3;
 		refreshDisplay();
-		frameGeneralStore.getContentPane().add(panelStoreDisplay, gbc_panelStoreDisplay);
+		//frameGeneralStore.getContentPane().add(panelStoreDisplay, gbc_panelStoreDisplay);
+		
+		JScrollPane displayScrollPane = new JScrollPane(panelStoreDisplay);
+		displayScrollPane.setPreferredSize(new Dimension(400, 300));
+		GridBagConstraints gbc_displayScrollPane = new GridBagConstraints();
+		gbc_displayScrollPane.anchor = GridBagConstraints.NORTH;
+		gbc_displayScrollPane.gridwidth = 5;
+		gbc_displayScrollPane.insets = new Insets(0, 0, 5, 5);
+		gbc_displayScrollPane.fill = GridBagConstraints.BOTH;
+		gbc_displayScrollPane.gridx = 1;
+		gbc_displayScrollPane.gridy = 3;
+		refreshDisplay();
+		frameGeneralStore.getContentPane().add(displayScrollPane, gbc_displayScrollPane);
 		
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
