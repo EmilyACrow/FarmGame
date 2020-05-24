@@ -316,7 +316,7 @@ public class MainScreen {
 		
 		
 		//move to next day button 
-		JButton btnNextDay = new JButton("next day");
+		JButton btnNextDay = new JButton("end day");
 		btnNextDay.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//have to move this to game environ	

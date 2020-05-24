@@ -13,7 +13,7 @@ import gameScreens.OptionalItemDialog;
  * 
  * last modified: 20-05-2020
  * 
- * created:
+ * created: 
  * @author Dmitri Smith 
  * @author Kenn Leen Duenas Fulgencio
  *
@@ -162,7 +162,7 @@ public class GameEnvironment {
 		try
 		{
 			
-			OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, typeToTend);
+			OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, typeToTend,"plant");
 			optionalItemDialog.setVisible(true);
 			
 			//output = m_farm.tendCrops(crop);
@@ -190,10 +190,33 @@ public class GameEnvironment {
 		
 	}
 	
+	/**
+	 * Feed animals 
+	 * @param wrappedSelection animals of the chosen species of animal.
+	 */
 	private void feedAnimals(MerchandiseWrapper wrappedSelection) 
 	{
-		//if(wrappedSelection.getAnimals().size())
+		//there exists animals that need feeding. 
 		//Create OptionalItemDialog window
+		
+		if(wrappedSelection.getAnimals().size()>=1) 
+		{  /*
+			
+			try 
+			{
+			//Create OptionalItemDialog window
+			OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, wrappedSelection, "animal");
+			optionalItemDialog.setVisible(true);
+			}
+			catch(Exception e)
+			{
+				updateDetailText(String.format("Unable to feed %s", wrappedSelection));
+			} 
+			
+			*/
+			
+		}
+		
 		
 	}
 	
@@ -231,6 +254,7 @@ public class GameEnvironment {
 	
 	private void playWithAnimals(MerchandiseWrapper wrappedSelection)
 	{
+		
 		//Need to access wrapper this way in order to act on reference to player object rather than 
 		for(int i = 0; i < wrappedSelection.size(); i++)
 		{
@@ -238,6 +262,7 @@ public class GameEnvironment {
 			m_farm.playWithAnimal(a);
 		}
 		
+		updateDetailText(String.format("All animals of this species have their happiness increased by %s", m_farm.getAnimalHappinessMod() ));		
 	}
 	
 	private void harvestCrop(MerchandiseWrapper wrappedSelection)
@@ -511,7 +536,6 @@ public class GameEnvironment {
 	}
 	
 	/**
-	 * 
 	 * @return Animal chosen by user
 	 * @throws IllegalStateException if the user chose no animal, or if the user cancelled out of the selection
 	 */
@@ -1450,27 +1474,37 @@ public class GameEnvironment {
 	}
 	
 	/**
-	 * After using an item to tend to the crops the player has selected, the mainScreen detail box is updated
-	 * to tell the player about their crops. It then deletes the item used.
+	 * Tends to the crops then updates the detail box to tell the player about their crops. It then deletes the item used.
 	 * 
 	 * @param typeToTend the crop that has been chosen 
 	 * @param itemUsed the item that has been chosen
 	 */
 	public void tendCropMessage(Merchandise typeToTend, Item itemUsed) {
-		updateDetailText(getFarm().tendCrops(typeToTend, itemUsed));
-		removeFromFarm(itemUsed);
+		updateDetailText(getFarm().tendCrops(typeToTend));
+		m_farm.removeItem(itemUsed);
 		
 	}
 	
 	/**
-	 * Tends to crop without an item. It delivers a message to player after this action has completed.
+	 * Tends to crop without using anything. it updates the detail box on the mainscreen to tell the player about their crops.
 	 * @param typeToTend the crop player wants to tend to.
 	 */
 	public void tendCropMessage(Merchandise typeToTend) {
 		updateDetailText(getFarm().tendCrops(typeToTend));	
 	}
 	
-	
-	 
+	/**
+	 * Called by OptionalItemDialog, sends the chosen Item and the animal species.
+	 * @param animalSpecies the animal type the player has selected to feed.
+	 * @param itemUsed the item type the player has chosen to feed to the animal.
+	 */
+	public void accessFeedAnimal(Merchandise animalSpecies, Item itemUsed) {
+		
+		//Needs a for loop to find occurrences of these items in player's inventory?
+		
+		//needs arraylist type of animal and item
+		//feedAnimal(animalSpecies, itemUsed);
+		
+	}
 	
 }

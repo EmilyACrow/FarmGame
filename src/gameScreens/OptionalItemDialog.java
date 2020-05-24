@@ -38,7 +38,7 @@ public class OptionalItemDialog extends JDialog {
 	/**
 	 * Sets up the components inside the AskItemDialog
 	 */
-	public OptionalItemDialog(GameEnvironment game, Merchandise typeToTend) {
+	public OptionalItemDialog(GameEnvironment game, Merchandise typeToTend, String typeOfLife) {
 		setTitle("Optional item");
 		setBounds(100, 100, 301, 329);
 		getContentPane().setLayout(null);
@@ -48,10 +48,28 @@ public class OptionalItemDialog extends JDialog {
 		DefaultListModel<Item> itemListModel = new DefaultListModel<>();
 		
 		//using for-loop in game environment
-		for(Item item : game.getFarm().getItems() )
+		//Need to get the items for crops or animals depending on the merch. 
+		//Here I try to seperate them by doing this. 
+		if(typeOfLife.equals("animal")) 
 		{
-			if(item.getForCrops()){
-				itemListModel.addElement(item);
+			
+			for(Item item : game.getFarm().getItems())
+			{
+				if(item.getForAnimals())
+				{
+					itemListModel.addElement(item);
+				}			
+			}	
+		}
+		//must then be an item.
+		else 
+		{
+			for(Item item : game.getFarm().getItems())
+			{
+				if(item.getForCrops())
+				{
+					itemListModel.addElement(item);
+				}
 			}
 		}
 
@@ -63,8 +81,8 @@ public class OptionalItemDialog extends JDialog {
 		getContentPane().add(optionalItemScroll);
 		
 		//creates Jlist
-		JList<Item> itemsForCropList = new JList<Item>(itemListModel);
-		optionalItemScroll.setViewportView(itemsForCropList);
+		JList<Item> itemsOwnedList = new JList<Item>(itemListModel);
+		optionalItemScroll.setViewportView(itemsOwnedList);
 	
 		
 		JLabel lblAskHeading = new JLabel("Do you want to use an item on the crop?");
@@ -91,24 +109,39 @@ public class OptionalItemDialog extends JDialog {
 		
 		
 		JButton btnUse = new JButton("Confirm");
-		//Uses the selected item object in the Jlist
-		btnUse.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				//deliver message to the mainScreen's detailText via gameEnvironment and deletes the item used. "
-				game.tendCropMessage(typeToTend, itemsForCropList.getSelectedValue() );
-				itemListModel.clear();		
-				dispose();	
-			}
-		});
 		btnUse.setBounds(158, 232, 85, 39);
 		getContentPane().add(btnUse);
 		btnUse.setVisible(false);
+		//Uses the selected item object in the Jlist
+		btnUse.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				
+				
+				//Uses game to call the right method depending on the type of life.
+				if(typeOfLife.equals("animal")) 
+				{	
+					
+					game.accessFeedAnimal(typeToTend, itemsOwnedList.getSelectedValue());
+					itemListModel.clear();		
+					dispose();	
+				}
+				
+				else 
+				{
+					game.tendCropMessage(typeToTend, itemsOwnedList.getSelectedValue() );
+					itemListModel.clear();		
+					dispose();	
+				}
+			}
+		});
+
 		
 		
 		
-		//Jlist itemsForCropList, mouse Clicked. makes button appear.
-		itemsForCropList.addMouseListener(new MouseAdapter() {
+		//Jlist itemsOwnedList, mouse Clicked. makes button appear.
+		itemsOwnedList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				btnUse.setVisible(true);
