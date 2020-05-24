@@ -1,5 +1,12 @@
 package gameLogic;
-
+/**
+ * Start's the Farm Game
+ * Main goes here
+ * 
+ * last modified: 5-24-2020
+ * @author Dmitri Smith
+ *
+ */
 import gameScreens.WelcomeScreen;
 
 public class Welcome {

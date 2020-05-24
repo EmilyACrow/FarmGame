@@ -1,14 +1,16 @@
 package gameScreens;
-
-import java.util.ArrayList;
+/**
+ * Popup that gets the item a player wants based on what type of Merchandise they have selected
+ * 
+ * last modified: 5-24-2020
+ * @author Kenn Leen Duenas Fulgencio
+ *
+ */
 
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 
-import gameLogic.Animal;
 import gameLogic.GameEnvironment;
 import gameLogic.Item;
-import gameLogic.Merchandise;
 import gameLogic.MerchandiseWrapper;
 
 import javax.swing.JList;
@@ -18,7 +20,6 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -118,9 +119,7 @@ public class OptionalItemDialog extends JDialog {
 			{
 				
 				//Rough, last minute solution
-				String formattedSelection = itemsOwnedList.getSelectedValue().substring(0,itemsOwnedList.getSelectedValue().indexOf('('));
-				System.out.println(formattedSelection);
-				
+				String formattedSelection = itemsOwnedList.getSelectedValue().substring(0,itemsOwnedList.getSelectedValue().indexOf('('));				
 				Item itemToUse = (Item) game.getFarm().getPlayerMerchFromString(formattedSelection).get(0);
 				//Uses game to call the right method depending on the type of life.
 				if(isAnimal) 

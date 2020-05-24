@@ -2,9 +2,6 @@ package gameLogic;
 import gameScreens.ConfirmPurchaseDialog;
 import gameScreens.GeneralStoreScreen;
 import gameScreens.StoreFilter;
-
-import java.awt.LayoutManager;
-import java.io.File;
 import java.io.InputStream;
 import java.util.ArrayList;
 
@@ -12,12 +9,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 /**
  * The GeneralStore class is where the player can view or purchase available merchandise.
- * They can also view their current balance.
  * 
- * Last modified: 13-05-2020
+ * Last modified: 24-05-2020
  * 
- * created: 1-05-2020
- * @author Kenn Leen Duenas Fulgencio
+ * @author Dmitri Smith
  */
 
 public class GeneralStore {

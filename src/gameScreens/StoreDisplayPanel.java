@@ -1,5 +1,11 @@
 package gameScreens;
-
+/**
+ * Panel that creates an interactable, informative list to display the GeneralStore mechandise
+ * 
+ * last modified: 5-24-2020
+ * @author Dmitri Smith
+ *
+ */
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
@@ -13,11 +19,9 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
 import javax.swing.JTextField;
 
 import gameLogic.Merchandise;
-import gameLogic.MerchandiseWrapper;
 
 public class StoreDisplayPanel extends JPanel {
 	private ArrayList<JTextField> amountTextFields;
@@ -275,9 +279,6 @@ public class StoreDisplayPanel extends JPanel {
 				cart.add(merchDisplayed.get(i).clone());
 			}
 		}
-		
-		//Clear selection after adding to cart
-		//refreshDisplay(merchDisplayed, cart);
 		
 		return cart;
 	}

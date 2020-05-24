@@ -1,5 +1,11 @@
 package gameScreens;
-
+/**
+ * Window that lets the user buy more animals, items, and crops
+ * 
+ * last modified: 5-24-2020
+ * @author Dmitri Smith
+ *
+ */
 import javax.swing.JFrame;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
