@@ -1567,10 +1567,10 @@ public class GameEnvironment {
 		ArrayList<Item> items = m_farm.getItems();
 		
 		String output = "";
-		output += String.format("Your name: %d\n", m_farm.getFarmer().getName());
+		output += String.format("Your name: %s\n", m_farm.getFarmer().getName());
 		output += String.format("Your age: %d\n", m_farm.getFarmer().getAge());
-		output += String.format("Farm name: %d\n", m_farm.getFarmName());
-		output += String.format("Farm type: %d\n", m_farm.getfarmType());
+		output += String.format("Farm name: %s\n", m_farm.getFarmName());
+		output += String.format("Farm type: %s\n", m_farm.getfarmType());
 		output += String.format("Farm money: %d\n", getPlayerMoney());
 		output += String.format("Max number of animals: %d\n", getMaxAnimalAmount());
 		output += String.format("Max number of crops: %d\n", getMaxCropAmount());
