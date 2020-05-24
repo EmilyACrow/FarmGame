@@ -194,7 +194,7 @@ public class GameEnvironment {
 	
 	/**
 	 * Feed animals 
-	 * @param wrappedSelection animals of the chosen species of animal.
+	 * @param wrappedSelection is a reference to the species of animal chosen by player
 	 */
 	private void feedAnimals(MerchandiseWrapper wrappedSelection) 
 	{
@@ -202,21 +202,31 @@ public class GameEnvironment {
 		//Create OptionalItemDialog window
 		
 		if(wrappedSelection.getAnimals().size()>=1) 
-		{  /*
+		{  
 			
 			try 
 			{
-			//Create OptionalItemDialog window
-			OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this, wrappedSelection, "animal");
-			optionalItemDialog.setVisible(true);
+				
+				//Create OptionalItemDialog window. send the items the player owns
+				OptionalItemDialog optionalItemDialog = new OptionalItemDialog(this,wrappedSelection.getAnimals(), "animal");
+				optionalItemDialog.setVisible(true);
+				
+				/*
+				System.out.println(wrappedSelection);
+				System.out.println(wrappedSelection.getAnimals());
+				System.out.println( ( (Merchandise)wrappedSelection.getAnimals() ).getName() ) ;
+				//how to get inventory from farm?
+				System.out.println(m_farm.getAnimals()); */	
+
+			//get selected items into an ArrayList<Item>
 			}
 			catch(Exception e)
 			{
 				updateDetailText(String.format("Unable to feed %s", wrappedSelection));
-			} 
+			}
 			
-			*/
-			
+			//m_farm.getSelectedItem();
+					
 		}
 		
 		
@@ -379,7 +389,9 @@ public class GameEnvironment {
 						break;
 					}
 					break;
-				case FEED_ANIMAL: 					
+				case FEED_ANIMAL: 			
+					
+					//gets the matching class type.
 					feedAnimals(wrappedSelection);
 					break;
 					
@@ -1465,16 +1477,15 @@ public class GameEnvironment {
 	}
 	
 	/**
-	 * Called by OptionalItemDialog, sends the chosen Item and the animal species.
+	 * Called by OptionalItemDialog, sends a list of chosen items and animals of the selected species.
 	 * @param animalSpecies the animal type the player has selected to feed.
 	 * @param itemUsed the item type the player has chosen to feed to the animal.
 	 */
-	public void accessFeedAnimal(Merchandise animalSpecies, Item itemUsed) {
+	public void accessFeedAnimal(ArrayList<Animal> animalSpecies, ArrayList<Item> possibleItem) {
 		
-		//Needs a for loop to find occurrences of these items in player's inventory?
+		feedAnimal(animalSpecies, possibleItem);
 		
-		//needs arraylist type of animal and item
-		//feedAnimal(animalSpecies, itemUsed);
+
 		
 	}
 	
