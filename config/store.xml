@@ -97,7 +97,7 @@
 		<forCrops>0</forCrops>
 	</item>
 	<item>
-		<name>ball</name>
+		<name>hay</name>
 		<purchasePrice>4</purchasePrice>
 		<boostAmount>3</boostAmount>
 		<forAnimals>1</forAnimals>
