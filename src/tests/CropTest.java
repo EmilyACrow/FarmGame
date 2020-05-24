@@ -27,7 +27,7 @@ class CropTest {
 		//create some instances
 		Crop pea = new Crop("pea", 15, 20, 4);
 		Crop cotton = new Crop("cotton", 30, 40, 8);
-		Crop apples = new Crop("apples", 50, 60, 8);
+		Crop apples = new Crop("apples", 50, 60, 12);
 		
 		int timeReduced = 3;
 		
@@ -53,7 +53,7 @@ class CropTest {
 		//create some instances
 		Crop pea = new Crop("pea", 15, 20, 4);
 		Crop cotton = new Crop("cotton", 30, 40, 8);
-		Crop apples = new Crop("apples", 50, 60, 8);
+		Crop apples = new Crop("apples", 50, 60, 12);
 		
 		pea.setDaysUntilHarvest(0);
 		assertEquals(4, pea.harvest());
@@ -64,16 +64,17 @@ class CropTest {
 	}
 	
 	@Test
-	public tendCropTest()
+	void tendCropTest()
 	{
 		//create some instances
 		Crop pea = new Crop("pea", 15, 20, 4);
 		Crop cotton = new Crop("cotton", 30, 40, 8);
-		Crop apples = new Crop("apples", 50, 60, 8);
+		Crop apples = new Crop("apples", 50, 60, 12);
 		
-		cotton.setDaysUntilHarvest(5);
-		assertThrows(expectedType, executable)
+		cotton.setDaysUntilHarvest(0);
+		assertEquals(8, cotton.harvest());
 		
 	}
+	
 
 }
