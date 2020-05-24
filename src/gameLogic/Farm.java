@@ -495,6 +495,7 @@ public class Farm {
 	
 	/**
 	 * Adds a given amount of money to the farm's bank
+	 * @param amount amount of money
 	 */
 	public void addMoney(int amount)
 	{
@@ -503,6 +504,7 @@ public class Farm {
 	
 	/**
 	 * Subtract a given amount of money from the player's bank
+	 * @param amount amount of money
 	 * @throws RuntimeException if player does not have enough money
 	 */
 	public void subtractMoney(int amount)
@@ -529,7 +531,7 @@ public class Farm {
 	
 	/**
 	 * 
-	 * @param m_maxCrop sets the maximum amount of crops in player's farm.
+	 * @param maxCrop sets the maximum amount of crops in player's farm.
 	 */
 	
 	public void setMaxCropAmount(int maxCrop) {
@@ -538,7 +540,7 @@ public class Farm {
 
 	/**
 	 * 
-	 * @return m_maxAnimalAmount the maximum animals player can have in farm. 
+	 * @return The maximum animals player can have in farm. 
 	 */
 	public int getMaxAnimalAmount() {
 		return m_maxAnimalAmount;
@@ -580,7 +582,7 @@ public class Farm {
 
 	/**
 	 * 
-	 * @param m_cropCashMod sets the bonus percentage
+	 * @param cropCash sets the bonus percentage
 	 *  					player earn when harvesting crops to a different value. 
 	 */
 	public void setCropCashMod(double cropCash) {
@@ -647,7 +649,7 @@ public class Farm {
 	}
 	
 	/**
-	 * @param actionsLeft change how many days left in the game.
+	 * @param days change how many days left in the game.
 	 */
 	public void setRemainingDays(int days)
 	{

@@ -13,6 +13,7 @@ public class MyCustomDialog extends JDialog  {
 
 	/**
 	 * Sets up the components inside the AskItemDialog
+	 * @param itemList ArrayList of Items representing all of the player's items
 	 */
 	public MyCustomDialog(ArrayList<Item> itemList ) {
 		setTitle("Optional item");

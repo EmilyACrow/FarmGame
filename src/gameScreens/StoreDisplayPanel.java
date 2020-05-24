@@ -31,6 +31,7 @@ public class StoreDisplayPanel extends JPanel {
 	
 	/**
 	 * Create the panel.
+	 * @param discountMod Player's store discount, determined off of FarmType
 	 */
 	public StoreDisplayPanel(double discountMod) {
 		
@@ -51,8 +52,9 @@ public class StoreDisplayPanel extends JPanel {
 	/**
 	 * Add a new item to the panel. Note there is no remove option.
 	 * To remove an item, delete the panel and rebuild it. Slow but simple. 
-	 * @param name Name of the product to be put in
-	 * @param amtInInventory Amount of the product in the player's inventory
+	 * @param filter Currently selected filter for store
+	 * @param storeMerch ArrayList of all store Merchandise
+	 * @param playerMerch ArrayList of all of the player's merchandise
 	 */
 	public void refreshDisplay(StoreFilter filter, ArrayList<Merchandise> storeMerch, ArrayList<Merchandise> playerMerch)
 	{

@@ -68,7 +68,7 @@ public class MainScreen {
 	 * For now it is using an Instance of a test FarmClass.
 	 * 
 	 * 
-	 * @param newGame the Farm class created by the player.
+	 * @param game Reference to GameEnvironment the screen is paired to
 	 */
 	public MainScreen(GameEnvironment game) {
 		
@@ -368,7 +368,7 @@ public class MainScreen {
 	}
 	
 	/**
-	 * Populate a DefaultListModel<String> with names from a list of Merchandise.
+	 * Populate a DefaultListModel with names from a list of Merchandise.
 	 * Can display multiple class types by formatting filter string as [classStringA]|[classStringB].
 	 * @param merch list of merchandise to display by type
 	 * @param merchType MerchandiseWrapper constant, either .ANIMAL, .CROP, or .ITEM based on which class you want to display
@@ -426,7 +426,7 @@ public class MainScreen {
 	
 	/**
 	 * Sets the text in textAreaSelectionDetails
-	 * @param text
+	 * @param text String to set TextArea to. Supports some formatting
 	 */
 	public void setDetailText(String text)
 	{

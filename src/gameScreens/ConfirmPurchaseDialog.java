@@ -44,6 +44,10 @@ public class ConfirmPurchaseDialog extends JDialog {
 
 	/**
 	 * Create the dialog.
+	 * @param store Reference to GeneralStore this is attached to
+	 * @param cart Cart of Merchandise player wants to buy
+	 * @param playerMoney How much money the player has
+	 * @param finalPrice Price of cart, adjusted for player discount
 	 */
 	public ConfirmPurchaseDialog(GeneralStore store, MerchandiseWrapper cart, int playerMoney, int finalPrice) {
 		setTitle("Checkout");

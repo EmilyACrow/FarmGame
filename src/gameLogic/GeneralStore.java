@@ -45,6 +45,7 @@ public class GeneralStore {
 	 * RUN setGamEnvironment IMMEDIATELY AFTER THIS!
 	 * This constructor method reads in from an XML config file and populates the merchandise wrapper.
 	 * Also makes an instance of a MerchandiseWrapper class.
+	 * @param game Reference to paired GameEnvironment object
 	 */
 	public GeneralStore(GameEnvironment game) {
 		
@@ -70,13 +71,17 @@ public class GeneralStore {
 	
 	/**
 	 * Setter for GameEnviornment reference
-	 * @param game
+	 * @param game Reference to paired GameEnvironment object
 	 */
 	public void setGameEnvironment(GameEnvironment game)
 	{
 		m_game = game;
 	}
 	
+	/**
+	 * Returns paired GameEnvironment obj
+	 * @return GameEnvironment reference
+	 */
 	public GameEnvironment getGameEnvironment()
 	{
 		return m_game;
@@ -84,7 +89,7 @@ public class GeneralStore {
 	
 	/**
 	 * Sets atatched GeneralStoreScreen to visible
-	 * @param visible
+	 * @param visible New visibility state
 	 */
 	public void setVisible(boolean visible)
 	{
@@ -151,7 +156,7 @@ public class GeneralStore {
 	
 	
 	/**
-	 * @param purchasedItem item player has bought.
+	 * @param item item player has bought.
 	 */
 	public void removeFromShop(Item item) 
 	{
@@ -161,7 +166,7 @@ public class GeneralStore {
 	}
 	
 	/**
-	 * @param purchasedAnimal the animal player has bought.
+	 * @param animal the animal player has bought.
 	 */
 	public void removeFromShop(Animal animal) 
 	{
@@ -170,7 +175,7 @@ public class GeneralStore {
 	}
 	
 	/**
-	 * @param purchasedAnimal the animal player has bought.
+	 * @param crop the crop player has bought.
 	 */
 	public void removeFromShop(Crop crop) 
 	{
@@ -179,7 +184,7 @@ public class GeneralStore {
 	}
 	
 	/**
-	 * @param purchasedAnimal the animal player has bought.
+	 * @param merch the merch player has bought.
 	 */
 	public void removeFromShop(Merchandise merch) 
 	{
@@ -195,7 +200,7 @@ public class GeneralStore {
 	
 	
 	/**  
-	 * @return ArrayList<Merchandise> deep copy of merch currently in cart.
+	 * @return ArrayList Reference to Merchandise currently in cart.
 	 */
 	public ArrayList<Merchandise> viewCart() {
 	
@@ -227,7 +232,6 @@ public class GeneralStore {
 	/**
 	 * The checkout method checks the player can afford the merch in the cart
 	 * before giving merch to the player.
-	 * @return an ArrayList of merch player has purchased.
 	 */
 	public void checkout() {
 		
@@ -245,8 +249,8 @@ public class GeneralStore {
 	/**
 	 * Checks if the player has the money and the space to buy everything in the cart
 	 * @param playersMoney Amount of money player has
-	 * @param finalCost Total cost of cart
-	 * @param purchasedMerch MerchandiseWrapper of merchandise in cart
+	 * @param finalCost Total adjusted cost of cart
+	 * @param cart MerchandiseWrapper of merchandise in cart
 	 * @return true if player meets all criteria to purchase the cart
 	 */
 	public boolean canPurchaseCart(int playersMoney, int finalCost, MerchandiseWrapper cart)

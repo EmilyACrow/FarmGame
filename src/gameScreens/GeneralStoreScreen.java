@@ -40,6 +40,7 @@ public class GeneralStoreScreen{
 
 	/**
 	 * Create the application.
+	 * @param store Reference to GeneralStore the screen is paired with
 	 */
 	public GeneralStoreScreen(GeneralStore store) {
 		m_backend = store;
@@ -248,7 +249,6 @@ public class GeneralStoreScreen{
 	/**
 	 * Method to filter out the unwanted items from the store display.
 	 * Displaying player inventory count currently broken.
-	 * @param filter Store filter for items
 	 */
 	public void refreshDisplay()
 	{
@@ -297,7 +297,7 @@ public class GeneralStoreScreen{
 
 	/**
 	 * Set visibility of the GeneralStoreScreen
-	 * @param visible
+	 * @param visible Visibility state to set
 	 */
 	public void setVisible(boolean visible) {
 		frameGeneralStore.setVisible(visible);
@@ -305,6 +305,7 @@ public class GeneralStoreScreen{
 	
 	/**
 	 * Get store filter
+	 * @return Selected store filter
 	 */
 	public StoreFilter getStoreFilter()
 	{

@@ -48,6 +48,7 @@ public class WelcomeScreen {
 
 	/**
 	 * Create the application.
+	 * @param backend Reference to Welcome object this screen is paired with
 	 */
 	public WelcomeScreen(Welcome backend) {
 		m_backend = backend;

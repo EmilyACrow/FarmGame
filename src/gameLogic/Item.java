@@ -54,7 +54,6 @@ public class Item implements Merchandise{
 	 * @param boostAmount		Amount of benefit provided when used
 	 * @param forAnimals		Represents whether or not an object in the class Animal can use this item
 	 * @param forCrops			Represents whether or not an object in the class Crop can use this item
-	 * @return null
 	 */
 	public Item(String name, int purchasePrice, int boostAmount, boolean forAnimals, boolean forCrops)
 	{
@@ -107,7 +106,7 @@ public class Item implements Merchandise{
 	
 	/**
 	 * Set new price of Item when bought from General Store
-	 * @param New price for Item
+	 * @param price New price for Item
 	 */
 	@Override
 	public void setPurchasePrice(int price)
@@ -188,7 +187,7 @@ public class Item implements Merchandise{
 	
 	/**
 	 * Gets a default item if the user chooses not to use an item on their crops.
-	 * @return
+	 * @return A new instance of Item that only works on crops and has a boostAmount of 1
 	 */
 	public static Item getBlankCropItem()
 	{

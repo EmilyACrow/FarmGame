@@ -44,8 +44,8 @@ public class MerchandiseWrapper {
 	}
 	
 	/**
-	 * Create new MerchandiseWrapper around target ArrayList<Merchandise>
-	 * @param source ArrayList<Merchandise> to wrap
+	 * Create new MerchandiseWrapper around target ArrayList
+	 * @param source ArrayList to wrap
 	 */
 	public MerchandiseWrapper(ArrayList<Merchandise> source)
 	{
@@ -57,7 +57,7 @@ public class MerchandiseWrapper {
 	
 	/**
 	 * Returns reference to the ArrayList contained in the wrapper
-	 * @return ArrayList<Merchandise> Deep copy of contained ArrayList
+	 * @return ArrayList of Merchandise Reference to contained ArrayList
 	 */
     public ArrayList<Merchandise> getMerchList() 
     {
@@ -66,7 +66,7 @@ public class MerchandiseWrapper {
     
     /**
      * Changes which ArrayList is being pointed to
-     * @param merchList ArrayList<Merchandise> new list to be pointed at
+     * @param list ArrayList of Merchandise, new list to be pointed at
      */
     public void setMerchList(ArrayList<Merchandise> list) 
     {
@@ -80,7 +80,7 @@ public class MerchandiseWrapper {
     
     /**
      * makes this MerchandiseWrapper a deep copy of the source arraylist
-     * @param source ArrayList<Merchandise> to deep copy
+     * @param source ArrayList of Merchandise to deep copy
      */
     public void clone(ArrayList<Merchandise> source)
     {
@@ -117,7 +117,7 @@ public class MerchandiseWrapper {
     
     /**
      * Overload getAnimals to default to the local merchList
-     * @return ArrayList<Animal> Reference to all animals in the local merchlist
+     * @return Reference to all animals in the local merchlist
      */
     public ArrayList<Animal> getAnimals()
     {
@@ -127,7 +127,7 @@ public class MerchandiseWrapper {
     /**
      * Get all animals out of a Merchandise arraylist
      * @param merchList Merchandise arraylist
-     * @return Arraylist<Animal> Reference to all animals in the param merchlist
+     * @return Reference to all animals in the param merchlist
      */
     public ArrayList<Animal> getAnimals(ArrayList<Merchandise> merchList)
     {
@@ -145,7 +145,7 @@ public class MerchandiseWrapper {
     
     /**
      * Overload getCropss to default to the local merchList
-     * @return ArrayList<Crop> Reference to all crops in the local merchlist
+     * @return Reference to all crops in the local merchlist
      */
     public ArrayList<Crop> getCrops()
     {
@@ -155,7 +155,7 @@ public class MerchandiseWrapper {
     /**
      * Get all crops out of a Merchandise arraylist
      * @param merchList Merchandise arraylist
-     * @return ArrayList<Crop> Reference to all crops in the param merchlist
+     * @return Reference to all crops in the param merchlist
      */
     public ArrayList<Crop> getCrops(ArrayList<Merchandise> merchList)
     {
@@ -172,7 +172,7 @@ public class MerchandiseWrapper {
     
     /**
      * Get all items out of a Merchandise arraylist
-     * @return ArrayList<Item> Reference to all items in the local merchlist
+     * @return Reference to all items in the local merchlist
      */
     public ArrayList<Item> getItems()
     {
@@ -182,7 +182,7 @@ public class MerchandiseWrapper {
     /**
      * Get all items out of a Merchandise arraylist
      * @param merchList Merchandise arraylist
-     * @return ArrayList<Item> Reference to all items in the param merchlist
+     * @return Reference to all items in the param merchlist
      */
     public ArrayList<Item> getItems(ArrayList<Merchandise> merchList)
     {

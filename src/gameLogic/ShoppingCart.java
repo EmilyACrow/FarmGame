@@ -33,7 +33,8 @@ public class ShoppingCart {
 	
 	/**
 	 * 
-	 * Shopping Cart constructor for pre-populated ArrayList<Merchandise>
+	 * Shopping Cart constructor for pre-populated ArrayList
+	 * @param merchList Arraylist to wrap
 	 */
 	public ShoppingCart(ArrayList<Merchandise> merchList)
 	{

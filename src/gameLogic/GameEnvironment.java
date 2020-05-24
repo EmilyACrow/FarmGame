@@ -31,6 +31,10 @@ public class GameEnvironment {
 	/**
 	 * the constructor method activates the scanner that will be used to get player's input
 	 * It also asks the player to input information to create a farm.
+	 * @param farmName name of farm
+	 * @param farmType Type of farm
+	 * @param farmer Farmer Object to use
+	 * @param remainingDays Number of days to play the game
 	 */
 	public GameEnvironment(String farmName, FarmType farmType, Farmer farmer, int remainingDays)
 	{
@@ -43,6 +47,7 @@ public class GameEnvironment {
 	/**
 	 * the constructor method activates the scanner that will be used to get player's input
 	 * It also asks the player to input information to create a farm.
+	 * @param farm Reference to Farm object created for the game
 	 */
 	public GameEnvironment(Farm farm)
 	{
@@ -159,8 +164,7 @@ public class GameEnvironment {
 	/**
 	 * Tends to the crops then updates the detail box to tell the player about their crops. It then deletes the item used.
 	 * 
-	 * @param selection the crop that has been chosen 
-	 * @param itemUsed the item that has been chosen
+	 * @param message Formatted String to display to user
 	 */
 	public void tendCropMessage(String message) {
 		updateDetailText(message);
@@ -223,7 +227,7 @@ public class GameEnvironment {
 	/**
 	 * Called by OptionalItemDialog, sends a list of chosen items and animals of the selected species.
 	 * @param selection the animals the player has selected to feed.
-	 * @param itemUsed the item type the player has chosen to feed to the animal.
+	 * @param item the item type the player has chosen to feed to the animal.
 	 */
 	public void feedAnimals(MerchandiseWrapper selection, Item item) 
 	{
@@ -574,6 +578,7 @@ public class GameEnvironment {
 	 * @return An item to use for the selected action
 	 * @throws IllegalStateException if the farm has no items or if the user cancels out of the selection
 	 * @throws NullPointerException Not an error, occurs when the user doesn't want to use an item AND not using an item is allowed
+	 * @throws Exception Any other exception
 	 */
 	public Item selectActionItem(boolean required) throws Exception
 	{
@@ -657,7 +662,7 @@ public class GameEnvironment {
 	
 	/**
 	 * End the game day.
-	 * If days remaining in game <= 0, it ends the game.
+	 * If days remaining in game less than 1, it ends the game.
 	 */
 	public void endDay()
 	{

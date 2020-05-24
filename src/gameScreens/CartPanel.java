@@ -13,10 +13,11 @@ import java.awt.Component;
 import javax.swing.Box;
 
 public class CartPanel extends JPanel {
-	ArrayList<Merchandise> merch;
+	private ArrayList<Merchandise> merch;
 
 	/**
 	 * Create the panel.
+	 * @param cart ArrayList of Merchandise used to fill the panel
 	 */
 	public CartPanel(ArrayList<Merchandise> cart) {
 		merch = cart;
