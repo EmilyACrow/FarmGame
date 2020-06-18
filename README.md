@@ -1,5 +1,5 @@
-# SENG201
-SENG201 project for 2020 term 1
+# Farm Game
+Software Engineering project for 2020 term 1
 
 ## Compiling the program:
 **IMPORTANT! This project will only compile under Java 8 due to JAXB support being removed in later versions.** 
